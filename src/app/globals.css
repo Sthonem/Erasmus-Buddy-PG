@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+:root {
+  --pg-navy: #003580;
+  --pg-blue: #005DAA;
+  --pg-teal: #00A693;
+  --pg-red: #C8102E;
+  --pg-light: #F5F6F8;
+  --pg-white: #FFFFFF;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background-color: var(--pg-light);
+  color: #1a1a2e;
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
