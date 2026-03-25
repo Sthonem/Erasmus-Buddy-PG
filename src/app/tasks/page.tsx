@@ -44,26 +44,32 @@ export default function Tasks() {
   }, [router]);
 
   async function toggleTask(slug: string) {
-    if (!userId) return;
-    const isDone = completed.includes(slug);
+  if (!userId) return;
+  const isDone = completed.includes(slug);
 
-    if (isDone) {
-      setCompleted(completed.filter(s => s !== slug));
+  if (isDone) {
+    setCompleted(completed.filter(s => s !== slug));
+    await supabase.from("user_tasks")
+      .delete()
+      .eq("user_id", userId)
+      .eq("task_slug", slug);
+  } else {
+    setCompleted([...completed, slug]);
+    const { error } = await supabase.from("user_tasks")
+      .insert({
+        user_id: userId,
+        task_slug: slug,
+        completed: true,
+        completed_at: new Date().toISOString()
+      });
+    if (error) {
       await supabase.from("user_tasks")
-        .update({ completed: false, completed_at: null })
+        .update({ completed: true, completed_at: new Date().toISOString() })
         .eq("user_id", userId)
         .eq("task_slug", slug);
-    } else {
-      setCompleted([...completed, slug]);
-      await supabase.from("user_tasks")
-        .upsert({
-          user_id: userId,
-          task_slug: slug,
-          completed: true,
-          completed_at: new Date().toISOString()
-        }, { onConflict: "user_id,task_slug" });
     }
   }
+}
 
   if (loading) return (
     <main className="min-h-screen flex items-center justify-center" style={{ background: "var(--pg-light)" }}>
