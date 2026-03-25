@@ -1,24 +1,26 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
 export default function Home() {
+  const router = useRouter();
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6"
       style={{ background: "var(--pg-navy)" }}>
 
       <div className="text-center mb-12">
         <div className="text-6xl mb-4">🎓</div>
-        <h1 className="text-3xl font-bold text-white mb-2">
-          ErasmusBuddy
-        </h1>
-        <p className="text-blue-200 text-sm">
-          Gdańsk University of Technology
-        </p>
+        <h1 className="text-3xl font-bold text-white mb-2">ErasmusBuddy</h1>
+        <p className="text-blue-200 text-sm">Gdańsk University of Technology</p>
       </div>
 
-      <div className="w-full max-w-sm space-y-4">
+      <div className="w-full max-w-sm">
         <p className="text-center text-white text-sm mb-6">
           Your step-by-step guide to life in Gdańsk
         </p>
-
         <button
+          onClick={() => router.push("/dashboard")}
           className="w-full py-4 rounded-2xl font-semibold text-base flex items-center justify-center gap-3"
           style={{ background: "var(--pg-white)", color: "var(--pg-navy)" }}>
           <svg width="20" height="20" viewBox="0 0 48 48">
@@ -29,12 +31,10 @@ export default function Home() {
           </svg>
           Continue with Google
         </button>
-
         <p className="text-center text-blue-200 text-xs mt-6">
           By continuing, you agree to our Terms of Service
         </p>
       </div>
-
     </main>
   );
 }
