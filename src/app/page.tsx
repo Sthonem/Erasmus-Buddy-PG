@@ -1,9 +1,16 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 export default function Home() {
-  const router = useRouter();
+  async function handleGoogleLogin() {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+  }
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6"
@@ -20,7 +27,7 @@ export default function Home() {
           Your step-by-step guide to life in Gdańsk
         </p>
         <button
-          onClick={() => router.push("/dashboard")}
+          onClick={handleGoogleLogin}
           className="w-full py-4 rounded-2xl font-semibold text-base flex items-center justify-center gap-3"
           style={{ background: "var(--pg-white)", color: "var(--pg-navy)" }}>
           <svg width="20" height="20" viewBox="0 0 48 48">

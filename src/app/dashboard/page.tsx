@@ -1,16 +1,37 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 import BottomNav from "@/components/shared/BottomNav";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
+  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) {
+        router.push("/");
+      } else {
+        setUser({
+          name: data.user.user_metadata?.full_name?.split(" ")[0] || "Student",
+          email: data.user.email || "",
+        });
+      }
+    });
+  }, [router]);
+
+  if (!user) return null;
+
   return (
     <main className="min-h-screen pb-20" style={{ background: "var(--pg-light)" }}>
-      
-      {/* Top Bar */}
+
       <div className="px-5 pt-8 pb-4" style={{ background: "var(--pg-navy)" }}>
         <p className="text-blue-200 text-sm">Welcome back 👋</p>
-        <h1 className="text-white text-2xl font-bold mt-1">Erdem</h1>
+        <h1 className="text-white text-2xl font-bold mt-1">{user.name}</h1>
         <p className="text-blue-200 text-xs mt-1">Gdańsk University of Technology</p>
 
-        {/* Progress */}
         <div className="mt-4 bg-white/10 rounded-2xl p-4">
           <div className="flex justify-between items-center mb-2">
             <span className="text-white text-sm font-medium">Onboarding Progress</span>
@@ -23,12 +44,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Priority Tasks */}
       <div className="px-5 mt-5">
-        <h2 className="text-sm font-semibold mb-3" style={{ color: "#1a1a2e" }}>
-          Priority Tasks
-        </h2>
-
+        <h2 className="text-sm font-semibold mb-3" style={{ color: "#1a1a2e" }}>Priority Tasks</h2>
         {[
           { title: "PESEL Application", badge: "Critical", done: false },
           { title: "Open Bank Account", badge: "Critical", done: false },
@@ -38,7 +55,6 @@ export default function Dashboard() {
           <div key={task.title}
             className="flex items-center gap-3 p-3 rounded-xl mb-2 bg-white border"
             style={{ borderColor: "#e5e7eb", opacity: task.done ? 0.5 : 1 }}>
-            
             <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
               style={{
                 background: task.done ? "var(--pg-teal)" : "transparent",
@@ -50,9 +66,7 @@ export default function Dashboard() {
                 </svg>
               )}
             </div>
-
             <span className="flex-1 text-sm" style={{ color: "#1a1a2e" }}>{task.title}</span>
-
             <span className="text-xs px-2 py-1 rounded-full"
               style={{
                 background: task.badge === "Critical" ? "#FBEAED" :
@@ -66,11 +80,8 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Quick Access */}
       <div className="px-5 mt-5">
-        <h2 className="text-sm font-semibold mb-3" style={{ color: "#1a1a2e" }}>
-          Quick Access
-        </h2>
+        <h2 className="text-sm font-semibold mb-3" style={{ color: "#1a1a2e" }}>Quick Access</h2>
         <div className="grid grid-cols-2 gap-3">
           {[
             { title: "Guides", sub: "PESEL, bank, SIS", color: "#E8EEF7", icon: "📖" },
