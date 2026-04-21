@@ -72,6 +72,36 @@ const guideData: Record<string, {
     ],
     link: { label: "ZUS official website", url: "https://www.zus.pl" },
   },
+  ola: {
+    title: "Online Learning Agreement (OLA)",
+    category: "Academic",
+    time: "~1 hour",
+    urgent: true,
+    intro: "The Online Learning Agreement (OLA) is the official digital document that defines the courses you will study at PG as part of your Erasmus programme. It must be approved by both your home institution and PG before or shortly after arrival.",
+    steps: [
+      { title: "Log in to the OLA platform", desc: "Go to learning-agreement.eu and sign in with your home university credentials" },
+      { title: "Create a new Learning Agreement", desc: "Select PG as the host institution and your home university as the sending institution" },
+      { title: "Add your courses (Table A)", desc: "List the courses you plan to take at PG with ECTS credits. Use the SIS course catalogue at pg.edu.pl" },
+      { title: "Add component at home (Table B)", desc: "Map PG courses to equivalent courses at your home university" },
+      { title: "Send for approval", desc: "Submit to your home coordinator first, then it goes to PG's International Office" },
+      { title: "Wait for both signatures", desc: "The process typically takes 1-2 weeks. Check your email for status updates" },
+      { title: "Download the signed copy", desc: "Save a PDF copy once fully approved — you may need it for your grant documentation" },
+    ],
+    documents: [
+      "Erasmus grant letter / nomination confirmation",
+      "PG course catalogue (from SIS or pg.edu.pl)",
+      "Home university coordinator contact",
+      "Your student ID number at PG",
+    ],
+    faq: [
+      { q: "What is the deadline for OLA?", a: "Usually within the first 2-3 weeks of arrival. Check with your home coordinator — missing the deadline can affect your grant." },
+      { q: "Can I change courses after submitting?", a: "Yes, you can submit a Changes to the Learning Agreement form. Try to finalise within the first 5 weeks." },
+      { q: "Who is the PG coordinator?", a: "The International Students Office (Building A, room 14) handles OLA approvals at PG." },
+      { q: "What if I can't find a course in OLA?", a: "Search by ECTS code or partial name. Contact the International Office if a course is missing from the system." },
+      { q: "Does OLA replace the paper Learning Agreement?", a: "Yes — OLA is the digital replacement. Most universities now require OLA only, but verify with your home institution." },
+    ],
+    link: { label: "Open OLA platform — learning-agreement.eu", url: "https://learning-agreement.eu" },
+  },
   sis: {
     title: "SIS Registration",
     category: "Academic",
@@ -129,30 +159,52 @@ const guideData: Record<string, {
   },
 };
 
+const categoryColors: Record<string, { bg: string; text: string }> = {
+  Admin:    { bg: "#FBEAED", text: "#C8102E" },
+  Academic: { bg: "#E8EEF7", text: "#003580" },
+  Campus:   { bg: "#E0F5F3", text: "#00A693" },
+};
+
 export default async function GuidePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const guide = guideData[slug];
 
   if (!guide) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
-        <p style={{ color: "#888" }}>Guide not found.</p>
+      <main className="min-h-screen flex flex-col items-center justify-center gap-3 px-5"
+        style={{ background: "var(--pg-light)" }}>
+        <p className="text-4xl">🔍</p>
+        <p className="text-sm font-medium" style={{ color: "#1a1a2e" }}>Guide not found</p>
+        <Link href="/guides">
+          <span className="text-sm" style={{ color: "var(--pg-blue)" }}>← Back to Guides</span>
+        </Link>
       </main>
     );
   }
 
-  return (
-    <main className="min-h-screen pb-20" style={{ background: "var(--pg-light)" }}>
+  const cat = categoryColors[guide.category] ?? { bg: "#F5F6F8", text: "#888" };
 
-      {/* Top Bar */}
-      <div className="px-5 pt-8 pb-5" style={{ background: "var(--pg-navy)" }}>
+  return (
+    <main className="min-h-screen pb-24" style={{ background: "var(--pg-light)" }}>
+
+      {/* Header */}
+      <div className="px-5 pt-10 pb-5" style={{ background: "var(--pg-navy)" }}>
         <Link href="/guides">
-          <p className="text-blue-200 text-xs mb-2">← Back to Guides</p>
+          <span className="text-blue-200 text-xs flex items-center gap-1 mb-3">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M10 4L6 8l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+            Back to Guides
+          </span>
         </Link>
-        <h1 className="text-white text-xl font-bold">{guide.title}</h1>
-        <div className="flex items-center gap-2 mt-2">
+        <h1 className="text-white text-xl font-bold leading-snug">{guide.title}</h1>
+        <div className="flex items-center gap-2 mt-2 flex-wrap">
+          <span className="text-xs px-2.5 py-0.5 rounded-full font-medium"
+            style={{ background: cat.bg, color: cat.text }}>
+            {guide.category}
+          </span>
           {guide.urgent && (
-            <span className="text-xs px-2 py-0.5 rounded-full"
+            <span className="text-xs px-2.5 py-0.5 rounded-full font-medium"
               style={{ background: "#C8102E", color: "white" }}>
               Critical
             </span>
@@ -167,19 +219,19 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       </div>
 
       {/* Steps */}
-      <div className="px-5 mt-5">
-        <h2 className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#003580" }}>
+      <div className="px-5 mt-6">
+        <h2 className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: "#003580" }}>
           Steps
         </h2>
         {guide.steps.map((step, i) => (
-          <div key={i} className="flex gap-3 mb-3">
-            <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-              style={{ background: "#E8EEF7", color: "#003580", fontSize: 11, fontWeight: 600 }}>
+          <div key={i} className="flex gap-3 mb-4">
+            <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+              style={{ background: "#E8EEF7", color: "#003580", fontSize: 11, fontWeight: 700 }}>
               {i + 1}
             </div>
-            <div className="flex-1 pb-3 border-b" style={{ borderColor: "#e5e7eb" }}>
-              <p className="text-sm font-medium" style={{ color: "#1a1a2e" }}>{step.title}</p>
-              <p className="text-xs mt-0.5" style={{ color: "#888" }}>{step.desc}</p>
+            <div className="flex-1 pb-4 border-b" style={{ borderColor: "#e5e7eb" }}>
+              <p className="text-sm font-semibold" style={{ color: "#1a1a2e" }}>{step.title}</p>
+              <p className="text-xs mt-1 leading-relaxed" style={{ color: "#666" }}>{step.desc}</p>
             </div>
           </div>
         ))}
@@ -187,14 +239,15 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
 
       {/* Documents */}
       {guide.documents.length > 0 && (
-        <div className="px-5 mt-4">
+        <div className="px-5 mt-2">
           <h2 className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#003580" }}>
             Documents needed
           </h2>
-          <div className="bg-white rounded-xl p-4 border" style={{ borderColor: "#e5e7eb" }}>
+          <div className="bg-white rounded-2xl p-4 border" style={{ borderColor: "#e5e7eb" }}>
             {guide.documents.map((doc, i) => (
-              <div key={i} className="flex items-center gap-2 py-1.5">
-                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#00A693" }}/>
+              <div key={i} className="flex items-center gap-3 py-2 border-b last:border-b-0"
+                style={{ borderColor: "#f0f0f0" }}>
+                <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: "#00A693" }} />
                 <p className="text-sm" style={{ color: "#1a1a2e" }}>{doc}</p>
               </div>
             ))}
@@ -206,27 +259,37 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       {guide.link && (
         <div className="px-5 mt-4">
           <a href={guide.link.url} target="_blank" rel="noopener noreferrer">
-            <div className="p-4 rounded-xl border flex items-center gap-3"
+            <div className="p-4 rounded-2xl border flex items-center gap-3 active:scale-[0.98] transition-transform"
               style={{ background: "#E8EEF7", borderColor: "#B3C6E0" }}>
-              <p className="text-sm flex-1" style={{ color: "#003580" }}>{guide.link.label}</p>
-              <span style={{ color: "#005DAA" }}>→</span>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: "#003580" }}>
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 3h5v5M13 3L7 9M5 4H3v9h9v-2" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <p className="text-sm flex-1 font-medium" style={{ color: "#003580" }}>{guide.link.label}</p>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="flex-shrink-0">
+                <path d="M6 4l4 4-4 4" stroke="#005DAA" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
             </div>
           </a>
         </div>
       )}
 
       {/* FAQ */}
-      <div className="px-5 mt-5 mb-4">
-        <h2 className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#003580" }}>
-          Frequently asked questions
-        </h2>
-        {guide.faq.map((item, i) => (
-          <div key={i} className="bg-white rounded-xl p-4 border mb-2" style={{ borderColor: "#e5e7eb" }}>
-            <p className="text-sm font-medium mb-1" style={{ color: "#1a1a2e" }}>{item.q}</p>
-            <p className="text-xs" style={{ color: "#888" }}>{item.a}</p>
-          </div>
-        ))}
-      </div>
+      {guide.faq.length > 0 && (
+        <div className="px-5 mt-5 mb-4">
+          <h2 className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#003580" }}>
+            Frequently asked questions
+          </h2>
+          {guide.faq.map((item, i) => (
+            <div key={i} className="bg-white rounded-2xl p-4 border mb-2" style={{ borderColor: "#e5e7eb" }}>
+              <p className="text-sm font-semibold mb-1.5" style={{ color: "#1a1a2e" }}>{item.q}</p>
+              <p className="text-xs leading-relaxed" style={{ color: "#666" }}>{item.a}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       <BottomNav />
     </main>

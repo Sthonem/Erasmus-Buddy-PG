@@ -1,0 +1,39 @@
+{
+  "name": "ErasmusBuddy — PG Gdańsk",
+  "short_name": "ErasmusBuddy",
+  "description": "Your step-by-step guide to life at Gdańsk University of Technology",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#003580",
+  "theme_color": "#003580",
+  "orientation": "portrait",
+  "lang": "en",
+  "categories": ["education", "utilities"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "My Tasks",
+      "url": "/tasks",
+      "description": "View and complete your onboarding tasks"
+    },
+    {
+      "name": "Guides",
+      "url": "/guides",
+      "description": "Step-by-step guides"
+    }
+  ]
+}
