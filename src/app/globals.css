@@ -1,25 +1,242 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════ */
 :root {
-  --pg-navy: #003580;
-  --pg-blue: #005DAA;
-  --pg-teal: #00A693;
-  --pg-red: #C8102E;
-  --pg-light: #F5F6F8;
-  --pg-white: #FFFFFF;
+  /* Brand */
+  --pg-navy:    #003580;
+  --pg-blue:    #005DAA;
+  --pg-teal:    #00A693;
+  --pg-red:     #C8102E;
+  --pg-light:   #F7F8FC;
+  --pg-white:   #FFFFFF;
+
+  /* Text */
+  --text-primary:   #0D1117;
+  --text-secondary: #6E7891;
+  --text-tertiary:  #A0A8BB;
+
+  /* Surfaces */
+  --surface:        #FFFFFF;
+  --surface-raised: #FFFFFF;
+  --border:         rgba(0, 0, 0, 0.07);
+  --border-light:   rgba(0, 0, 0, 0.05);
+
+  /* Shadows */
+  --shadow-xs:  0 1px 2px rgba(0,0,0,0.06);
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-md:  0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-lg:  0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-nav: 0 -1px 0 rgba(0,0,0,0.06), 0 -4px 16px rgba(0,0,0,0.04);
+
+  /* Radii */
+  --radius-sm:  10px;
+  --radius-md:  14px;
+  --radius-lg:  18px;
+  --radius-xl:  22px;
+  --radius-2xl: 28px;
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-* {
+/* ═══════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════ */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* ═══════════════════════════════════════════
+   DESKTOP — phone-on-gradient
+═══════════════════════════════════════════ */
+html {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,93,170,0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 90%, rgba(0,165,147,0.15) 0%, transparent 55%),
+    linear-gradient(160deg, #000d26 0%, #002060 45%, #001540 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════════
+   APP SHELL
+═══════════════════════════════════════════ */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background-color: var(--pg-light);
-  color: #1a1a2e;
+  color: var(--text-primary);
   max-width: 430px;
   margin: 0 auto;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
+
+/* Desktop float */
+@media (min-width: 500px) {
+  html { padding: 32px 0 48px; }
+  body {
+    min-height: calc(100vh - 80px);
+    border-radius: 48px;
+    overflow: hidden;
+    box-shadow:
+      0 60px 140px rgba(0,0,0,0.8),
+      0 0 0 1px rgba(255,255,255,0.08),
+      0 0 0 2px rgba(0,0,0,0.3);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   TYPOGRAPHY UTILITIES
+═══════════════════════════════════════════ */
+.text-display  { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; }
+.text-title    { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
+.text-heading  { font-size: 15px; font-weight: 600; line-height: 1.4; }
+.text-body     { font-size: 14px; font-weight: 400; line-height: 1.6; }
+.text-label    { font-size: 12px; font-weight: 500; letter-spacing: 0.3px; }
+.text-caption  { font-size: 11px; font-weight: 400; letter-spacing: 0.1px; }
+.text-micro    { font-size: 10px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; }
+
+/* ═══════════════════════════════════════════
+   CARD SYSTEM
+═══════════════════════════════════════════ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-interactive {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform 0.15s var(--ease-out), box-shadow 0.15s var(--ease-out);
+}
+
+.card-interactive:active {
+  transform: scale(0.975);
+  box-shadow: var(--shadow-xs);
+}
+
+/* ═══════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════ */
+.btn-primary {
+  background: var(--pg-navy);
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: var(--radius-xl);
+  padding: 14px 24px;
+  transition: opacity 0.15s, transform 0.15s var(--ease-out);
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-primary:active { transform: scale(0.97); opacity: 0.92; }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn-ghost {
+  background: rgba(0,0,0,0.05);
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: var(--radius-xl);
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-ghost:active { background: rgba(0,0,0,0.09); }
+
+/* ═══════════════════════════════════════════
+   BADGE / CHIP
+═══════════════════════════════════════════ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION HEADER
+═══════════════════════════════════════════ */
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 10px;
+}
+
+/* ═══════════════════════════════════════════
+   INPUTS
+═══════════════════════════════════════════ */
+input, select {
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--pg-light);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+}
+input::placeholder { color: var(--text-tertiary); }
+input:focus, select:focus {
+  border-color: var(--pg-blue);
+  background: white;
+}
+
+/* ═══════════════════════════════════════════
+   DIVIDER
+═══════════════════════════════════════════ */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 -4px;
+}
+
+/* ═══════════════════════════════════════════
+   MISC
+═══════════════════════════════════════════ */
+* { -webkit-tap-highlight-color: transparent; }
+
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,53,128,0.15); border-radius: 3px; }
+
+/* Progress bar animation */
+@keyframes progress-fill {
+  from { width: 0; }
+}
+.progress-bar { animation: progress-fill 0.8s var(--ease-out) both; }
+
+/* Fade up on load */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fade-up 0.4s var(--ease-out) both; }
+.fade-up-1 { animation-delay: 0.05s; }
+.fade-up-2 { animation-delay: 0.1s; }
+.fade-up-3 { animation-delay: 0.15s; }

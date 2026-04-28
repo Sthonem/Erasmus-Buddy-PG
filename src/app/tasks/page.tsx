@@ -1,5 +1,4 @@
 "use client";
-
 export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
@@ -18,15 +17,10 @@ export default function Tasks() {
     async function load() {
       const { data } = await supabase.auth.getUser();
       if (!data.user) { router.push("/"); return; }
-
       setUserId(data.user.id);
-
       const { data: tasks } = await supabase
-        .from("user_tasks")
-        .select("task_slug")
-        .eq("user_id", data.user.id)
-        .eq("completed", true);
-
+        .from("user_tasks").select("task_slug")
+        .eq("user_id", data.user.id).eq("completed", true);
       if (tasks) setCompleted(tasks.map((t: { task_slug: string }) => t.task_slug));
       setLoading(false);
     }
@@ -36,143 +30,141 @@ export default function Tasks() {
   async function toggleTask(slug: string) {
     if (!userId) return;
     const isDone = completed.includes(slug);
-
     if (isDone) {
       const prev = completed;
-      setCompleted(completed.filter(s => s !== slug));
-      const { error } = await supabase.from("user_tasks")
-        .delete()
-        .eq("user_id", userId)
-        .eq("task_slug", slug);
+      setCompleted(c => c.filter(s => s !== slug));
+      const { error } = await supabase.from("user_tasks").delete()
+        .eq("user_id", userId).eq("task_slug", slug);
       if (error) setCompleted(prev);
     } else {
       const prev = completed;
-      setCompleted([...completed, slug]);
-      const { error } = await supabase.from("user_tasks")
-        .upsert({
-          user_id: userId,
-          task_slug: slug,
-          completed: true,
-          completed_at: new Date().toISOString(),
-        }, { onConflict: "user_id,task_slug" });
+      setCompleted(c => [...c, slug]);
+      const { error } = await supabase.from("user_tasks").upsert(
+        { user_id: userId, task_slug: slug, completed: true, completed_at: new Date().toISOString() },
+        { onConflict: "user_id,task_slug" }
+      );
       if (error) setCompleted(prev);
     }
   }
 
   if (loading) return (
     <main className="min-h-screen flex items-center justify-center" style={{ background: "var(--pg-light)" }}>
-      <div className="flex flex-col items-center gap-3">
-        <div className="w-8 h-8 rounded-full border-2 animate-spin"
-          style={{ borderColor: "var(--pg-blue)", borderTopColor: "transparent" }} />
-        <p className="text-sm" style={{ color: "#888" }}>Loading tasks...</p>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+        <div style={{ width: 34, height: 34, borderRadius: "50%", border: "2.5px solid var(--pg-blue)", borderTopColor: "transparent", animation: "spin 0.8s linear infinite" }} />
+        <p style={{ color: "var(--text-tertiary)", fontSize: 13 }}>Loading tasks…</p>
       </div>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </main>
   );
 
   const critical = TASKS.filter(t => t.critical && !completed.includes(t.slug));
   const upcoming = TASKS.filter(t => !t.critical && !completed.includes(t.slug));
-  const done = TASKS.filter(t => completed.includes(t.slug));
+  const done     = TASKS.filter(t => completed.includes(t.slug));
   const progress = Math.round((done.length / TASKS.length) * 100);
 
   return (
     <main className="min-h-screen pb-24" style={{ background: "var(--pg-light)" }}>
 
-      <div className="px-5 pt-10 pb-5" style={{ background: "var(--pg-navy)" }}>
-        <h1 className="text-white text-2xl font-bold">My Tasks</h1>
-        <p className="text-blue-200 text-xs mt-1">First 2 weeks checklist</p>
-        <div className="mt-4 rounded-2xl p-3" style={{ background: "rgba(255,255,255,0.1)" }}>
-          <div className="flex justify-between mb-2">
-            <span className="text-white text-xs">{done.length} of {TASKS.length} completed</span>
-            <span className="text-white text-xs font-bold">{progress}%</span>
+      {/* Header */}
+      <div style={{
+        background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)",
+        padding: "52px 20px 24px", position: "relative", overflow: "hidden",
+      }}>
+        <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,93,170,0.4), transparent 70%)", pointerEvents: "none" }} />
+
+        <h1 style={{ color: "white", fontSize: 26, fontWeight: 800, letterSpacing: "-0.5px" }}>My Tasks</h1>
+        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 3 }}>First 2 weeks checklist</p>
+
+        {/* Progress */}
+        <div style={{ marginTop: 16, background: "rgba(255,255,255,0.09)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 18, padding: "14px 16px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+            <span style={{ color: "rgba(255,255,255,0.6)", fontSize: 12 }}>{done.length} of {TASKS.length} completed</span>
+            <span style={{ color: "white", fontSize: 18, fontWeight: 800, letterSpacing: "-0.5px" }}>{progress}%</span>
           </div>
-          <div className="w-full rounded-full h-1.5" style={{ background: "rgba(255,255,255,0.2)" }}>
-            <div className="h-1.5 rounded-full transition-all duration-500"
-              style={{ width: `${progress}%`, background: "var(--pg-teal)" }} />
+          <div style={{ height: 5, background: "rgba(255,255,255,0.12)", borderRadius: 99, overflow: "hidden" }}>
+            <div className="progress-bar" style={{ height: "100%", borderRadius: 99, width: `${progress}%`, background: "linear-gradient(90deg, #00c4b4, #00e5d2)", boxShadow: "0 0 10px rgba(0,196,180,0.5)" }} />
           </div>
         </div>
       </div>
 
-      {critical.length > 0 && (
-        <div className="px-5 mt-5">
-          <h2 className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#C8102E" }}>
-            Critical — Do immediately
-          </h2>
-          {critical.map(task => (
-            <TaskCard key={task.slug} task={task} done={false} onToggle={toggleTask} />
-          ))}
-        </div>
-      )}
-
-      {upcoming.length > 0 && (
-        <div className="px-5 mt-4">
-          <h2 className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#888" }}>
-            Academic
-          </h2>
-          {upcoming.map(task => (
-            <TaskCard key={task.slug} task={task} done={false} onToggle={toggleTask} />
-          ))}
-        </div>
-      )}
-
-      {done.length > 0 && (
-        <div className="px-5 mt-4 mb-4">
-          <h2 className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#00A693" }}>
-            Completed
-          </h2>
-          {done.map(task => (
-            <TaskCard key={task.slug} task={task} done={true} onToggle={toggleTask} />
-          ))}
-        </div>
-      )}
-
-      {critical.length === 0 && upcoming.length === 0 && done.length > 0 && (
-        <div className="px-5 mt-4">
-          <div className="p-5 rounded-2xl text-center" style={{ background: "#E0F5F3" }}>
-            <p className="text-3xl mb-2">🎉</p>
-            <p className="text-sm font-semibold" style={{ color: "#00A693" }}>All tasks completed!</p>
-            <p className="text-xs mt-1" style={{ color: "#555" }}>You're all set — enjoy your Erasmus!</p>
+      <div style={{ padding: "0 16px" }}>
+        {critical.length > 0 && (
+          <Section label="Critical — Do immediately" labelColor="#C8102E" dot="#C8102E">
+            {critical.map(t => <TaskCard key={t.slug} task={t} done={false} onToggle={toggleTask} />)}
+          </Section>
+        )}
+        {upcoming.length > 0 && (
+          <Section label="Academic" labelColor="var(--text-tertiary)" dot="#D0D5DD">
+            {upcoming.map(t => <TaskCard key={t.slug} task={t} done={false} onToggle={toggleTask} />)}
+          </Section>
+        )}
+        {done.length > 0 && (
+          <Section label="Completed" labelColor="#00856f" dot="#00A693">
+            {done.map(t => <TaskCard key={t.slug} task={t} done={true} onToggle={toggleTask} />)}
+          </Section>
+        )}
+        {critical.length === 0 && upcoming.length === 0 && (
+          <div style={{ marginTop: 24, background: "#E5F7F5", border: "1px solid #b2ebe5", borderRadius: 18, padding: "24px 20px", textAlign: "center" }}>
+            <p style={{ fontSize: 36, marginBottom: 8 }}>🎉</p>
+            <p style={{ fontSize: 15, fontWeight: 700, color: "#00856f" }}>All tasks completed!</p>
+            <p style={{ fontSize: 12.5, color: "#555", marginTop: 4 }}>You&apos;re all set — enjoy your Erasmus!</p>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       <BottomNav />
     </main>
   );
 }
 
-function TaskCard({ task, done, onToggle }: {
-  task: Task;
-  done: boolean;
-  onToggle: (slug: string) => void;
-}) {
+function Section({ label, labelColor, dot, children }: { label: string; labelColor: string; dot: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginTop: 24 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
+        <div style={{ width: 6, height: 6, borderRadius: "50%", background: dot, flexShrink: 0 }} />
+        <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase", color: labelColor }}>{label}</p>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>{children}</div>
+    </div>
+  );
+}
+
+function TaskCard({ task, done, onToggle }: { task: Task; done: boolean; onToggle: (s: string) => void }) {
   return (
     <div
       onClick={() => onToggle(task.slug)}
-      className="flex items-center gap-3 p-3.5 rounded-xl mb-2 bg-white border cursor-pointer active:scale-[0.98] transition-transform"
-      style={{ borderColor: "#e5e7eb", opacity: done ? 0.55 : 1 }}>
-
-      <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
-        style={{
-          background: done ? "var(--pg-teal)" : "transparent",
-          border: done ? "none" : `1.5px solid ${task.critical ? "#C8102E" : "#ccc"}`
-        }}>
+      className="card-interactive"
+      style={{ padding: "13px 16px", display: "flex", alignItems: "center", gap: 12, opacity: done ? 0.55 : 1 }}
+    >
+      {/* Checkbox */}
+      <div style={{
+        width: 22, height: 22, borderRadius: "50%", flexShrink: 0,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        background: done ? "var(--pg-teal)" : "transparent",
+        border: done ? "none" : `1.5px solid ${task.critical ? "#C8102E" : "#D0D5DD"}`,
+        boxShadow: done ? "0 2px 8px rgba(0,166,147,0.35)" : "none",
+      }}>
         {done && (
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-            <path d="M2 5l2.5 2.5L8 3" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+          <svg width="11" height="11" viewBox="0 0 10 10" fill="none">
+            <path d="M2 5l2.5 2.5L8 3" stroke="white" strokeWidth="1.6" strokeLinecap="round"/>
           </svg>
         )}
       </div>
 
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium truncate" style={{ color: "#1a1a2e" }}>{task.title}</p>
-        <p className="text-xs mt-0.5" style={{ color: "#888" }}>{task.desc}</p>
+      {/* Content */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.3 }}>
+          {task.title}
+        </p>
+        <p style={{ fontSize: 11.5, color: "var(--text-secondary)", marginTop: 2 }}>{task.desc}</p>
       </div>
 
-      <span className="text-xs px-2 py-1 rounded-full flex-shrink-0"
-        style={{
-          background: done ? "#E0F5F3" : task.critical ? "#FBEAED" : "#F5F6F8",
-          color: done ? "#00A693" : task.critical ? "#C8102E" : "#888"
-        }}>
+      {/* Badge */}
+      <span className="badge" style={{
+        background: done ? "#E5F7F5" : task.critical ? "#FBEAED" : "#F3F4F8",
+        color: done ? "#00856f" : task.critical ? "#C8102E" : "var(--text-tertiary)",
+        flexShrink: 0,
+      }}>
         {done ? "Done" : task.badge}
       </span>
     </div>

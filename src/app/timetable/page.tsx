@@ -148,7 +148,8 @@ export default function Timetable() {
   return (
     <main className="min-h-screen pb-24" style={{ background: "var(--pg-light)" }}>
 
-      <div className="px-5 pt-10 pb-4" style={{ background: "var(--pg-navy)" }}>
+      <div style={{ background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)", padding: "52px 20px 16px", position: "relative", overflow: "hidden" }}>
+        <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,93,170,0.4), transparent 70%)", pointerEvents: "none" }} />
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-white text-2xl font-bold">Timetable</h1>

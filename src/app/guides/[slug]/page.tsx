@@ -188,7 +188,8 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
     <main className="min-h-screen pb-24" style={{ background: "var(--pg-light)" }}>
 
       {/* Header */}
-      <div className="px-5 pt-10 pb-5" style={{ background: "var(--pg-navy)" }}>
+      <div style={{ background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)", padding: "52px 20px 24px", position: "relative", overflow: "hidden" }}>
+        <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,93,170,0.4), transparent 70%)", pointerEvents: "none" }} />
         <Link href="/guides">
           <span className="text-blue-200 text-xs flex items-center gap-1 mb-3">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
