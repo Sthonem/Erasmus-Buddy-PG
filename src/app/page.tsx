@@ -4,7 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 export default function Home() {
-  const [mode, setMode] = useState<"idle" | "signin" | "signup">("idle");
+  const [mode, setMode] = useState<"idle" | "signin" | "signup" | "forgot">("idle");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -45,6 +45,22 @@ export default function Home() {
       setError(error.message);
     } else {
       setSuccess("Check your email to confirm your account, then sign in.");
+      setMode("signin");
+    }
+    setLoading(false);
+  }
+
+  async function handleForgotPassword() {
+    if (!email) return;
+    setLoading(true);
+    setError(null);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/reset-password`,
+    });
+    if (error) {
+      setError(error.message);
+    } else {
+      setSuccess("Password reset link sent! Check your email.");
       setMode("signin");
     }
     setLoading(false);
@@ -259,8 +275,16 @@ export default function Home() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleEmailSignIn()}
-              style={{ ...inputStyle, marginBottom: 14 }}
+              style={{ ...inputStyle, marginBottom: 6 }}
             />
+            <div style={{ textAlign: "right", marginBottom: 14 }}>
+              <button
+                onClick={() => { setPassword(""); setError(null); setMode("forgot"); }}
+                style={{ fontSize: 12, color: "#003580", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontWeight: 600 }}
+              >
+                Forgot password?
+              </button>
+            </div>
             <button
               onClick={handleEmailSignIn}
               disabled={loading || !email || !password}
@@ -278,6 +302,55 @@ export default function Home() {
                 style={{ color: "#003580", fontWeight: 600, background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 13 }}
               >
                 Create one
+              </button>
+            </p>
+          </div>
+        )}
+
+        {/* Forgot Password form */}
+        {mode === "forgot" && (
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span style={{ fontSize: 15, fontWeight: 700, color: "#1a1a2e" }}>Reset Password</span>
+              <button
+                onClick={() => { resetForm(); setMode("signin"); }}
+                style={{ fontSize: 20, color: "#B0B8CC", background: "none", border: "none", cursor: "pointer", lineHeight: 1 }}
+              >
+                ×
+              </button>
+            </div>
+            <p style={{ fontSize: 13, color: "#A0A8BB", marginBottom: 16, lineHeight: 1.5 }}>
+              Enter your email and we&apos;ll send you a reset link.
+            </p>
+            {error && (
+              <div className="mb-3 px-4 py-3 rounded-xl text-sm" style={{ background: "#FBEAED", color: "#C8102E" }}>
+                {error}
+              </div>
+            )}
+            <input
+              type="email"
+              placeholder="Email address"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && handleForgotPassword()}
+              style={{ ...inputStyle, marginBottom: 14 }}
+            />
+            <button
+              onClick={handleForgotPassword}
+              disabled={loading || !email}
+              style={{
+                ...submitStyle,
+                opacity: loading || !email ? 0.5 : 1,
+              }}
+            >
+              {loading ? "Sending…" : "Send Reset Link"}
+            </button>
+            <p style={{ textAlign: "center", fontSize: 13, color: "#B0B8CC", marginTop: 12 }}>
+              <button
+                onClick={() => { resetForm(); setMode("signin"); }}
+                style={{ color: "#003580", fontWeight: 600, background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 13 }}
+              >
+                ← Back to Sign In
               </button>
             </p>
           </div>
