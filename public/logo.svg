@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 300" fill="none">
+  <defs>
+    
+    <polygon id="s" fill="#FFD700" points="0,-5.5 1.35,-1.8 5.24,-1.7 2.21,0.69 3.24,4.5 0,2.5 -3.24,4.5 -2.21,0.69 -5.24,-1.7 -1.35,-1.8"></polygon>
+  </defs>
+
+  
+  <circle cx="130" cy="112" r="88" stroke="#003580" stroke-width="2.5" fill="white"></circle>
+
+  
+  
+  <use href="#s" transform="translate(130,42)"></use>
+  
+  <use href="#s" transform="translate(165,47)"></use>
+  
+  <use href="#s" transform="translate(191,77)"></use>
+  
+  <use href="#s" transform="translate(200,112)"></use>
+  
+  <use href="#s" transform="translate(191,147)"></use>
+  
+  <use href="#s" transform="translate(165,177)"></use>
+  
+  <use href="#s" transform="translate(130,182)"></use>
+  
+  <use href="#s" transform="translate(95,177)"></use>
+  
+  <use href="#s" transform="translate(69,147)"></use>
+  
+  <use href="#s" transform="translate(60,112)"></use>
+  
+  <use href="#s" transform="translate(69,77)"></use>
+  
+  <use href="#s" transform="translate(95,47)"></use>
+
+  
+  
+  <polygon points="122,83 157,97 122,111 87,97" fill="#003580"></polygon>
+  
+  <path d="M101,104 L101,126 Q101,137 122,137 Q143,137 143,126 L143,104 Z" fill="#003580"></path>
+  
+  <line x1="157" y1="97" x2="162" y2="118" stroke="#003580" stroke-width="2.5" stroke-linecap="round"></line>
+  <circle cx="162" cy="122" r="4" fill="#003580"></circle>
+
+  
+  
+  <g transform="translate(140,76) rotate(-28)">
+    
+    <polygon points="0,0 24,8.5 0,17 6,8.5" fill="#003580"></polygon>
+    
+    <line x1="6" y1="8.5" x2="24" y2="8.5" stroke="white" stroke-width="1.2"></line>
+    
+    <polygon points="0,17 6,8.5 0,0" fill="#003580" opacity="0.55"></polygon>
+  </g>
+
+  
+  <text x="130" y="226" font-family="Inter,&#39;Arial Black&#39;,Helvetica,sans-serif" font-weight="900" font-size="22" letter-spacing="3.5" fill="#003580" text-anchor="middle">ERASMUS</text>
+
+  <text x="130" y="258" font-family="Inter,&#39;Arial Black&#39;,Helvetica,sans-serif" font-weight="900" font-size="29" letter-spacing="4" fill="#003580" text-anchor="middle">BUDDY</text>
+
+  <text x="130" y="278" font-family="Inter,Arial,Helvetica,sans-serif" font-weight="400" font-size="10.5" letter-spacing="0.5" fill="#6E7891" text-anchor="middle">Connecting Students Worldwide</text>
+</svg>

@@ -52,7 +52,8 @@ export default function Home() {
               boxShadow: "0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15)",
             }}
           >
-            <span style={{ fontSize: 44 }}>🎓</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-icon.svg" alt="ErasmusBuddy" width={64} height={64} style={{ borderRadius: 12 }} />
           </div>
           {/* Online indicator */}
           <div
