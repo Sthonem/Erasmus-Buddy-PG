@@ -326,13 +326,14 @@ export default function Dashboard() {
         </div>
         <div style={{
           display: "flex", gap: 10, overflowX: "auto",
-          paddingLeft: 20, paddingRight: 20, paddingBottom: 4,
+          paddingBottom: 4,
           scrollSnapType: "x mandatory",
+          scrollPaddingLeft: 20,
           WebkitOverflowScrolling: "touch",
           msOverflowStyle: "none",
           scrollbarWidth: "none",
         }}>
-          {EXPLORE.map((item) => (
+          {EXPLORE.map((item, idx) => (
             <div key={item.title} style={{
               minWidth: 150, maxWidth: 150,
               background: item.color,
@@ -341,6 +342,8 @@ export default function Dashboard() {
               padding: "14px 14px 12px",
               scrollSnapAlign: "start",
               flexShrink: 0,
+              marginLeft: idx === 0 ? 20 : 0,
+              marginRight: idx === EXPLORE.length - 1 ? 20 : 0,
             }}>
               <p style={{ fontSize: 28, marginBottom: 8, lineHeight: 1 }}>{item.icon}</p>
               <p style={{ fontSize: 13, fontWeight: 700, color: item.accent, lineHeight: 1.3 }}>{item.title}</p>
@@ -362,13 +365,14 @@ export default function Dashboard() {
         </div>
         <div style={{
           display: "flex", gap: 10, overflowX: "auto",
-          paddingLeft: 20, paddingRight: 20, paddingBottom: 4,
+          paddingBottom: 4,
           scrollSnapType: "x mandatory",
+          scrollPaddingLeft: 20,
           WebkitOverflowScrolling: "touch",
           msOverflowStyle: "none",
           scrollbarWidth: "none",
         }}>
-          {EATS.map((item) => (
+          {EATS.map((item, idx) => (
             <div key={item.title} style={{
               minWidth: 150, maxWidth: 150,
               background: item.color,
@@ -377,6 +381,8 @@ export default function Dashboard() {
               padding: "14px 14px 12px",
               scrollSnapAlign: "start",
               flexShrink: 0,
+              marginLeft: idx === 0 ? 20 : 0,
+              marginRight: idx === EATS.length - 1 ? 20 : 0,
             }}>
               <p style={{ fontSize: 28, marginBottom: 8, lineHeight: 1 }}>{item.icon}</p>
               <p style={{ fontSize: 13, fontWeight: 700, color: item.accent, lineHeight: 1.3 }}>{item.title}</p>
