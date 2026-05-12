@@ -150,20 +150,36 @@ export default function Dashboard() {
               Gdańsk University of Technology
             </p>
           </div>
-          <button
-            onClick={async () => { await supabase.auth.signOut(); router.push("/"); }}
-            style={{
-              width: 36, height: 36, borderRadius: "50%", border: "none",
-              background: "rgba(255,255,255,0.10)",
-              cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-            }}
-            title="Sign out"
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"
-                stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
+          <div style={{ display: "flex", gap: 8 }}>
+            <Link href="/settings"
+              style={{
+                width: 36, height: 36, borderRadius: "50%", border: "none",
+                background: "rgba(255,255,255,0.10)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}
+              title="Settings"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="3" stroke="rgba(255,255,255,0.7)" strokeWidth="2"/>
+                <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"
+                  stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </Link>
+            <button
+              onClick={async () => { await supabase.auth.signOut(); router.push("/"); }}
+              style={{
+                width: 36, height: 36, borderRadius: "50%", border: "none",
+                background: "rgba(255,255,255,0.10)",
+                cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+              }}
+              title="Sign out"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"
+                  stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* ── Journey Progress Card — Stepper ── */}
