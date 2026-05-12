@@ -305,6 +305,10 @@ function GuideCard({ guide }: { guide: typeof guides[0] }) {
 }
 
 function PlaceCard({ place, cat }: { place: Place; cat: Category }) {
+  const mapUrl = place.coords
+    ? `https://www.google.com/maps/search/?api=1&query=${place.coords[0]},${place.coords[1]}`
+    : null;
+
   const inner = (
     <div className="card-interactive" style={{
       padding: "12px 16px",
@@ -312,12 +316,53 @@ function PlaceCard({ place, cat }: { place: Place; cat: Category }) {
     }}>
       <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 2 }}>
-            <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.3 }}>{place.name}</p>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
+            <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.3, flex: 1, minWidth: 0 }}>{place.name}</p>
             {place.tag && (
               <span className="badge" style={{ background: cat.color, color: cat.accent, border: `1px solid ${cat.border}`, flexShrink: 0 }}>
                 {place.tag}
               </span>
+            )}
+            {mapUrl && (
+              <a
+                href={mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 3,
+                  padding: "3px 8px", borderRadius: 6, flexShrink: 0,
+                  background: cat.color, border: `1px solid ${cat.border}`,
+                  fontSize: 10, fontWeight: 600, color: cat.accent,
+                  textDecoration: "none",
+                }}
+              >
+                <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.5-2-4.5-4.5-4.5z" stroke={cat.accent} strokeWidth="1.3"/>
+                  <circle cx="8" cy="6" r="1.5" stroke={cat.accent} strokeWidth="1.3"/>
+                </svg>
+                Map
+              </a>
+            )}
+            {place.link && (
+              <a
+                href={place.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 3,
+                  padding: "3px 8px", borderRadius: 6, flexShrink: 0,
+                  background: "#E8EEF7", border: "1px solid #B3C6E0",
+                  fontSize: 10, fontWeight: 600, color: "#003580",
+                  textDecoration: "none",
+                }}
+              >
+                <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 3h5v5M13 3L7 9M5 4H3v9h9v-2" stroke="#003580" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Link
+              </a>
             )}
           </div>
           <p style={{ fontSize: 11, color: cat.accent, fontWeight: 500 }}>{place.detail}</p>
@@ -338,52 +383,6 @@ function PlaceCard({ place, cat }: { place: Place; cat: Category }) {
                 <path d="M2 5.5l6 4 6-4" stroke="var(--pg-blue)" strokeWidth="1.2" strokeLinecap="round"/>
               </svg>
               <p style={{ fontSize: 10.5, color: "var(--pg-blue)", fontWeight: 500 }}>{place.email}</p>
-            </div>
-          )}
-          {/* Action row: map + link */}
-          {(place.coords || place.link) && (
-            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-              {place.coords && (
-                <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${place.coords[0]},${place.coords[1]}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  style={{
-                    display: "inline-flex", alignItems: "center", gap: 4,
-                    padding: "5px 10px", borderRadius: 8,
-                    background: cat.color, border: `1px solid ${cat.border}`,
-                    fontSize: 10.5, fontWeight: 600, color: cat.accent,
-                    textDecoration: "none",
-                  }}
-                >
-                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-                    <path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.5-2-4.5-4.5-4.5z" stroke={cat.accent} strokeWidth="1.2"/>
-                    <circle cx="8" cy="6" r="1.5" stroke={cat.accent} strokeWidth="1.2"/>
-                  </svg>
-                  Map
-                </a>
-              )}
-              {place.link && (
-                <a
-                  href={place.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  style={{
-                    display: "inline-flex", alignItems: "center", gap: 4,
-                    padding: "5px 10px", borderRadius: 8,
-                    background: "#E8EEF7", border: "1px solid #B3C6E0",
-                    fontSize: 10.5, fontWeight: 600, color: "#003580",
-                    textDecoration: "none",
-                  }}
-                >
-                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-                    <path d="M8 3h5v5M13 3L7 9M5 4H3v9h9v-2" stroke="#003580" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  Website
-                </a>
-              )}
             </div>
           )}
         </div>
