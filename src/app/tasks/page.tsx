@@ -35,7 +35,7 @@ export default function Tasks() {
       setCompleted(c => c.filter(s => s !== slug));
       const { error } = await supabase.from("user_tasks").delete()
         .eq("user_id", userId).eq("task_slug", slug);
-      if (error) setCompleted(prev);
+      if (error) { console.error("Toggle OFF error:", error); setCompleted(prev); }
     } else {
       const prev = completed;
       setCompleted(c => [...c, slug]);
@@ -43,7 +43,7 @@ export default function Tasks() {
         { user_id: userId, task_slug: slug, completed: true, completed_at: new Date().toISOString() },
         { onConflict: "user_id,task_slug" }
       );
-      if (error) setCompleted(prev);
+      if (error) { console.error("Toggle ON error:", error); setCompleted(prev); }
     }
   }
 
