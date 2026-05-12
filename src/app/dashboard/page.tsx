@@ -1,11 +1,11 @@
 "use client";
 export const dynamic = "force-dynamic";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { TASKS } from "@/lib/tasks-data";
 import BottomNav from "@/components/shared/BottomNav";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 
 function getGreeting() {
@@ -71,20 +71,23 @@ export default function Dashboard() {
   const [completedSlugs, setCompletedSlugs] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const pathname = usePathname();
 
-  useEffect(() => {
-    async function load() {
-      const { data } = await supabase.auth.getUser();
-      if (!data.user) { router.push("/"); return; }
-      setUser({ name: data.user.user_metadata?.full_name?.split(" ")[0] || "Student" });
-      const { data: tasks } = await supabase
-        .from("user_tasks").select("task_slug")
-        .eq("user_id", data.user.id).eq("completed", true);
-      setCompletedSlugs(tasks ? tasks.map((t: { task_slug: string }) => t.task_slug) : []);
-      setLoading(false);
-    }
-    load();
+  const loadData = useCallback(async () => {
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) { router.push("/"); return; }
+    setUser({ name: data.user.user_metadata?.full_name?.split(" ")[0] || "Student" });
+    const { data: tasks } = await supabase
+      .from("user_tasks").select("task_slug")
+      .eq("user_id", data.user.id).eq("completed", true);
+    setCompletedSlugs(tasks ? tasks.map((t: { task_slug: string }) => t.task_slug) : []);
+    setLoading(false);
   }, [router]);
+
+  // Refetch every time user navigates to dashboard
+  useEffect(() => {
+    loadData();
+  }, [pathname, loadData]);
 
   if (loading) return (
     <main className="min-h-screen flex items-center justify-center" style={{ background: "var(--pg-light)" }}>
