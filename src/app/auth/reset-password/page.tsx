@@ -88,7 +88,7 @@ function ResetPasswordForm() {
         ) : (
           <>
             {error && (
-              <div className="mb-4 px-4 py-3 rounded-xl text-sm" style={{ background: "#FBEAED", color: "#C8102E" }}>
+              <div className="mb-4 px-4 py-3 rounded-xl text-sm" style={{ background: "#FEF3C7", color: "#D97706" }}>
                 {error}
               </div>
             )}

@@ -102,7 +102,7 @@ const offices: Office[] = [
 
 export default function Offices() {
   return (
-    <main className="min-h-screen pb-24" style={{ background: "var(--pg-light)" }}>
+    <main className="min-h-screen" style={{ background: "var(--pg-light)", paddingBottom: 90 }}>
 
       {/* Header */}
       <div style={{ background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)", padding: "52px 20px 24px", position: "relative", overflow: "hidden" }}>

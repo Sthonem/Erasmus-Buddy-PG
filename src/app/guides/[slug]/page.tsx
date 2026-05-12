@@ -160,7 +160,7 @@ const guideData: Record<string, {
 };
 
 const categoryColors: Record<string, { bg: string; text: string }> = {
-  Admin:    { bg: "#FBEAED", text: "#C8102E" },
+  Admin:    { bg: "#FEF3C7", text: "#D97706" },
   Academic: { bg: "#E8EEF7", text: "#003580" },
   Campus:   { bg: "#E0F5F3", text: "#00A693" },
 };
@@ -185,7 +185,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
   const cat = categoryColors[guide.category] ?? { bg: "#F5F6F8", text: "#888" };
 
   return (
-    <main className="min-h-screen pb-24" style={{ background: "var(--pg-light)" }}>
+    <main className="min-h-screen" style={{ background: "var(--pg-light)", paddingBottom: 90 }}>
 
       {/* Header */}
       <div style={{ background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)", padding: "52px 20px 24px", position: "relative", overflow: "hidden" }}>
@@ -206,7 +206,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
           </span>
           {guide.urgent && (
             <span className="text-xs px-2.5 py-0.5 rounded-full font-medium"
-              style={{ background: "#C8102E", color: "white" }}>
+              style={{ background: "#D97706", color: "white" }}>
               Critical
             </span>
           )}

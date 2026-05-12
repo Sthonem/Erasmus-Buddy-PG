@@ -61,9 +61,20 @@ export default function Tasks() {
   const upcoming = TASKS.filter(t => !t.critical && !completed.includes(t.slug));
   const done     = TASKS.filter(t => completed.includes(t.slug));
   const progress = Math.round((done.length / TASKS.length) * 100);
+  const criticalDone = TASKS.filter(t => t.critical).every(t => completed.includes(t.slug));
+  const criticalCount = TASKS.filter(t => t.critical).length;
+  const criticalCompleted = TASKS.filter(t => t.critical && completed.includes(t.slug)).length;
+  const academicCount = TASKS.filter(t => !t.critical).length;
+  const academicCompleted = TASKS.filter(t => !t.critical && completed.includes(t.slug)).length;
+
+  // Journey stage for tasks
+  const stage = progress === 100 ? { emoji: "🌍", label: "All sorted!", msg: "You're basically a local now 😎" }
+    : criticalDone ? { emoji: "📚", label: "Academic setup", msg: "Bureaucracy done! Now set up your studies." }
+    : done.length > 0 ? { emoji: "📋", label: "Getting started", msg: "Nice progress — keep going! 💪" }
+    : { emoji: "🛬", label: "Just landed", msg: "Let's get you settled in Gdańsk!" };
 
   return (
-    <main className="min-h-screen pb-24" style={{ background: "var(--pg-light)" }}>
+    <main className="min-h-screen" style={{ background: "var(--pg-light)", paddingBottom: 90 }}>
 
       {/* Header */}
       <div style={{
@@ -73,41 +84,78 @@ export default function Tasks() {
         <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,93,170,0.4), transparent 70%)", pointerEvents: "none" }} />
 
         <h1 style={{ color: "white", fontSize: 26, fontWeight: 800, letterSpacing: "-0.5px" }}>My Tasks</h1>
-        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 3 }}>First 2 weeks checklist</p>
+        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 3 }}>Your first 2 weeks — one step at a time 💪</p>
 
-        {/* Progress */}
+        {/* Journey Progress Card */}
         <div style={{ marginTop: 16, background: "rgba(255,255,255,0.09)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 18, padding: "14px 16px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-            <span style={{ color: "rgba(255,255,255,0.6)", fontSize: 12 }}>{done.length} of {TASKS.length} completed</span>
-            <span style={{ color: "white", fontSize: 18, fontWeight: 800, letterSpacing: "-0.5px" }}>{progress}%</span>
+          {/* Stage + percentage */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+            <div>
+              <p style={{ color: "white", fontSize: 13, fontWeight: 600 }}>{stage.emoji} {stage.label}</p>
+              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, marginTop: 2 }}>{stage.msg}</p>
+            </div>
+            <p style={{ color: "white", fontSize: 24, fontWeight: 800, letterSpacing: "-1px", lineHeight: 1 }}>
+              {progress}<span style={{ fontSize: 12, fontWeight: 600, opacity: 0.7 }}>%</span>
+            </p>
           </div>
-          <div style={{ height: 5, background: "rgba(255,255,255,0.12)", borderRadius: 99, overflow: "hidden" }}>
-            <div className="progress-bar" style={{ height: "100%", borderRadius: 99, width: `${progress}%`, background: "linear-gradient(90deg, #00c4b4, #00e5d2)", boxShadow: "0 0 10px rgba(0,196,180,0.5)" }} />
+
+          {/* Two-section milestone bar */}
+          <div style={{ display: "flex", gap: 4, marginBottom: 6 }}>
+            {/* Critical section */}
+            <div style={{ flex: criticalCount, height: 5, background: "rgba(255,255,255,0.12)", borderRadius: 99, overflow: "hidden" }}>
+              <div style={{
+                height: "100%", borderRadius: 99,
+                width: `${criticalCount > 0 ? (criticalCompleted / criticalCount) * 100 : 0}%`,
+                background: criticalDone ? "var(--pg-teal)" : "linear-gradient(90deg, #F59E0B, #FBBF24)",
+                boxShadow: criticalCompleted > 0 ? "0 0 8px rgba(245,158,11,0.5)" : "none",
+                transition: "width 0.5s ease",
+              }} />
+            </div>
+            {/* Academic section */}
+            <div style={{ flex: academicCount, height: 5, background: "rgba(255,255,255,0.12)", borderRadius: 99, overflow: "hidden" }}>
+              <div style={{
+                height: "100%", borderRadius: 99,
+                width: `${academicCount > 0 ? (academicCompleted / academicCount) * 100 : 0}%`,
+                background: "linear-gradient(90deg, #00c4b4, #00e5d2)",
+                boxShadow: academicCompleted > 0 ? "0 0 8px rgba(0,196,180,0.5)" : "none",
+                transition: "width 0.5s ease",
+              }} />
+            </div>
+          </div>
+
+          {/* Section labels */}
+          <div style={{ display: "flex", gap: 4 }}>
+            <p style={{ flex: criticalCount, fontSize: 9.5, color: criticalDone ? "rgba(0,228,210,0.7)" : "rgba(251,191,36,0.7)", fontWeight: 600 }}>
+              ⚡ {criticalCompleted}/{criticalCount} essentials
+            </p>
+            <p style={{ flex: academicCount, fontSize: 9.5, color: academicCompleted > 0 ? "rgba(0,228,210,0.7)" : "rgba(255,255,255,0.3)", fontWeight: 600 }}>
+              📚 {academicCompleted}/{academicCount} academic
+            </p>
           </div>
         </div>
       </div>
 
       <div style={{ padding: "0 16px" }}>
         {critical.length > 0 && (
-          <Section label="Critical — Do immediately" labelColor="#C8102E" dot="#C8102E">
+          <Section label="⚡ First week essentials" labelColor="#D97706" dot="#D97706">
             {critical.map(t => <TaskCard key={t.slug} task={t} done={false} onToggle={toggleTask} />)}
           </Section>
         )}
         {upcoming.length > 0 && (
-          <Section label="Academic" labelColor="var(--text-tertiary)" dot="#D0D5DD">
+          <Section label="📚 Academic setup" labelColor="var(--text-tertiary)" dot="#D0D5DD">
             {upcoming.map(t => <TaskCard key={t.slug} task={t} done={false} onToggle={toggleTask} />)}
           </Section>
         )}
         {done.length > 0 && (
-          <Section label="Completed" labelColor="#00856f" dot="#00A693">
+          <Section label="✅ Done — nice work!" labelColor="#00856f" dot="#00A693">
             {done.map(t => <TaskCard key={t.slug} task={t} done={true} onToggle={toggleTask} />)}
           </Section>
         )}
         {critical.length === 0 && upcoming.length === 0 && (
           <div style={{ marginTop: 24, background: "#E5F7F5", border: "1px solid #b2ebe5", borderRadius: 18, padding: "24px 20px", textAlign: "center" }}>
             <p style={{ fontSize: 36, marginBottom: 8 }}>🎉</p>
-            <p style={{ fontSize: 15, fontWeight: 700, color: "#00856f" }}>All tasks completed!</p>
-            <p style={{ fontSize: 12.5, color: "#555", marginTop: 4 }}>You&apos;re all set — enjoy your Erasmus!</p>
+            <p style={{ fontSize: 15, fontWeight: 700, color: "#00856f" }}>You&apos;re all sorted!</p>
+            <p style={{ fontSize: 12.5, color: "#555", marginTop: 4 }}>Time to explore Gdańsk and enjoy your Erasmus 🌍</p>
           </div>
         )}
       </div>
@@ -141,7 +189,7 @@ function TaskCard({ task, done, onToggle }: { task: Task; done: boolean; onToggl
         width: 22, height: 22, borderRadius: "50%", flexShrink: 0,
         display: "flex", alignItems: "center", justifyContent: "center",
         background: done ? "var(--pg-teal)" : "transparent",
-        border: done ? "none" : `1.5px solid ${task.critical ? "#C8102E" : "#D0D5DD"}`,
+        border: done ? "none" : `1.5px solid ${task.critical ? "#D97706" : "#D0D5DD"}`,
         boxShadow: done ? "0 2px 8px rgba(0,166,147,0.35)" : "none",
       }}>
         {done && (
@@ -161,8 +209,8 @@ function TaskCard({ task, done, onToggle }: { task: Task; done: boolean; onToggl
 
       {/* Badge */}
       <span className="badge" style={{
-        background: done ? "#E5F7F5" : task.critical ? "#FBEAED" : "#F3F4F8",
-        color: done ? "#00856f" : task.critical ? "#C8102E" : "var(--text-tertiary)",
+        background: done ? "#E5F7F5" : task.critical ? "#FEF3C7" : "#F3F4F8",
+        color: done ? "#00856f" : task.critical ? "#D97706" : "var(--text-tertiary)",
         flexShrink: 0,
       }}>
         {done ? "Done" : task.badge}

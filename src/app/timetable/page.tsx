@@ -20,8 +20,8 @@ type Slot = {
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const HOURS = [8, 9, 10, 11, 12, 13, 14, 15, 16];
-const COLORS = ["#E8EEF7", "#E0F5F3", "#EEEDFE", "#FAEEDA", "#FAECE7"];
-const TEXT_COLORS = ["#003580", "#00A693", "#534AB7", "#854F0B", "#993C1D"];
+const COLORS = ["#E8EEF7", "#E0F5F3", "#EEEDFE", "#FAEEDA", "#FDE68A"];
+const TEXT_COLORS = ["#003580", "#00A693", "#534AB7", "#854F0B", "#78350F"];
 
 function detectConflicts(slots: Slot[]): number[] {
   const ids: number[] = [];
@@ -146,7 +146,7 @@ export default function Timetable() {
   const endOptions = HOURS.filter(h => h > form.start);
 
   return (
-    <main className="min-h-screen pb-24" style={{ background: "var(--pg-light)" }}>
+    <main className="min-h-screen" style={{ background: "var(--pg-light)", paddingBottom: 90 }}>
 
       <div style={{ background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)", padding: "52px 20px 16px", position: "relative", overflow: "hidden" }}>
         <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,93,170,0.4), transparent 70%)", pointerEvents: "none" }} />
@@ -166,54 +166,76 @@ export default function Timetable() {
         </div>
         {conflicts.length > 0 && (
           <div className="mt-3 px-3 py-2 rounded-xl flex items-center gap-2"
-            style={{ background: "#C8102E" }}>
+            style={{ background: "#D97706" }}>
             <div className="w-2 h-2 rounded-full bg-white flex-shrink-0" />
             <p className="text-white text-xs">{conflicts.length} conflict{conflicts.length !== 1 ? "s" : ""} detected — check your schedule</p>
           </div>
         )}
       </div>
 
-      {/* Grid */}
-      <div className="px-3 mt-4 overflow-x-auto">
-        <div style={{ minWidth: 300 }}>
-          <div className="grid mb-1" style={{ gridTemplateColumns: "34px repeat(5, 1fr)", gap: 2 }}>
-            <div />
-            {DAYS.map(d => (
-              <div key={d} className="text-center text-xs font-medium py-1" style={{ color: "#888" }}>{d}</div>
-            ))}
-          </div>
-          {HOURS.map(hour => (
-            <div key={hour} className="grid mb-0.5" style={{ gridTemplateColumns: "34px repeat(5, 1fr)", gap: 2 }}>
-              <div className="text-right pr-1.5 text-xs" style={{ color: "#bbb", paddingTop: 2, fontSize: 9 }}>{hour}:00</div>
-              {DAYS.map((_, dayIdx) => {
+      {/* Grid — single CSS grid so courses can span multiple rows */}
+      <div style={{ padding: "16px 8px 0", overflow: "hidden" }}>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "34px repeat(5, 1fr)",
+          gridTemplateRows: `auto repeat(${HOURS.length}, 38px)`,
+          gap: 2,
+        }}>
+          {/* Header row */}
+          <div />
+          {DAYS.map(d => (
+            <div key={d} style={{ textAlign: "center", fontSize: 11, fontWeight: 600, color: "#555", padding: "4px 0" }}>{d}</div>
+          ))}
+
+          {/* Hour rows */}
+          {HOURS.map((hour, hourIdx) => {
+            const row = hourIdx + 2; // +2 because row 1 is header
+            return [
+              /* Time label */
+              <div key={`t-${hour}`} style={{
+                gridColumn: 1, gridRow: row,
+                textAlign: "right", paddingRight: 3, paddingTop: 4, fontSize: 9, color: "#bbb",
+              }}>{hour}:00</div>,
+
+              /* Day cells */
+              ...DAYS.map((_, dayIdx) => {
+                const col = dayIdx + 2; // +2 because col 1 is time
                 const slot = slots.find(s => s.day_of_week === dayIdx && s.start_hour === hour);
-                const isConflict = slot && conflicts.includes(slot.id);
                 const isCovered = slots.some(s => s.day_of_week === dayIdx && s.start_hour < hour && s.end_hour > hour);
-                if (isCovered) return <div key={dayIdx} />;
+
+                if (isCovered) return null; // parent slot covers this cell
+
                 if (slot) {
                   const span = slot.end_hour - slot.start_hour;
                   const colorIdx = COLORS.indexOf(slot.color);
+                  const isConflict = conflicts.includes(slot.id);
                   return (
-                    <div key={dayIdx} className="rounded-lg px-1.5 py-1 relative"
-                      style={{
-                        background: isConflict ? "#FBEAED" : slot.color,
-                        border: isConflict ? "1.5px solid #C8102E" : "none",
-                        minHeight: span * 34,
-                      }}>
-                      <p style={{ fontSize: 9, fontWeight: 600, color: isConflict ? "#C8102E" : TEXT_COLORS[colorIdx] ?? "#003580", lineHeight: 1.3 }}>
+                    <div key={`s-${hour}-${dayIdx}`} style={{
+                      gridColumn: col, gridRow: `${row} / span ${span}`,
+                      borderRadius: 10, padding: "5px 7px", position: "relative",
+                      background: isConflict ? "#FEF3C7" : slot.color,
+                      border: isConflict ? "1.5px solid #D97706" : "none",
+                      zIndex: 2,
+                    }}>
+                      <p style={{ fontSize: 10, fontWeight: 700, color: isConflict ? "#D97706" : TEXT_COLORS[colorIdx] ?? "#003580", lineHeight: 1.3 }}>
                         {slot.course}
                       </p>
-                      {slot.room && <p style={{ fontSize: 8, color: "#999", marginTop: 1 }}>{slot.room}</p>}
+                      {slot.room && <p style={{ fontSize: 8, color: "#888", marginTop: 2 }}>{slot.room}</p>}
                       <button onClick={() => removeSlot(slot.id)}
-                        className="absolute top-0.5 right-0.5 w-4 h-4 flex items-center justify-center rounded-full"
-                        style={{ color: "#aaa", fontSize: 12, lineHeight: 1 }}>×</button>
+                        style={{ position: "absolute", top: 2, right: 4, width: 16, height: 16, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "50%", border: "none", background: "transparent", color: "#aaa", fontSize: 12, lineHeight: 1, cursor: "pointer" }}>×</button>
                     </div>
                   );
                 }
-                return <div key={dayIdx} className="rounded-lg" style={{ minHeight: 34, background: "rgba(0,0,0,0.03)" }} />;
-              })}
-            </div>
-          ))}
+
+                return (
+                  <div key={`e-${hour}-${dayIdx}`} style={{
+                    gridColumn: col, gridRow: row,
+                    background: "rgba(0,0,0,0.025)", borderRadius: 10,
+                  }} />
+                );
+              }),
+            ];
+          })}
         </div>
       </div>
 

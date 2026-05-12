@@ -258,7 +258,7 @@ export default function Home() {
               </button>
             </div>
             {error && (
-              <div className="mb-3 px-4 py-3 rounded-xl text-sm" style={{ background: "#FBEAED", color: "#C8102E" }}>
+              <div className="mb-3 px-4 py-3 rounded-xl text-sm" style={{ background: "#FEF3C7", color: "#D97706" }}>
                 {error}
               </div>
             )}
@@ -323,7 +323,7 @@ export default function Home() {
               Enter your email and we&apos;ll send you a reset link.
             </p>
             {error && (
-              <div className="mb-3 px-4 py-3 rounded-xl text-sm" style={{ background: "#FBEAED", color: "#C8102E" }}>
+              <div className="mb-3 px-4 py-3 rounded-xl text-sm" style={{ background: "#FEF3C7", color: "#D97706" }}>
                 {error}
               </div>
             )}
@@ -369,7 +369,7 @@ export default function Home() {
               </button>
             </div>
             {error && (
-              <div className="mb-3 px-4 py-3 rounded-xl text-sm" style={{ background: "#FBEAED", color: "#C8102E" }}>
+              <div className="mb-3 px-4 py-3 rounded-xl text-sm" style={{ background: "#FEF3C7", color: "#D97706" }}>
                 {error}
               </div>
             )}

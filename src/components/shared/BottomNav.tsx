@@ -63,46 +63,20 @@ const navItems = [
     ),
   },
   {
-    href: "/guides",
-    label: "Guides",
+    href: "/places",
+    label: "Explore",
     icon: (active: boolean) => (
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
         <path
-          d="M4 19.5A2.5 2.5 0 016.5 17H20V3H6.5A2.5 2.5 0 004 5.5v14z"
-          fill={active ? "rgba(0,93,170,0.12)" : "none"}
-          stroke={active ? "var(--pg-blue)" : "#B0B8CC"}
-          strokeWidth="1.75"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M4 19.5A2.5 2.5 0 016.5 17M9 9h6M9 13h4"
-          stroke={active ? "var(--pg-blue)" : "#B0B8CC"}
-          strokeWidth="1.75"
-          strokeLinecap="round"
-        />
-      </svg>
-    ),
-  },
-  {
-    href: "/offices",
-    label: "Offices",
-    icon: (active: boolean) => (
-      <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
-        <path
-          d="M3 22h18M4 22V9l8-6 8 6v13"
-          stroke={active ? "var(--pg-blue)" : "#B0B8CC"}
-          strokeWidth="1.75"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <rect
-          x="9" y="14" width="6" height="8" rx="1.5"
+          d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
           fill={active ? "rgba(0,93,170,0.12)" : "none"}
           stroke={active ? "var(--pg-blue)" : "#B0B8CC"}
           strokeWidth="1.75"
         />
-        <circle cx="9.8" cy="9.5" r="1" fill={active ? "var(--pg-blue)" : "#B0B8CC"} />
-        <circle cx="14.2" cy="9.5" r="1" fill={active ? "var(--pg-blue)" : "#B0B8CC"} />
+        <circle cx="12" cy="9" r="2.5"
+          stroke={active ? "var(--pg-blue)" : "#B0B8CC"}
+          strokeWidth="1.75"
+        />
       </svg>
     ),
   },
