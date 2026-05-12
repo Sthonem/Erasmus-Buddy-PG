@@ -169,6 +169,11 @@ const translations = {
   "settings.cancel": { en: "Cancel", tr: "İptal", es: "Cancelar", pl: "Anuluj" },
   "settings.erasmusStudent": { en: "Erasmus Student", tr: "Erasmus Öğrencisi", es: "Estudiante Erasmus", pl: "Student Erasmus" },
   "settings.memberSince": { en: "Member since", tr: "Üyelik tarihi", es: "Miembro desde", pl: "Członek od" },
+  "settings.changeEmail": { en: "Change Email", tr: "E-posta Değiştir", es: "Cambiar Correo", pl: "Zmień E-mail" },
+  "settings.newEmail": { en: "New Email", tr: "Yeni E-posta", es: "Nuevo Correo", pl: "Nowy E-mail" },
+  "settings.updateEmail": { en: "Update Email", tr: "E-postayı Güncelle", es: "Actualizar Correo", pl: "Zaktualizuj E-mail" },
+  "settings.emailUpdated": { en: "Confirmation email sent! Check your inbox.", tr: "Onay e-postası gönderildi! Gelen kutunu kontrol et.", es: "Correo de confirmación enviado! Revisa tu bandeja.", pl: "E-mail potwierdzający wysłany! Sprawdź skrzynkę." },
+  "settings.invalidEmail": { en: "Please enter a valid email", tr: "Geçerli bir e-posta gir", es: "Introduce un correo válido", pl: "Wprowadź prawidłowy e-mail" },
 
   // ── Login ──
   "login.title": { en: "ErasmusBuddy", tr: "ErasmusBuddy", es: "ErasmusBuddy", pl: "ErasmusBuddy" },

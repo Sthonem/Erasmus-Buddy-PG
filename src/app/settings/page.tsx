@@ -19,6 +19,12 @@ export default function Settings() {
   const [profileMsg, setProfileMsg] = useState<string | null>(null);
   const [savingProfile, setSavingProfile] = useState(false);
 
+  // Email editing
+  const [editingEmail, setEditingEmail] = useState(false);
+  const [editEmail, setEditEmail] = useState("");
+  const [emailMsg, setEmailMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [savingEmail, setSavingEmail] = useState(false);
+
   // Password change
   const [showPassword, setShowPassword] = useState(false);
   const [newPassword, setNewPassword] = useState("");
@@ -37,6 +43,7 @@ export default function Settings() {
         createdAt: data.user.created_at || "",
       });
       setEditName(name);
+      setEditEmail(data.user.email || "");
 
       const saved = localStorage.getItem("erasmus-dark-mode");
       if (saved === "true") {
@@ -72,6 +79,24 @@ export default function Settings() {
       setTimeout(() => setProfileMsg(null), 3000);
     }
     setSavingProfile(false);
+  }
+
+  async function handleChangeEmail() {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(editEmail)) {
+      setEmailMsg({ type: "error", text: t("settings.invalidEmail") });
+      return;
+    }
+    setSavingEmail(true);
+    setEmailMsg(null);
+    const { error } = await supabase.auth.updateUser({ email: editEmail });
+    if (error) {
+      setEmailMsg({ type: "error", text: error.message });
+    } else {
+      setEmailMsg({ type: "success", text: t("settings.emailUpdated") });
+      setTimeout(() => { setEmailMsg(null); setEditingEmail(false); }, 4000);
+    }
+    setSavingEmail(false);
   }
 
   async function handleChangePassword() {
@@ -202,7 +227,60 @@ export default function Settings() {
                     <p style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-primary)", marginTop: 1 }}>{user?.email}</p>
                   </div>
                 </div>
+                <button
+                  onClick={() => { setEditingEmail(true); setEditEmail(user?.email || ""); }}
+                  style={editBtnStyle}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="#003580" strokeWidth="1.8" strokeLinecap="round"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="#003580" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
               </div>
+              {/* Email edit panel */}
+              {editingEmail && (
+                <div style={{ padding: "0 16px 16px", borderTop: "1px solid var(--border)" }}>
+                  <div style={{ paddingTop: 14 }}>
+                    <p style={{ fontSize: 11, color: "var(--text-tertiary)", fontWeight: 500, marginBottom: 6 }}>{t("settings.newEmail")}</p>
+                    <input
+                      type="email"
+                      value={editEmail}
+                      onChange={e => setEditEmail(e.target.value)}
+                      placeholder="new@email.com"
+                      onKeyDown={e => e.key === "Enter" && handleChangeEmail()}
+                      style={inputStyle}
+                      autoFocus
+                    />
+                    {emailMsg && (
+                      <div style={{
+                        marginTop: 10, padding: "9px 12px", borderRadius: 10,
+                        background: emailMsg.type === "success" ? "#E5F7F5" : "#FEF3C7",
+                        display: "flex", alignItems: "center", gap: 8,
+                      }}>
+                        <span style={{ fontSize: 13 }}>{emailMsg.type === "success" ? "✅" : "⚠️"}</span>
+                        <p style={{ fontSize: 12, fontWeight: 600, color: emailMsg.type === "success" ? "#00856f" : "#D97706" }}>
+                          {emailMsg.text}
+                        </p>
+                      </div>
+                    )}
+                    <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+                      <button
+                        onClick={() => { setEditingEmail(false); setEmailMsg(null); }}
+                        style={{ ...actionBtnStyle, background: "var(--pg-light)", color: "var(--text-secondary)", border: "1px solid var(--border)", flex: 1 }}
+                      >
+                        {t("settings.cancel")}
+                      </button>
+                      <button
+                        onClick={handleChangeEmail}
+                        disabled={savingEmail || !editEmail.trim()}
+                        style={{ ...actionBtnStyle, background: "#003580", color: "white", flex: 1, opacity: savingEmail ? 0.6 : 1 }}
+                      >
+                        {savingEmail ? t("settings.updating") : t("settings.updateEmail")}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             /* Edit mode */
