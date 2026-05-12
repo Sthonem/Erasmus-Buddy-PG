@@ -39,6 +39,9 @@ const translations = {
   "dashboard.allSortedSub": { en: "Time to explore Gdańsk and enjoy your Erasmus 🌍", tr: "Gdańsk'ı keşfetme ve Erasmus'un tadını çıkarma zamanı 🌍", es: "Es hora de explorar Gdańsk y disfrutar tu Erasmus 🌍", pl: "Czas odkrywać Gdańsk i cieszyć się Erasmusem 🌍" },
   "dashboard.doFirst": { en: "⚡ Do first", tr: "⚡ Önce yap", es: "⚡ Hazlo primero", pl: "⚡ Zrób najpierw" },
   "dashboard.loading": { en: "Loading…", tr: "Yükleniyor…", es: "Cargando…", pl: "Ładowanie…" },
+  "dashboard.startAdventure": { en: "Let's start your Gdańsk adventure!", tr: "Gdańsk macerana başlayalım!", es: "¡Comencemos tu aventura en Gdańsk!", pl: "Rozpocznijmy twoją przygodę w Gdańsku!" },
+  "dashboard.halfway": { en: "More than halfway there! 🎉", tr: "Yarıdan fazlasını tamamladın! 🎉", es: "¡Más de la mitad hecho! 🎉", pl: "Ponad połowa zrobiona! 🎉" },
+  "dashboard.left": { en: "left 💪", tr: "kaldı 💪", es: "restantes 💪", pl: "pozostało 💪" },
 
   // ── Journey stages ──
   "stage.landed": { en: "Just Landed", tr: "Yeni Geldin", es: "Recién Llegado", pl: "Właśnie Wylądowałeś" },
@@ -175,6 +178,30 @@ const translations = {
   "login.sending": { en: "Sending…", tr: "Gönderiliyor…", es: "Enviando…", pl: "Wysyłanie…" },
   "login.resetSent": { en: "Password reset link sent! Check your email.", tr: "Sıfırlama linki gönderildi! E-postanı kontrol et.", es: "¡Enlace enviado! Revisa tu email.", pl: "Link do resetowania wysłany! Sprawdź email." },
   "login.backToSignIn": { en: "← Back to Sign In", tr: "← Giriş'e Dön", es: "← Volver a Iniciar Sesión", pl: "← Wróć do Logowania" },
+
+  // ── Explore cards ──
+  "explore.sopot": { en: "Longest wooden pier in Europe", tr: "Avrupa'nın en uzun ahşap iskelesi", es: "El muelle de madera más largo de Europa", pl: "Najdłuższe drewniane molo w Europie" },
+  "explore.sopot.dist": { en: "25 min by SKM", tr: "SKM ile 25 dk", es: "25 min en SKM", pl: "25 min SKM" },
+  "explore.dlugi": { en: "The heart of old town Gdańsk", tr: "Gdańsk eski şehrinin kalbi", es: "El corazón del casco antiguo", pl: "Serce starego Gdańska" },
+  "explore.dlugi.dist": { en: "15 min by tram", tr: "Tramvayla 15 dk", es: "15 min en tranvía", pl: "15 min tramwajem" },
+  "explore.oliwa": { en: "Cathedral organ concerts", tr: "Katedral org konserleri", es: "Conciertos de órgano en la catedral", pl: "Koncerty organowe w katedrze" },
+  "explore.oliwa.dist": { en: "10 min by tram", tr: "Tramvayla 10 dk", es: "10 min en tranvía", pl: "10 min tramwajem" },
+  "explore.hel": { en: "Beach day trip paradise", tr: "Plaj günübirlik cenneti", es: "Paraíso de excursión a la playa", pl: "Raj na jednodniową wycieczkę na plażę" },
+  "explore.hel.dist": { en: "2h by ferry", tr: "Feribot ile 2 saat", es: "2h en ferry", pl: "2h promem" },
+  "explore.wester": { en: "WWII memorial & views", tr: "II. Dünya Savaşı anıtı & manzara", es: "Memorial de la IIGM y vistas", pl: "Pomnik II WŚ i widoki" },
+  "explore.wester.dist": { en: "Ferry from town", tr: "Şehirden feribot", es: "Ferry desde la ciudad", pl: "Prom z miasta" },
+  "explore.gdynia": { en: "Modern city by the sea", tr: "Deniz kenarında modern şehir", es: "Ciudad moderna junto al mar", pl: "Nowoczesne miasto nad morzem" },
+  "explore.gdynia.dist": { en: "30 min by SKM", tr: "SKM ile 30 dk", es: "30 min en SKM", pl: "30 min SKM" },
+
+  // ── Eats cards ──
+  "eats.pierogi": { en: "Best pierogi in town", tr: "Şehrin en iyi pierogisi", es: "Los mejores pierogi de la ciudad", pl: "Najlepsze pierogi w mieście" },
+  "eats.pierogi.tip": { en: "Student favorite", tr: "Öğrenci favorisi", es: "Favorito estudiantil", pl: "Ulubione wśród studentów" },
+  "eats.biedronka": { en: "Cheapest grocery chain", tr: "En ucuz market zinciri", es: "Cadena de supermercados más barata", pl: "Najtańsza sieć sklepów" },
+  "eats.biedronka.tip": { en: "Closest to PG", tr: "PG'ye en yakın", es: "Más cercano a PG", pl: "Najbliżej PG" },
+  "eats.kebab": { en: "Late night go-to food", tr: "Gece atıştırmalığı", es: "Comida nocturna favorita", pl: "Nocne jedzenie" },
+  "eats.kebab.tip": { en: "ul. Rajska area", tr: "ul. Rajska bölgesi", es: "Zona ul. Rajska", pl: "Okolice ul. Rajskiej" },
+  "eats.stacja": { en: "Many cuisines, one place", tr: "Birçok mutfak, tek yer", es: "Muchas cocinas, un lugar", pl: "Wiele kuchni, jedno miejsce" },
+  "eats.stacja.tip": { en: "Great for groups", tr: "Gruplar için harika", es: "Ideal para grupos", pl: "Świetne dla grup" },
 
   // ── Fun tips ──
   "tip.0": { en: "Get a ZTM monthly pass — it covers trams, buses, and SKM trains to Sopot & Gdynia!", tr: "ZTM aylık kartı al — tramvay, otobüs ve Sopot & Gdynia'ya SKM trenlerini kapsar!", es: "Consigue un pase mensual ZTM — cubre tranvías, buses y trenes SKM a Sopot y Gdynia!", pl: "Kup miesięczny bilet ZTM — obejmuje tramwaje, autobusy i pociągi SKM do Sopotu i Gdyni!" },

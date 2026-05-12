@@ -22,21 +22,21 @@ function getStage(completedCount: number, totalCount: number, criticalDone: bool
   return 0;
 }
 
-// ── Explore Gdańsk data ─────────────────────────────────────────────────────
-const EXPLORE = [
-  { title: "Sopot Pier",        sub: "Longest wooden pier in Europe", icon: "🏖️", dist: "25 min by SKM", color: "#B2F0E8", accent: "#006B5A", border: "#7DE0D2" },
-  { title: "Długi Targ",        sub: "The heart of old town Gdańsk",  icon: "🏛️", dist: "15 min by tram", color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF" },
-  { title: "Oliwa Park",        sub: "Cathedral organ concerts",      icon: "🌿", dist: "10 min by tram", color: "#BBF0CC", accent: "#14522A", border: "#88E0A4" },
-  { title: "Hel Peninsula",     sub: "Beach day trip paradise",       icon: "⛱️", dist: "2h by ferry",    color: "#FDE68A", accent: "#78350F", border: "#FBD34D" },
-  { title: "Westerplatte",      sub: "WWII memorial & views",        icon: "🚢", dist: "Ferry from town", color: "#DDD6FE", accent: "#4C1D95", border: "#C4B5FD" },
-  { title: "Gdynia Waterfront", sub: "Modern city by the sea",       icon: "⚓", dist: "30 min by SKM",  color: "#BFDBFE", accent: "#1E3A8A", border: "#93C5FD" },
+// ── Explore & Eats visual config (text comes from i18n) ─────────────────────
+const EXPLORE_ITEMS = [
+  { key: "sopot",  title: "Sopot Pier",        icon: "🏖️", color: "#B2F0E8", accent: "#006B5A", border: "#7DE0D2" },
+  { key: "dlugi",  title: "Długi Targ",        icon: "🏛️", color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF" },
+  { key: "oliwa",  title: "Oliwa Park",        icon: "🌿", color: "#BBF0CC", accent: "#14522A", border: "#88E0A4" },
+  { key: "hel",    title: "Hel Peninsula",     icon: "⛱️", color: "#FDE68A", accent: "#78350F", border: "#FBD34D" },
+  { key: "wester", title: "Westerplatte",      icon: "🚢", color: "#DDD6FE", accent: "#4C1D95", border: "#C4B5FD" },
+  { key: "gdynia", title: "Gdynia Waterfront", icon: "⚓", color: "#BFDBFE", accent: "#1E3A8A", border: "#93C5FD" },
 ];
 
-const EATS = [
-  { title: "Pierogarnia Mandu", sub: "Best pierogi in town",     icon: "🥟", tip: "Student favorite",  color: "#FDE68A", accent: "#78350F", border: "#FBD34D" },
-  { title: "Biedronka",         sub: "Cheapest grocery chain",    icon: "🛒", tip: "Closest to PG",    color: "#FED7AA", accent: "#9A3412", border: "#FDBA74" },
-  { title: "Kebab spots",       sub: "Late night go-to food",     icon: "🌯", tip: "ul. Rajska area",  color: "#BBF0CC", accent: "#14522A", border: "#88E0A4" },
-  { title: "Stacja Food Hall",  sub: "Many cuisines, one place",  icon: "🍕", tip: "Great for groups", color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF" },
+const EATS_ITEMS = [
+  { key: "pierogi",   title: "Pierogarnia Mandu", icon: "🥟", color: "#FDE68A", accent: "#78350F", border: "#FBD34D" },
+  { key: "biedronka", title: "Biedronka",         icon: "🛒", color: "#FED7AA", accent: "#9A3412", border: "#FDBA74" },
+  { key: "kebab",     title: "Kebab spots",       icon: "🌯", color: "#BBF0CC", accent: "#14522A", border: "#88E0A4" },
+  { key: "stacja",    title: "Stacja Food Hall",  icon: "🍕", color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF" },
 ];
 
 const QUICK_ACCESS: { titleKey: TranslationKey; subKey: TranslationKey; bg: string; accent: string; border: string; icon: string; href: string }[] = [
@@ -51,7 +51,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
-  const { t, lang } = useI18n();
+  const { t } = useI18n();
 
   const loadData = useCallback(async () => {
     const { data } = await supabase.auth.getUser();
@@ -106,9 +106,9 @@ export default function Dashboard() {
   const tipText = t(`tip.${tipIdx}` as TranslationKey);
 
   // Motivational sub-text
-  const progressMsg = progress === 0 ? (lang === "tr" ? "Gdańsk macerana başlayalım!" : lang === "es" ? "¡Comencemos tu aventura en Gdańsk!" : lang === "pl" ? "Rozpocznijmy twoją przygodę w Gdańsku!" : "Let's start your Gdańsk adventure!") :
-    progress < 50 ? `${completedCount} ✓ · ${TASKS.length - completedCount} left 💪` :
-    progress < 100 ? (lang === "tr" ? "Yarıdan fazlasını tamamladın! 🎉" : lang === "es" ? "¡Más de la mitad hecho! 🎉" : lang === "pl" ? "Ponad połowa zrobiona! 🎉" : "More than halfway there! 🎉") :
+  const progressMsg = progress === 0 ? t("dashboard.startAdventure") :
+    progress < 50 ? `${completedCount} ✓ · ${TASKS.length - completedCount} ${t("dashboard.left")}` :
+    progress < 100 ? t("dashboard.halfway") :
     t("dashboard.allSortedSub");
 
   return (
@@ -339,8 +339,8 @@ export default function Dashboard() {
           msOverflowStyle: "none",
           scrollbarWidth: "none",
         }}>
-          {EXPLORE.map((item, idx) => (
-            <div key={item.title} style={{
+          {EXPLORE_ITEMS.map((item, idx) => (
+            <div key={item.key} style={{
               minWidth: 150, maxWidth: 150,
               background: item.color,
               border: `1.5px solid ${item.border}`,
@@ -349,13 +349,13 @@ export default function Dashboard() {
               scrollSnapAlign: "start",
               flexShrink: 0,
               marginLeft: idx === 0 ? 20 : 0,
-              marginRight: idx === EXPLORE.length - 1 ? 20 : 0,
+              marginRight: idx === EXPLORE_ITEMS.length - 1 ? 20 : 0,
             }}>
               <p style={{ fontSize: 28, marginBottom: 8, lineHeight: 1 }}>{item.icon}</p>
               <p style={{ fontSize: 13, fontWeight: 700, color: item.accent, lineHeight: 1.3 }}>{item.title}</p>
-              <p style={{ fontSize: 10.5, color: "var(--text-secondary)", marginTop: 3, lineHeight: 1.4 }}>{item.sub}</p>
+              <p style={{ fontSize: 10.5, color: "var(--text-secondary)", marginTop: 3, lineHeight: 1.4 }}>{t(`explore.${item.key}` as TranslationKey)}</p>
               <p style={{ fontSize: 9.5, color: item.accent, marginTop: 6, fontWeight: 600, opacity: 0.7 }}>
-                📍 {item.dist}
+                📍 {t(`explore.${item.key}.dist` as TranslationKey)}
               </p>
             </div>
           ))}
@@ -378,8 +378,8 @@ export default function Dashboard() {
           msOverflowStyle: "none",
           scrollbarWidth: "none",
         }}>
-          {EATS.map((item, idx) => (
-            <div key={item.title} style={{
+          {EATS_ITEMS.map((item, idx) => (
+            <div key={item.key} style={{
               minWidth: 150, maxWidth: 150,
               background: item.color,
               border: `1.5px solid ${item.border}`,
@@ -388,13 +388,13 @@ export default function Dashboard() {
               scrollSnapAlign: "start",
               flexShrink: 0,
               marginLeft: idx === 0 ? 20 : 0,
-              marginRight: idx === EATS.length - 1 ? 20 : 0,
+              marginRight: idx === EATS_ITEMS.length - 1 ? 20 : 0,
             }}>
               <p style={{ fontSize: 28, marginBottom: 8, lineHeight: 1 }}>{item.icon}</p>
               <p style={{ fontSize: 13, fontWeight: 700, color: item.accent, lineHeight: 1.3 }}>{item.title}</p>
-              <p style={{ fontSize: 10.5, color: "var(--text-secondary)", marginTop: 3, lineHeight: 1.4 }}>{item.sub}</p>
+              <p style={{ fontSize: 10.5, color: "var(--text-secondary)", marginTop: 3, lineHeight: 1.4 }}>{t(`eats.${item.key}` as TranslationKey)}</p>
               <p style={{ fontSize: 9.5, color: item.accent, marginTop: 6, fontWeight: 600, opacity: 0.7 }}>
-                ⭐ {item.tip}
+                ⭐ {t(`eats.${item.key}.tip` as TranslationKey)}
               </p>
             </div>
           ))}
