@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useI18n, type TranslationKey } from "@/lib/i18n";
 
 const navItems = [
   {
     href: "/dashboard",
-    label: "Home",
+    labelKey: "nav.home" as TranslationKey,
     icon: (active: boolean) => (
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
         <path
@@ -21,7 +22,7 @@ const navItems = [
   },
   {
     href: "/tasks",
-    label: "Tasks",
+    labelKey: "nav.tasks" as TranslationKey,
     icon: (active: boolean) => (
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
         <rect
@@ -42,7 +43,7 @@ const navItems = [
   },
   {
     href: "/timetable",
-    label: "Timetable",
+    labelKey: "nav.timetable" as TranslationKey,
     icon: (active: boolean) => (
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
         <rect
@@ -64,7 +65,7 @@ const navItems = [
   },
   {
     href: "/places",
-    label: "Explore",
+    labelKey: "nav.explore" as TranslationKey,
     icon: (active: boolean) => (
       <svg width="21" height="21" viewBox="0 0 24 24" fill="none">
         <path
@@ -84,6 +85,7 @@ const navItems = [
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const { t } = useI18n();
 
   return (
     <nav
@@ -122,7 +124,7 @@ export default function BottomNav() {
                   letterSpacing: "0.1px",
                 }}
               >
-                {item.label}
+                {t(item.labelKey)}
               </span>
             </Link>
           );

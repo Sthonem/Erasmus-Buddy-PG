@@ -6,12 +6,14 @@ import { supabase } from "@/lib/supabase";
 import { TASKS, type Task } from "@/lib/tasks-data";
 import BottomNav from "@/components/shared/BottomNav";
 import { useRouter } from "next/navigation";
+import { useI18n, type TranslationKey } from "@/lib/i18n";
 
 export default function Tasks() {
   const [completed, setCompleted] = useState<string[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { t } = useI18n();
 
   useEffect(() => {
     async function load() {
@@ -51,7 +53,7 @@ export default function Tasks() {
     <main className="min-h-screen flex items-center justify-center" style={{ background: "var(--pg-light)" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
         <div style={{ width: 34, height: 34, borderRadius: "50%", border: "2.5px solid var(--pg-blue)", borderTopColor: "transparent", animation: "spin 0.8s linear infinite" }} />
-        <p style={{ color: "var(--text-tertiary)", fontSize: 13 }}>Loading tasks…</p>
+        <p style={{ color: "var(--text-tertiary)", fontSize: 13 }}>{t("tasks.loadingTasks")}</p>
       </div>
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </main>
@@ -68,10 +70,10 @@ export default function Tasks() {
   const academicCompleted = TASKS.filter(t => !t.critical && completed.includes(t.slug)).length;
 
   // Journey stage for tasks
-  const stage = progress === 100 ? { emoji: "🌍", label: "All sorted!", msg: "You're basically a local now 😎" }
-    : criticalDone ? { emoji: "📚", label: "Academic setup", msg: "Bureaucracy done! Now set up your studies." }
-    : done.length > 0 ? { emoji: "📋", label: "Getting started", msg: "Nice progress — keep going! 💪" }
-    : { emoji: "🛬", label: "Just landed", msg: "Let's get you settled in Gdańsk!" };
+  const stage = progress === 100 ? { emoji: "🌍", label: t("stage.explorer"), msg: t("stage.explorer.msg") }
+    : criticalDone ? { emoji: "📚", label: t("tasks.academic"), msg: t("stage.settling.msg") }
+    : done.length > 0 ? { emoji: "📋", label: t("stage.started"), msg: t("stage.started.msg") }
+    : { emoji: "🛬", label: t("stage.landed"), msg: t("stage.landed.msg") };
 
   return (
     <main className="min-h-screen" style={{ background: "var(--pg-light)", paddingBottom: 90 }}>
@@ -83,12 +85,11 @@ export default function Tasks() {
       }}>
         <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,93,170,0.4), transparent 70%)", pointerEvents: "none" }} />
 
-        <h1 style={{ color: "white", fontSize: 26, fontWeight: 800, letterSpacing: "-0.5px" }}>My Tasks</h1>
-        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 3 }}>Your first 2 weeks — one step at a time 💪</p>
+        <h1 style={{ color: "white", fontSize: 26, fontWeight: 800, letterSpacing: "-0.5px" }}>{t("tasks.title")}</h1>
+        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 3 }}>{t("tasks.subtitle")}</p>
 
         {/* Journey Progress Card */}
         <div style={{ marginTop: 16, background: "rgba(255,255,255,0.09)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 18, padding: "14px 16px" }}>
-          {/* Stage + percentage */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
             <div>
               <p style={{ color: "white", fontSize: 13, fontWeight: 600 }}>{stage.emoji} {stage.label}</p>
@@ -99,9 +100,7 @@ export default function Tasks() {
             </p>
           </div>
 
-          {/* Two-section milestone bar */}
           <div style={{ display: "flex", gap: 4, marginBottom: 6 }}>
-            {/* Critical section */}
             <div style={{ flex: criticalCount, height: 5, background: "rgba(255,255,255,0.12)", borderRadius: 99, overflow: "hidden" }}>
               <div style={{
                 height: "100%", borderRadius: 99,
@@ -111,7 +110,6 @@ export default function Tasks() {
                 transition: "width 0.5s ease",
               }} />
             </div>
-            {/* Academic section */}
             <div style={{ flex: academicCount, height: 5, background: "rgba(255,255,255,0.12)", borderRadius: 99, overflow: "hidden" }}>
               <div style={{
                 height: "100%", borderRadius: 99,
@@ -123,13 +121,12 @@ export default function Tasks() {
             </div>
           </div>
 
-          {/* Section labels */}
           <div style={{ display: "flex", gap: 4 }}>
             <p style={{ flex: criticalCount, fontSize: 9.5, color: criticalDone ? "rgba(0,228,210,0.7)" : "rgba(251,191,36,0.7)", fontWeight: 600 }}>
-              ⚡ {criticalCompleted}/{criticalCount} essentials
+              ⚡ {criticalCompleted}/{criticalCount} {t("tasks.essentialsLabel")}
             </p>
             <p style={{ flex: academicCount, fontSize: 9.5, color: academicCompleted > 0 ? "rgba(0,228,210,0.7)" : "rgba(255,255,255,0.3)", fontWeight: 600 }}>
-              📚 {academicCompleted}/{academicCount} academic
+              📚 {academicCompleted}/{academicCount} {t("tasks.academicLabel")}
             </p>
           </div>
         </div>
@@ -137,25 +134,25 @@ export default function Tasks() {
 
       <div style={{ padding: "0 16px" }}>
         {critical.length > 0 && (
-          <Section label="⚡ First week essentials" labelColor="#D97706" dot="#D97706">
-            {critical.map(t => <TaskCard key={t.slug} task={t} done={false} onToggle={toggleTask} />)}
+          <Section label={`⚡ ${t("tasks.essentials")}`} labelColor="#D97706" dot="#D97706">
+            {critical.map(task => <TaskCard key={task.slug} task={task} done={false} onToggle={toggleTask} t={t} />)}
           </Section>
         )}
         {upcoming.length > 0 && (
-          <Section label="📚 Academic setup" labelColor="var(--text-tertiary)" dot="#D0D5DD">
-            {upcoming.map(t => <TaskCard key={t.slug} task={t} done={false} onToggle={toggleTask} />)}
+          <Section label={`📚 ${t("tasks.academic")}`} labelColor="var(--text-tertiary)" dot="#D0D5DD">
+            {upcoming.map(task => <TaskCard key={task.slug} task={task} done={false} onToggle={toggleTask} t={t} />)}
           </Section>
         )}
         {done.length > 0 && (
-          <Section label="✅ Done — nice work!" labelColor="#00856f" dot="#00A693">
-            {done.map(t => <TaskCard key={t.slug} task={t} done={true} onToggle={toggleTask} />)}
+          <Section label={`✅ ${t("tasks.done")}`} labelColor="#00856f" dot="#00A693">
+            {done.map(task => <TaskCard key={task.slug} task={task} done={true} onToggle={toggleTask} t={t} />)}
           </Section>
         )}
         {critical.length === 0 && upcoming.length === 0 && (
           <div style={{ marginTop: 24, background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 18, padding: "24px 20px", textAlign: "center" }}>
             <p style={{ fontSize: 36, marginBottom: 8 }}>🎉</p>
-            <p style={{ fontSize: 15, fontWeight: 700, color: "#00856f" }}>You&apos;re all sorted!</p>
-            <p style={{ fontSize: 12.5, color: "var(--text-secondary)", marginTop: 4 }}>Time to explore Gdańsk and enjoy your Erasmus 🌍</p>
+            <p style={{ fontSize: 15, fontWeight: 700, color: "#00856f" }}>{t("tasks.allSorted")}</p>
+            <p style={{ fontSize: 12.5, color: "var(--text-secondary)", marginTop: 4 }}>{t("tasks.allSortedSub")}</p>
           </div>
         )}
       </div>
@@ -177,14 +174,13 @@ function Section({ label, labelColor, dot, children }: { label: string; labelCol
   );
 }
 
-function TaskCard({ task, done, onToggle }: { task: Task; done: boolean; onToggle: (s: string) => void }) {
+function TaskCard({ task, done, onToggle, t }: { task: Task; done: boolean; onToggle: (s: string) => void; t: (key: TranslationKey) => string }) {
   return (
     <div
       onClick={() => onToggle(task.slug)}
       className="card-interactive"
       style={{ padding: "13px 16px", display: "flex", alignItems: "center", gap: 12, opacity: done ? 0.55 : 1 }}
     >
-      {/* Checkbox */}
       <div style={{
         width: 22, height: 22, borderRadius: "50%", flexShrink: 0,
         display: "flex", alignItems: "center", justifyContent: "center",
@@ -199,21 +195,19 @@ function TaskCard({ task, done, onToggle }: { task: Task; done: boolean; onToggl
         )}
       </div>
 
-      {/* Content */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <p style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.3 }}>
-          {task.title}
+          {t(`task.${task.slug}` as TranslationKey)}
         </p>
-        <p style={{ fontSize: 11.5, color: "var(--text-secondary)", marginTop: 2 }}>{task.desc}</p>
+        <p style={{ fontSize: 11.5, color: "var(--text-secondary)", marginTop: 2 }}>{t(`task.${task.slug}.desc` as TranslationKey)}</p>
       </div>
 
-      {/* Badge */}
       <span className="badge" style={{
         background: done ? "#E5F7F5" : task.critical ? "#FEF3C7" : "#F3F4F8",
         color: done ? "#00856f" : task.critical ? "#D97706" : "var(--text-tertiary)",
         flexShrink: 0,
       }}>
-        {done ? "Done" : task.badge}
+        {done ? t("tasks.badgeDone") : task.badge}
       </span>
     </div>
   );

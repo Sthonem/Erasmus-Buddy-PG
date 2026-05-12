@@ -3,6 +3,7 @@
 import { useState } from "react";
 import BottomNav from "@/components/shared/BottomNav";
 import Link from "next/link";
+import { useI18n } from "@/lib/i18n";
 
 // ── GUIDES DATA ─────────────────────────────────────────────────────────────
 const guides = [
@@ -117,6 +118,7 @@ const categories: Category[] = [
 // ── COMPONENT ───────────────────────────────────────────────────────────────
 export default function Explore() {
   const [tab, setTab] = useState<"guides" | "places">("guides");
+  const { t } = useI18n();
 
   return (
     <main className="min-h-screen" style={{ background: "var(--pg-light)", paddingBottom: 90 }}>
@@ -129,9 +131,9 @@ export default function Explore() {
       }}>
         <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,93,170,0.4), transparent 70%)", pointerEvents: "none" }} />
 
-        <h1 style={{ color: "white", fontSize: 26, fontWeight: 800, letterSpacing: "-0.5px" }}>Explore</h1>
+        <h1 style={{ color: "white", fontSize: 26, fontWeight: 800, letterSpacing: "-0.5px" }}>{t("explore.title")}</h1>
         <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 3 }}>
-          Guides, offices & useful spots 📍
+          {t("explore.subtitle")}
         </p>
 
         {/* Tab Switcher */}
@@ -159,7 +161,7 @@ export default function Explore() {
               boxShadow: tab === "guides" ? "0 2px 8px rgba(0,0,0,0.15)" : "none",
             }}
           >
-            📖 Guides
+            {t("explore.guides")}
           </button>
           <button
             onClick={() => setTab("places")}
@@ -177,7 +179,7 @@ export default function Explore() {
               boxShadow: tab === "places" ? "0 2px 8px rgba(0,0,0,0.15)" : "none",
             }}
           >
-            📍 Places
+            {t("explore.places")}
           </button>
         </div>
       </div>
@@ -189,7 +191,7 @@ export default function Explore() {
           <div style={{ marginTop: 20 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#D97706" }} />
-              <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase", color: "#D97706" }}>Start with these</p>
+              <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase", color: "#D97706" }}>{t("explore.startWith")}</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {guides.filter(g => g.urgent).map(g => <GuideCard key={g.slug} guide={g} />)}
@@ -200,7 +202,7 @@ export default function Explore() {
           <div style={{ marginTop: 24, marginBottom: 12 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#D0D5DD" }} />
-              <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase", color: "var(--text-tertiary)" }}>Also important</p>
+              <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase", color: "var(--text-tertiary)" }}>{t("explore.alsoImportant")}</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {guides.filter(g => !g.urgent).map(g => <GuideCard key={g.slug} guide={g} />)}
@@ -262,7 +264,7 @@ export default function Explore() {
                   </svg>
                 </div>
                 <div style={{ flex: 1 }}>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: "#002A6B" }}>Interactive Campus Map</p>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: "#002A6B" }}>{t("explore.campusMap")}</p>
                   <p style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 2 }}>pg.edu.pl/en/campus</p>
                 </div>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">

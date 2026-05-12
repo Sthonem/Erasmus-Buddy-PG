@@ -7,31 +7,19 @@ import { TASKS } from "@/lib/tasks-data";
 import BottomNav from "@/components/shared/BottomNav";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-
-function getGreeting() {
-  const h = new Date().getHours();
-  if (h < 5)  return "Good night";
-  if (h < 12) return "Good morning";
-  if (h < 18) return "Good afternoon";
-  return "Good evening";
-}
+import { useI18n, type TranslationKey } from "@/lib/i18n";
 
 // ── Journey stages ──────────────────────────────────────────────────────────
-const STAGES = [
-  { key: "landed",    emoji: "🛬", label: "Just Landed",      msg: "Welcome to Gdańsk! Let's get you settled." },
-  { key: "started",   emoji: "📋", label: "Getting Started",   msg: "You're figuring things out — nice!" },
-  { key: "settling",  emoji: "🏠", label: "Settling In",       msg: "Bureaucracy? Done. Now the fun begins!" },
-  { key: "student",   emoji: "📚", label: "Student Life",      msg: "You're officially a PG student!" },
-  { key: "explorer",  emoji: "🌍", label: "Gdańsk Explorer",   msg: "You're basically a local now 😎" },
-];
+const STAGE_KEYS = ["landed", "started", "settling", "student", "explorer"] as const;
+const STAGE_EMOJIS = ["🛬", "📋", "🏠", "📚", "🌍"];
 
 function getStage(completedCount: number, totalCount: number, criticalDone: boolean) {
   const pct = completedCount / totalCount;
-  if (pct === 1) return 4;          // Explorer
-  if (pct >= 0.7) return 3;          // Student Life
-  if (criticalDone) return 2;        // Settling In
-  if (completedCount > 0) return 1;  // Getting Started
-  return 0;                           // Just Landed
+  if (pct === 1) return 4;
+  if (pct >= 0.7) return 3;
+  if (criticalDone) return 2;
+  if (completedCount > 0) return 1;
+  return 0;
 }
 
 // ── Explore Gdańsk data ─────────────────────────────────────────────────────
@@ -51,19 +39,10 @@ const EATS = [
   { title: "Stacja Food Hall",  sub: "Many cuisines, one place",  icon: "🍕", tip: "Great for groups", color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF" },
 ];
 
-const QUICK_ACCESS = [
-  { title: "Explore",   sub: "Guides & places",      bg: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF", icon: "🧭", href: "/places"    },
-  { title: "Timetable", sub: "Build your schedule",   bg: "#B2F0E8", accent: "#006B5A", border: "#7DE0D2", icon: "📅", href: "/timetable" },
-  { title: "Tasks",     sub: "Your to-do list",       bg: "#FDE68A", accent: "#78350F", border: "#FBD34D", icon: "✅", href: "/tasks"     },
-];
-
-const FUN_TIPS = [
-  { emoji: "🚃", text: "Get a ZTM monthly pass — it covers trams, buses, and SKM trains to Sopot & Gdynia!" },
-  { emoji: "🍺", text: "Thursday is the unofficial Erasmus party night in Gdańsk. Check ESN events!" },
-  { emoji: "🏖️", text: "Stogi beach is just 20 min by tram — perfect for summer sunsets." },
-  { emoji: "🎵", text: "Oliwa Cathedral has free organ concerts — one of Gdańsk's hidden gems." },
-  { emoji: "🛍️", text: "Galeria Bałtycka is the biggest shopping mall near PG. 5 min walk!" },
-  { emoji: "⚽", text: "Lechia Gdańsk matches at Stadion Energa are super cheap with a student ID." },
+const QUICK_ACCESS: { titleKey: TranslationKey; subKey: TranslationKey; bg: string; accent: string; border: string; icon: string; href: string }[] = [
+  { titleKey: "quick.explore",   subKey: "quick.explore.sub",   bg: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF", icon: "🧭", href: "/places"    },
+  { titleKey: "quick.timetable", subKey: "quick.timetable.sub", bg: "#B2F0E8", accent: "#006B5A", border: "#7DE0D2", icon: "📅", href: "/timetable" },
+  { titleKey: "quick.tasks",     subKey: "quick.tasks.sub",     bg: "#FDE68A", accent: "#78350F", border: "#FBD34D", icon: "✅", href: "/tasks"     },
 ];
 
 export default function Dashboard() {
@@ -72,6 +51,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
+  const { t, lang } = useI18n();
 
   const loadData = useCallback(async () => {
     const { data } = await supabase.auth.getUser();
@@ -84,10 +64,17 @@ export default function Dashboard() {
     setLoading(false);
   }, [router]);
 
-  // Refetch every time user navigates to dashboard
   useEffect(() => {
     loadData();
   }, [pathname, loadData]);
+
+  function getGreeting() {
+    const h = new Date().getHours();
+    if (h < 5)  return t("greeting.night");
+    if (h < 12) return t("greeting.morning");
+    if (h < 18) return t("greeting.afternoon");
+    return t("greeting.evening");
+  }
 
   if (loading) return (
     <main className="min-h-screen flex items-center justify-center" style={{ background: "var(--pg-light)" }}>
@@ -97,7 +84,7 @@ export default function Dashboard() {
           border: "2.5px solid var(--pg-blue)", borderTopColor: "transparent",
           animation: "spin 0.8s linear infinite",
         }} />
-        <p style={{ color: "var(--text-tertiary)", fontSize: 13 }}>Loading…</p>
+        <p style={{ color: "var(--text-tertiary)", fontSize: 13 }}>{t("dashboard.loading")}</p>
       </div>
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </main>
@@ -108,17 +95,21 @@ export default function Dashboard() {
   const priorityTasks = TASKS.filter(t => !completedSlugs.includes(t.slug)).slice(0, 2);
   const criticalDone = TASKS.filter(t => t.critical).every(t => completedSlugs.includes(t.slug));
   const stageIdx = getStage(completedCount, TASKS.length, criticalDone);
-  const stage = STAGES[stageIdx];
+  const stageKey = STAGE_KEYS[stageIdx];
+  const stageEmoji = STAGE_EMOJIS[stageIdx];
+  const stageLabel = t(`stage.${stageKey}` as TranslationKey);
+  const stageMsg = t(`stage.${stageKey}.msg` as TranslationKey);
 
   // Pick a random fun tip based on today's date
-  const tipIdx = new Date().getDate() % FUN_TIPS.length;
-  const tip = FUN_TIPS[tipIdx];
+  const tipIdx = new Date().getDate() % 6;
+  const tipEmojis = ["🚃", "🍺", "🏖️", "🎵", "🛍️", "⚽"];
+  const tipText = t(`tip.${tipIdx}` as TranslationKey);
 
   // Motivational sub-text
-  const progressMsg = progress === 0 ? "Let's start your Gdańsk adventure!" :
-    progress < 50 ? `${completedCount} down, ${TASKS.length - completedCount} to go — you got this! 💪` :
-    progress < 100 ? `More than halfway there! Almost sorted 🎉` :
-    "You're all set! Time to explore Gdańsk 🌍";
+  const progressMsg = progress === 0 ? (lang === "tr" ? "Gdańsk macerana başlayalım!" : lang === "es" ? "¡Comencemos tu aventura en Gdańsk!" : lang === "pl" ? "Rozpocznijmy twoją przygodę w Gdańsku!" : "Let's start your Gdańsk adventure!") :
+    progress < 50 ? `${completedCount} ✓ · ${TASKS.length - completedCount} left 💪` :
+    progress < 100 ? (lang === "tr" ? "Yarıdan fazlasını tamamladın! 🎉" : lang === "es" ? "¡Más de la mitad hecho! 🎉" : lang === "pl" ? "Ponad połowa zrobiona! 🎉" : "More than halfway there! 🎉") :
+    t("dashboard.allSortedSub");
 
   return (
     <main className="min-h-screen" style={{ background: "var(--pg-light)", paddingBottom: 90 }}>
@@ -147,7 +138,7 @@ export default function Dashboard() {
               {user?.name}
             </h1>
             <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, marginTop: 2 }}>
-              Gdańsk University of Technology
+              {t("dashboard.university")}
             </p>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
@@ -190,14 +181,13 @@ export default function Dashboard() {
           padding: 18,
           backdropFilter: "blur(8px)",
         }}>
-          {/* Title row */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
             <div>
               <p style={{ color: "white", fontSize: 13, fontWeight: 600 }}>
-                {stage.emoji} Your Gdańsk Journey
+                {stageEmoji} {t("dashboard.journey")}
               </p>
               <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 11, marginTop: 2 }}>
-                {stage.msg}
+                {stageMsg}
               </p>
             </div>
             <p style={{
@@ -210,12 +200,12 @@ export default function Dashboard() {
 
           {/* Stepper */}
           <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
-            {STAGES.map((s, i) => {
+            {STAGE_KEYS.map((s, i) => {
               const isPast = i < stageIdx;
               const isActive = i === stageIdx;
-              const isLast = i === STAGES.length - 1;
+              const isLast = i === STAGE_KEYS.length - 1;
               return (
-                <div key={s.key} style={{ display: "contents" }}>
+                <div key={s} style={{ display: "contents" }}>
                   {isActive ? (
                     <div style={{
                       width: 22, height: 22, borderRadius: "50%",
@@ -262,11 +252,11 @@ export default function Dashboard() {
             display: "flex", justifyContent: "space-between",
             fontSize: 13, padding: "0 1px", marginBottom: 8,
           }}>
-            {STAGES.map((s, i) => (
-              <span key={s.key} style={{
+            {STAGE_EMOJIS.map((emoji, i) => (
+              <span key={i} style={{
                 opacity: i === stageIdx ? 1 : i < stageIdx ? 0.5 : 0.3,
                 transition: "opacity 0.3s",
-              }}>{s.emoji}</span>
+              }}>{emoji}</span>
             ))}
           </div>
 
@@ -275,7 +265,7 @@ export default function Dashboard() {
             fontSize: 13.5, fontWeight: 700, color: "white",
             textAlign: "center", letterSpacing: "-0.2px",
           }}>
-            {stage.label}
+            {stageLabel}
           </p>
         </div>
       </div>
@@ -285,10 +275,10 @@ export default function Dashboard() {
         <div style={{ padding: "20px 20px 0" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
             <p style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.1px" }}>
-              What&apos;s next on your list
+              {t("dashboard.whatsNext")}
             </p>
             <Link href="/tasks">
-              <span style={{ fontSize: 12, fontWeight: 600, color: "var(--pg-blue)" }}>See all →</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: "var(--pg-blue)" }}>{t("dashboard.seeAll")}</span>
             </Link>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -301,16 +291,16 @@ export default function Dashboard() {
                   }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.3 }}>
-                      {task.title}
+                      {t(`task.${task.slug}` as TranslationKey)}
                     </p>
-                    <p style={{ fontSize: 11.5, color: "var(--text-secondary)", marginTop: 1 }}>{task.desc}</p>
+                    <p style={{ fontSize: 11.5, color: "var(--text-secondary)", marginTop: 1 }}>{t(`task.${task.slug}.desc` as TranslationKey)}</p>
                   </div>
                   <span className="badge" style={{
                     background: task.critical ? "#FEF3C7" : "#F0F1F8",
                     color: task.critical ? "#D97706" : "#6E7891",
                     flexShrink: 0,
                   }}>
-                    {task.critical ? "⚡ Do first" : task.badge}
+                    {task.critical ? t("dashboard.doFirst") : task.badge}
                   </span>
                 </div>
               </Link>
@@ -324,8 +314,8 @@ export default function Dashboard() {
         <div style={{ padding: "20px 20px 0" }}>
           <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "18px 20px", textAlign: "center" }}>
             <p style={{ fontSize: 32, marginBottom: 6 }}>🎉</p>
-            <p style={{ fontSize: 15, fontWeight: 700, color: "#00856f" }}>You&apos;re all sorted!</p>
-            <p style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 3 }}>Time to explore Gdańsk and enjoy your Erasmus 🌍</p>
+            <p style={{ fontSize: 15, fontWeight: 700, color: "#00856f" }}>{t("dashboard.allSorted")}</p>
+            <p style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 3 }}>{t("dashboard.allSortedSub")}</p>
           </div>
         </div>
       )}
@@ -334,10 +324,10 @@ export default function Dashboard() {
       <div style={{ padding: "24px 0 0" }}>
         <div style={{ padding: "0 20px", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.1px" }}>
-            🌍 Explore Gdańsk
+            🌍 {t("dashboard.explore")}
           </p>
           <Link href="/places">
-            <span style={{ fontSize: 12, fontWeight: 600, color: "var(--pg-blue)" }}>Explore all →</span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: "var(--pg-blue)" }}>{t("dashboard.exploreAll")}</span>
           </Link>
         </div>
         <div style={{
@@ -376,7 +366,7 @@ export default function Dashboard() {
       <div style={{ padding: "20px 0 0" }}>
         <div style={{ padding: "0 20px", marginBottom: 12 }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.1px" }}>
-            🍕 Student Eats & Shopping
+            🍕 {t("dashboard.eats")}
           </p>
         </div>
         <div style={{
@@ -411,14 +401,14 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* ── QUICK ACCESS (3 items now) ── */}
+      {/* ── QUICK ACCESS ── */}
       <div style={{ padding: "20px 20px 0" }}>
         <p style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)", marginBottom: 12, letterSpacing: "-0.1px" }}>
-          Jump to...
+          {t("dashboard.jumpTo")}
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
           {QUICK_ACCESS.map((item) => (
-            <Link key={item.title} href={item.href}>
+            <Link key={item.href} href={item.href}>
               <div
                 style={{
                   background: item.bg,
@@ -436,9 +426,9 @@ export default function Dashboard() {
               >
                 <div style={{ fontSize: 24, marginBottom: 6, lineHeight: 1 }}>{item.icon}</div>
                 <p style={{ fontSize: 12, fontWeight: 700, color: "var(--text-primary)" }}>
-                  {item.title}
+                  {t(item.titleKey)}
                 </p>
-                <p style={{ fontSize: 10, color: "var(--text-secondary)", marginTop: 2 }}>{item.sub}</p>
+                <p style={{ fontSize: 10, color: "var(--text-secondary)", marginTop: 2 }}>{t(item.subKey)}</p>
               </div>
             </Link>
           ))}
@@ -448,10 +438,10 @@ export default function Dashboard() {
       {/* ── FUN TIP ── */}
       <div style={{ padding: "16px 20px 8px" }}>
         <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "13px 16px", display: "flex", gap: 12, boxShadow: "var(--shadow-xs)" }}>
-          <span style={{ fontSize: 18, flexShrink: 0 }}>{tip.emoji}</span>
+          <span style={{ fontSize: 18, flexShrink: 0 }}>{tipEmojis[tipIdx]}</span>
           <p style={{ fontSize: 12.5, color: "var(--text-secondary)", lineHeight: 1.5 }}>
-            <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>Did you know?</span>{" "}
-            {tip.text}
+            <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>{t("dashboard.didYouKnow")}</span>{" "}
+            {tipText}
           </p>
         </div>
       </div>

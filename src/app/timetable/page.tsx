@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import BottomNav from "@/components/shared/BottomNav";
 import { useRouter } from "next/navigation";
+import { useI18n, type TranslationKey } from "@/lib/i18n";
 
 type Slot = {
   id: number;
@@ -18,7 +19,7 @@ type Slot = {
   color: string;
 };
 
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+const DAY_KEYS: TranslationKey[] = ["day.mon", "day.tue", "day.wed", "day.thu", "day.fri"];
 const HOURS = [8, 9, 10, 11, 12, 13, 14, 15, 16];
 const COLORS = ["#E8EEF7", "#E0F5F3", "#EEEDFE", "#FAEEDA", "#FDE68A"];
 const TEXT_COLORS = ["#003580", "#00A693", "#534AB7", "#854F0B", "#78350F"];
@@ -58,6 +59,8 @@ export default function Timetable() {
     day: 0, start: 8, end: 10, colorIndex: 0,
   });
   const router = useRouter();
+  const { t } = useI18n();
+  const DAYS = DAY_KEYS.map(k => t(k));
 
   useEffect(() => {
     async function load() {
@@ -138,7 +141,7 @@ export default function Timetable() {
       <div className="flex flex-col items-center gap-3">
         <div className="w-8 h-8 rounded-full border-2 animate-spin"
           style={{ borderColor: "var(--pg-blue)", borderTopColor: "transparent" }} />
-        <p className="text-sm" style={{ color: "var(--text-tertiary)" }}>Loading timetable...</p>
+        <p className="text-sm" style={{ color: "var(--text-tertiary)" }}>{t("timetable.loading")}</p>
       </div>
     </main>
   );
@@ -152,8 +155,8 @@ export default function Timetable() {
         <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,93,170,0.4), transparent 70%)", pointerEvents: "none" }} />
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-white text-2xl font-bold">Timetable</h1>
-            <p className="text-blue-200 text-xs mt-1">{slots.length} course{slots.length !== 1 ? "s" : ""} added</p>
+            <h1 className="text-white text-2xl font-bold">{t("timetable.title")}</h1>
+            <p className="text-blue-200 text-xs mt-1">{slots.length} {slots.length !== 1 ? t("timetable.coursesPlural") : t("timetable.courses")} {t("timetable.added")}</p>
           </div>
           <button onClick={exportICS}
             className="text-xs px-3 py-2 rounded-xl font-medium flex items-center gap-1.5"
@@ -168,7 +171,7 @@ export default function Timetable() {
           <div className="mt-3 px-3 py-2 rounded-xl flex items-center gap-2"
             style={{ background: "#D97706" }}>
             <div className="w-2 h-2 rounded-full bg-white flex-shrink-0" />
-            <p className="text-white text-xs">{conflicts.length} conflict{conflicts.length !== 1 ? "s" : ""} detected — check your schedule</p>
+            <p className="text-white text-xs">{conflicts.length} {conflicts.length !== 1 ? t("timetable.conflictsPlural") : t("timetable.conflicts")} {t("timetable.conflictMsg")}</p>
           </div>
         )}
       </div>
@@ -271,7 +274,7 @@ export default function Timetable() {
         <button onClick={() => setShowModal(true)}
           className="w-full py-3.5 rounded-2xl font-semibold text-sm flex items-center justify-center gap-2"
           style={{ background: "var(--pg-navy)", color: "white" }}>
-          <span style={{ fontSize: 18, lineHeight: 1 }}>+</span> Add Course
+          <span style={{ fontSize: 18, lineHeight: 1 }}>+</span> {t("timetable.addCourse")}
         </button>
       </div>
 
@@ -282,23 +285,23 @@ export default function Timetable() {
           onClick={(e) => { if (e.target === e.currentTarget) setShowModal(false); }}>
           <div className="w-full rounded-t-3xl p-6 pb-8" style={{ background: "var(--surface)", maxWidth: 430 }}>
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-bold" style={{ color: "var(--text-primary)" }}>Add Course</h2>
+              <h2 className="text-lg font-bold" style={{ color: "var(--text-primary)" }}>{t("timetable.addCourse")}</h2>
               <button onClick={() => setShowModal(false)}
                 className="w-8 h-8 rounded-full flex items-center justify-center"
                 style={{ background: "var(--surface-raised)", color: "var(--text-tertiary)", fontSize: 18 }}>×</button>
             </div>
 
-            <input placeholder="Course name *" value={form.course}
+            <input placeholder={t("timetable.courseName")} value={form.course}
               onChange={e => setForm({ ...form, course: e.target.value })}
               className="w-full px-4 py-3 rounded-xl border mb-3 text-sm outline-none focus:border-blue-400"
               style={{ borderColor: "var(--border)" }} />
 
             <div className="grid grid-cols-2 gap-3 mb-3">
-              <input placeholder="Code (e.g. CS101)" value={form.code}
+              <input placeholder={t("timetable.code")} value={form.code}
                 onChange={e => setForm({ ...form, code: e.target.value })}
                 className="px-4 py-3 rounded-xl border text-sm outline-none focus:border-blue-400"
                 style={{ borderColor: "var(--border)" }} />
-              <input placeholder="Room" value={form.room}
+              <input placeholder={t("timetable.room")} value={form.room}
                 onChange={e => setForm({ ...form, room: e.target.value })}
                 className="px-4 py-3 rounded-xl border text-sm outline-none focus:border-blue-400"
                 style={{ borderColor: "var(--border)" }} />
@@ -306,15 +309,15 @@ export default function Timetable() {
 
             <div className="grid grid-cols-3 gap-3 mb-4">
               <div>
-                <p className="text-xs mb-1.5 font-medium" style={{ color: "var(--text-tertiary)" }}>Day</p>
+                <p className="text-xs mb-1.5 font-medium" style={{ color: "var(--text-tertiary)" }}>{t("timetable.day")}</p>
                 <select value={form.day} onChange={e => setForm({ ...form, day: Number(e.target.value) })}
                   className="w-full px-3 py-2.5 rounded-xl border text-sm outline-none"
                   style={{ borderColor: "var(--border)" }}>
-                  {DAYS.map((d, i) => <option key={d} value={i}>{d}</option>)}
+                  {DAYS.map((d, i) => <option key={i} value={i}>{d}</option>)}
                 </select>
               </div>
               <div>
-                <p className="text-xs mb-1.5 font-medium" style={{ color: "var(--text-tertiary)" }}>Start</p>
+                <p className="text-xs mb-1.5 font-medium" style={{ color: "var(--text-tertiary)" }}>{t("timetable.start")}</p>
                 <select value={form.start}
                   onChange={e => {
                     const s = Number(e.target.value);
@@ -326,7 +329,7 @@ export default function Timetable() {
                 </select>
               </div>
               <div>
-                <p className="text-xs mb-1.5 font-medium" style={{ color: "var(--text-tertiary)" }}>End</p>
+                <p className="text-xs mb-1.5 font-medium" style={{ color: "var(--text-tertiary)" }}>{t("timetable.end")}</p>
                 <select value={form.end} onChange={e => setForm({ ...form, end: Number(e.target.value) })}
                   className="w-full px-3 py-2.5 rounded-xl border text-sm outline-none"
                   style={{ borderColor: "var(--border)" }}>
@@ -335,7 +338,7 @@ export default function Timetable() {
               </div>
             </div>
 
-            <p className="text-xs mb-2 font-medium" style={{ color: "var(--text-tertiary)" }}>Color</p>
+            <p className="text-xs mb-2 font-medium" style={{ color: "var(--text-tertiary)" }}>{t("timetable.color")}</p>
             <div className="flex gap-2 mb-6">
               {COLORS.map((c, i) => (
                 <button key={c} onClick={() => setForm({ ...form, colorIndex: i })}
@@ -348,7 +351,7 @@ export default function Timetable() {
               <button onClick={() => setShowModal(false)}
                 className="flex-1 py-3.5 rounded-2xl text-sm font-medium"
                 style={{ background: "var(--surface-raised)", color: "var(--text-tertiary)" }}>
-                Cancel
+                {t("timetable.cancel")}
               </button>
               <button onClick={addSlot}
                 disabled={!form.course.trim()}
@@ -358,7 +361,7 @@ export default function Timetable() {
                   color: "white",
                   opacity: form.course.trim() ? 1 : 0.4,
                 }}>
-                Add Course
+                {t("timetable.addCourse")}
               </button>
             </div>
           </div>

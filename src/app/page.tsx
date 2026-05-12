@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useI18n } from "@/lib/i18n";
 
 export default function Home() {
   const [mode, setMode] = useState<"idle" | "signin" | "signup" | "forgot">("idle");
@@ -11,6 +12,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const { t } = useI18n();
 
   async function handleGoogleLogin() {
     await supabase.auth.signInWithOAuth({
@@ -126,12 +128,11 @@ export default function Home() {
           className="text-white mb-2"
           style={{ fontSize: 30, fontWeight: 800, letterSpacing: "-0.6px", lineHeight: 1.2 }}
         >
-          ErasmusBuddy
+          {t("login.title")}
         </h1>
 
-        <p style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", lineHeight: 1.5 }}>
-          Your student guide to settling in<br />
-          at Gdańsk University of Technology
+        <p style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", lineHeight: 1.5, whiteSpace: "pre-line" }}>
+          {t("login.subtitle")}
         </p>
 
         <span
@@ -144,7 +145,7 @@ export default function Home() {
             letterSpacing: "0.3px",
           }}
         >
-          Made by students, for students
+          {t("login.tagline")}
         </span>
       </div>
 
@@ -195,13 +196,13 @@ export default function Home() {
             <path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5.1l-6.2-5.2C29.4 35.5 26.8 36 24 36c-5.2 0-9.6-2.9-11.3-7.1l-6.6 4.8C9.8 39.7 16.4 44 24 44z"/>
             <path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.6 4.6-4.8 6l6.2 5.2C40.7 35.5 44 30.1 44 24c0-1.3-.1-2.7-.4-4z"/>
           </svg>
-          Sign in with Google
+          {t("login.google")}
         </button>
 
         {/* Divider */}
         <div className="flex items-center gap-3 mb-4">
           <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
-          <span style={{ fontSize: 12, color: "#B0B8CC", fontWeight: 500 }}>or</span>
+          <span style={{ fontSize: 12, color: "#B0B8CC", fontWeight: 500 }}>{t("login.or")}</span>
           <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
         </div>
 
@@ -223,7 +224,7 @@ export default function Home() {
                 fontFamily: "inherit",
               }}
             >
-              Sign In
+              {t("login.signIn")}
             </button>
             <button
               onClick={() => { resetForm(); setMode("signup"); }}
@@ -240,7 +241,7 @@ export default function Home() {
                 fontFamily: "inherit",
               }}
             >
-              Create Account
+              {t("login.createAccount")}
             </button>
           </div>
         )}
@@ -249,7 +250,7 @@ export default function Home() {
         {mode === "signin" && (
           <div>
             <div className="flex items-center justify-between mb-4">
-              <span style={{ fontSize: 15, fontWeight: 700, color: "var(--text-primary)" }}>Sign In</span>
+              <span style={{ fontSize: 15, fontWeight: 700, color: "var(--text-primary)" }}>{t("login.signIn")}</span>
               <button
                 onClick={() => { resetForm(); setMode("idle"); }}
                 style={{ fontSize: 20, color: "#B0B8CC", background: "none", border: "none", cursor: "pointer", lineHeight: 1 }}
@@ -264,14 +265,14 @@ export default function Home() {
             )}
             <input
               type="email"
-              placeholder="Email address"
+              placeholder={t("login.email")}
               value={email}
               onChange={e => setEmail(e.target.value)}
               style={inputStyle}
             />
             <input
               type="password"
-              placeholder="Password"
+              placeholder={t("login.password")}
               value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleEmailSignIn()}
@@ -282,7 +283,7 @@ export default function Home() {
                 onClick={() => { setPassword(""); setError(null); setMode("forgot"); }}
                 style={{ fontSize: 12, color: "#003580", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontWeight: 600 }}
               >
-                Forgot password?
+                {t("login.forgotPassword")}
               </button>
             </div>
             <button
@@ -293,15 +294,15 @@ export default function Home() {
                 opacity: loading || !email || !password ? 0.5 : 1,
               }}
             >
-              {loading ? "Signing in…" : "Sign In"}
+              {loading ? t("login.signingIn") : t("login.signIn")}
             </button>
             <p style={{ textAlign: "center", fontSize: 13, color: "#B0B8CC", marginTop: 12 }}>
-              No account?{" "}
+              {t("login.noAccount")}{" "}
               <button
                 onClick={() => { resetForm(); setMode("signup"); }}
                 style={{ color: "#003580", fontWeight: 600, background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 13 }}
               >
-                Create one
+                {t("login.createOne")}
               </button>
             </p>
           </div>
@@ -311,7 +312,7 @@ export default function Home() {
         {mode === "forgot" && (
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span style={{ fontSize: 15, fontWeight: 700, color: "var(--text-primary)" }}>Reset Password</span>
+              <span style={{ fontSize: 15, fontWeight: 700, color: "var(--text-primary)" }}>{t("login.resetPassword")}</span>
               <button
                 onClick={() => { resetForm(); setMode("signin"); }}
                 style={{ fontSize: 20, color: "#B0B8CC", background: "none", border: "none", cursor: "pointer", lineHeight: 1 }}
@@ -320,7 +321,7 @@ export default function Home() {
               </button>
             </div>
             <p style={{ fontSize: 13, color: "#A0A8BB", marginBottom: 16, lineHeight: 1.5 }}>
-              Enter your email and we&apos;ll send you a reset link.
+              {t("login.resetSub")}
             </p>
             {error && (
               <div className="mb-3 px-4 py-3 rounded-xl text-sm" style={{ background: "#FEF3C7", color: "#D97706" }}>
@@ -329,7 +330,7 @@ export default function Home() {
             )}
             <input
               type="email"
-              placeholder="Email address"
+              placeholder={t("login.email")}
               value={email}
               onChange={e => setEmail(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleForgotPassword()}
@@ -343,14 +344,14 @@ export default function Home() {
                 opacity: loading || !email ? 0.5 : 1,
               }}
             >
-              {loading ? "Sending…" : "Send Reset Link"}
+              {loading ? t("login.sending") : t("login.sendReset")}
             </button>
             <p style={{ textAlign: "center", fontSize: 13, color: "#B0B8CC", marginTop: 12 }}>
               <button
                 onClick={() => { resetForm(); setMode("signin"); }}
                 style={{ color: "#003580", fontWeight: 600, background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 13 }}
               >
-                ← Back to Sign In
+                {t("login.backToSignIn")}
               </button>
             </p>
           </div>
@@ -360,7 +361,7 @@ export default function Home() {
         {mode === "signup" && (
           <div>
             <div className="flex items-center justify-between mb-4">
-              <span style={{ fontSize: 15, fontWeight: 700, color: "var(--text-primary)" }}>Create Account</span>
+              <span style={{ fontSize: 15, fontWeight: 700, color: "var(--text-primary)" }}>{t("login.createAccount")}</span>
               <button
                 onClick={() => { resetForm(); setMode("idle"); }}
                 style={{ fontSize: 20, color: "#B0B8CC", background: "none", border: "none", cursor: "pointer", lineHeight: 1 }}
@@ -375,21 +376,21 @@ export default function Home() {
             )}
             <input
               type="text"
-              placeholder="Your name (optional)"
+              placeholder={t("login.name")}
               value={name}
               onChange={e => setName(e.target.value)}
               style={inputStyle}
             />
             <input
               type="email"
-              placeholder="Email address"
+              placeholder={t("login.email")}
               value={email}
               onChange={e => setEmail(e.target.value)}
               style={inputStyle}
             />
             <input
               type="password"
-              placeholder="Password (min 6 characters)"
+              placeholder={t("login.passwordMin")}
               value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleEmailSignUp()}
@@ -403,15 +404,15 @@ export default function Home() {
                 opacity: loading || !email || !password ? 0.5 : 1,
               }}
             >
-              {loading ? "Creating account…" : "Create Account"}
+              {loading ? t("login.creatingAccount") : t("login.createAccount")}
             </button>
             <p style={{ textAlign: "center", fontSize: 13, color: "#B0B8CC", marginTop: 12 }}>
-              Already have one?{" "}
+              {t("login.haveAccount")}{" "}
               <button
                 onClick={() => { resetForm(); setMode("signin"); }}
                 style={{ color: "#003580", fontWeight: 600, background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 13 }}
               >
-                Sign in
+                {t("login.signIn")}
               </button>
             </p>
           </div>
@@ -428,10 +429,10 @@ export default function Home() {
               marginTop: 14,
             }}
           >
-            Free to use · Your PG university account
+            {t("login.free")}
             <br />
             <span style={{ color: "#6E7891", fontWeight: 600 }}>
-              No separate registration needed
+              {t("login.noRegistration")}
             </span>
           </p>
         )}
