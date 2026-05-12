@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { useI18n } from "@/lib/i18n";
+import { useI18n, LANGUAGES, type Lang } from "@/lib/i18n";
 
 export default function Home() {
   const [mode, setMode] = useState<"idle" | "signin" | "signup" | "forgot">("idle");
@@ -12,7 +12,8 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const { t } = useI18n();
+  const { t, lang, setLang } = useI18n();
+  const [showLangPicker, setShowLangPicker] = useState(false);
 
   async function handleGoogleLogin() {
     await supabase.auth.signInWithOAuth({
@@ -81,8 +82,56 @@ export default function Home() {
       className="min-h-screen flex flex-col"
       style={{
         background: "linear-gradient(170deg, #001233 0%, #002e75 55%, #003580 100%)",
+        position: "relative",
       }}
     >
+      {/* Language Picker */}
+      <div style={{ position: "absolute", top: 16, right: 16, zIndex: 10 }}>
+        <button
+          onClick={() => setShowLangPicker(!showLangPicker)}
+          style={{
+            width: 40, height: 40, borderRadius: "50%",
+            background: "rgba(255,255,255,0.10)",
+            border: "1px solid rgba(255,255,255,0.15)",
+            cursor: "pointer",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: 18,
+          }}
+        >
+          {LANGUAGES.find(l => l.code === lang)?.flag}
+        </button>
+        {showLangPicker && (
+          <div style={{
+            position: "absolute", top: 48, right: 0,
+            background: "rgba(0,20,64,0.95)",
+            border: "1px solid rgba(255,255,255,0.15)",
+            borderRadius: 14, padding: 6,
+            backdropFilter: "blur(12px)",
+            display: "flex", flexDirection: "column", gap: 2,
+            minWidth: 140,
+            boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+          }}>
+            {LANGUAGES.map(l => (
+              <button
+                key={l.code}
+                onClick={() => { setLang(l.code); setShowLangPicker(false); }}
+                style={{
+                  display: "flex", alignItems: "center", gap: 10,
+                  padding: "10px 14px", borderRadius: 10,
+                  border: "none", cursor: "pointer",
+                  background: lang === l.code ? "rgba(255,255,255,0.15)" : "transparent",
+                  color: "white", fontSize: 13, fontWeight: lang === l.code ? 700 : 400,
+                  textAlign: "left", width: "100%",
+                }}
+              >
+                <span style={{ fontSize: 18 }}>{l.flag}</span>
+                {l.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Hero */}
       <div className="flex-1 flex flex-col items-center justify-center px-9 pt-16 pb-8 text-center">
 
