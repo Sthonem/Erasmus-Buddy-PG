@@ -24,19 +24,19 @@ function getStage(completedCount: number, totalCount: number, criticalDone: bool
 
 // ── Explore & Eats visual config (text comes from i18n) ─────────────────────
 const EXPLORE_ITEMS = [
-  { key: "sopot",  title: "Sopot Pier",        icon: "🏖️", color: "#B2F0E8", accent: "#006B5A", border: "#7DE0D2" },
-  { key: "dlugi",  title: "Długi Targ",        icon: "🏛️", color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF" },
-  { key: "oliwa",  title: "Oliwa Park",        icon: "🌿", color: "#BBF0CC", accent: "#14522A", border: "#88E0A4" },
-  { key: "hel",    title: "Hel Peninsula",     icon: "⛱️", color: "#FDE68A", accent: "#78350F", border: "#FBD34D" },
-  { key: "wester", title: "Westerplatte",      icon: "🚢", color: "#DDD6FE", accent: "#4C1D95", border: "#C4B5FD" },
-  { key: "gdynia", title: "Gdynia Waterfront", icon: "⚓", color: "#BFDBFE", accent: "#1E3A8A", border: "#93C5FD" },
+  { key: "sopot",  icon: "🏖️", color: "#B2F0E8", accent: "#006B5A", border: "#7DE0D2" },
+  { key: "dlugi",  icon: "🏛️", color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF" },
+  { key: "oliwa",  icon: "🌿", color: "#BBF0CC", accent: "#14522A", border: "#88E0A4" },
+  { key: "hel",    icon: "⛱️", color: "#FDE68A", accent: "#78350F", border: "#FBD34D" },
+  { key: "wester", icon: "🚢", color: "#DDD6FE", accent: "#4C1D95", border: "#C4B5FD" },
+  { key: "gdynia", icon: "⚓", color: "#BFDBFE", accent: "#1E3A8A", border: "#93C5FD" },
 ];
 
 const EATS_ITEMS = [
-  { key: "pierogi",   title: "Pierogarnia Mandu", icon: "🥟", color: "#FDE68A", accent: "#78350F", border: "#FBD34D" },
-  { key: "biedronka", title: "Biedronka",         icon: "🛒", color: "#FED7AA", accent: "#9A3412", border: "#FDBA74" },
-  { key: "kebab",     title: "Kebab spots",       icon: "🌯", color: "#BBF0CC", accent: "#14522A", border: "#88E0A4" },
-  { key: "stacja",    title: "Stacja Food Hall",  icon: "🍕", color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF" },
+  { key: "pierogi",   icon: "🥟", color: "#FDE68A", accent: "#78350F", border: "#FBD34D" },
+  { key: "biedronka", icon: "🛒", color: "#FED7AA", accent: "#9A3412", border: "#FDBA74" },
+  { key: "kebab",     icon: "🌯", color: "#BBF0CC", accent: "#14522A", border: "#88E0A4" },
+  { key: "stacja",    icon: "🍕", color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF" },
 ];
 
 const QUICK_ACCESS: { titleKey: TranslationKey; subKey: TranslationKey; bg: string; accent: string; border: string; icon: string; href: string }[] = [
@@ -352,7 +352,7 @@ export default function Dashboard() {
               marginRight: idx === EXPLORE_ITEMS.length - 1 ? 20 : 0,
             }}>
               <p style={{ fontSize: 28, marginBottom: 8, lineHeight: 1 }}>{item.icon}</p>
-              <p style={{ fontSize: 13, fontWeight: 700, color: item.accent, lineHeight: 1.3 }}>{item.title}</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: item.accent, lineHeight: 1.3 }}>{t(`explore.${item.key}.title` as TranslationKey)}</p>
               <p style={{ fontSize: 10.5, color: "var(--text-secondary)", marginTop: 3, lineHeight: 1.4 }}>{t(`explore.${item.key}` as TranslationKey)}</p>
               <p style={{ fontSize: 9.5, color: item.accent, marginTop: 6, fontWeight: 600, opacity: 0.7 }}>
                 📍 {t(`explore.${item.key}.dist` as TranslationKey)}
@@ -391,7 +391,7 @@ export default function Dashboard() {
               marginRight: idx === EATS_ITEMS.length - 1 ? 20 : 0,
             }}>
               <p style={{ fontSize: 28, marginBottom: 8, lineHeight: 1 }}>{item.icon}</p>
-              <p style={{ fontSize: 13, fontWeight: 700, color: item.accent, lineHeight: 1.3 }}>{item.title}</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: item.accent, lineHeight: 1.3 }}>{t(`eats.${item.key}.title` as TranslationKey)}</p>
               <p style={{ fontSize: 10.5, color: "var(--text-secondary)", marginTop: 3, lineHeight: 1.4 }}>{t(`eats.${item.key}` as TranslationKey)}</p>
               <p style={{ fontSize: 9.5, color: item.accent, marginTop: 6, fontWeight: 600, opacity: 0.7 }}>
                 ⭐ {t(`eats.${item.key}.tip` as TranslationKey)}

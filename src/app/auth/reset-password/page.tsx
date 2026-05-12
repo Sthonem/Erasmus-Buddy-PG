@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { useI18n } from "@/lib/i18n";
 
 function ResetPasswordForm() {
   const router = useRouter();
@@ -12,15 +13,13 @@ function ResetPasswordForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
-    // Supabase sends the token as a fragment (#access_token=...) — it handles
-    // session restoration automatically via onAuthStateChange when the page loads.
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY") setReady(true);
     });
 
-    // Also check if there's a code param (PKCE flow)
     const code = searchParams.get("code");
     if (code) {
       supabase.auth.exchangeCodeForSession(code).then(() => setReady(true));
@@ -31,11 +30,11 @@ function ResetPasswordForm() {
 
   async function handleReset() {
     if (!password || password !== confirm) {
-      setError("Passwords don't match.");
+      setError(t("reset.mismatch"));
       return;
     }
     if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+      setError(t("reset.tooShort"));
       return;
     }
     setLoading(true);
@@ -58,9 +57,7 @@ function ResetPasswordForm() {
         <div
           className="flex items-center justify-center mb-6"
           style={{
-            width: 72,
-            height: 72,
-            borderRadius: 18,
+            width: 72, height: 72, borderRadius: 18,
             background: "rgba(255,255,255,0.07)",
             border: "1px solid rgba(255,255,255,0.14)",
           }}
@@ -71,10 +68,10 @@ function ResetPasswordForm() {
           </svg>
         </div>
         <h1 className="text-white mb-2" style={{ fontSize: 26, fontWeight: 800, letterSpacing: "-0.5px" }}>
-          New Password
+          {t("reset.title")}
         </h1>
         <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)" }}>
-          Choose a strong password for your account
+          {t("reset.subtitle")}
         </p>
       </div>
 
@@ -83,7 +80,7 @@ function ResetPasswordForm() {
           <div className="flex flex-col items-center gap-3 py-6">
             <div className="w-8 h-8 rounded-full border-2 animate-spin"
               style={{ borderColor: "#003580", borderTopColor: "transparent" }} />
-            <p style={{ fontSize: 13, color: "var(--text-tertiary)" }}>Verifying reset link…</p>
+            <p style={{ fontSize: 13, color: "var(--text-tertiary)" }}>{t("reset.verifying")}</p>
           </div>
         ) : (
           <>
@@ -94,14 +91,14 @@ function ResetPasswordForm() {
             )}
             <input
               type="password"
-              placeholder="New password (min 6 characters)"
+              placeholder={t("reset.newPassword")}
               value={password}
               onChange={e => setPassword(e.target.value)}
               style={inputStyle}
             />
             <input
               type="password"
-              placeholder="Confirm new password"
+              placeholder={t("reset.confirm")}
               value={confirm}
               onChange={e => setConfirm(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleReset()}
@@ -111,20 +108,14 @@ function ResetPasswordForm() {
               onClick={handleReset}
               disabled={loading || !password || !confirm}
               style={{
-                width: "100%",
-                padding: "15px",
-                borderRadius: 14,
-                border: "none",
-                background: "#003580",
-                color: "white",
-                fontSize: 15,
-                fontWeight: 700,
-                cursor: "pointer",
+                width: "100%", padding: "15px", borderRadius: 14,
+                border: "none", background: "#003580", color: "white",
+                fontSize: 15, fontWeight: 700, cursor: "pointer",
                 fontFamily: "inherit",
                 opacity: loading || !password || !confirm ? 0.5 : 1,
               }}
             >
-              {loading ? "Updating…" : "Set New Password"}
+              {loading ? t("reset.updating") : t("reset.submit")}
             </button>
           </>
         )}

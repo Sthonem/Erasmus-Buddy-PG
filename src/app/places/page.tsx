@@ -24,8 +24,11 @@ const CAT: Record<string, { bg: string; text: string }> = {
 
 // ── PLACES DATA ─────────────────────────────────────────────────────────────
 type Place = {
-  name: string;
-  detail: string;
+  nameKey?: TranslationKey;
+  name?: string;
+  detailKey?: TranslationKey;
+  detail?: string;
+  noteKey?: TranslationKey;
   note?: string;
   tagKey?: TranslationKey;
   icon: string;
@@ -50,67 +53,67 @@ const categories: Category[] = [
     id: "campus", titleKey: "places.cat.campus",
     color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF", icon: "🏫",
     places: [
-      { name: "International Students Office", detail: "Main Building, Room 124", note: "Your first stop — English-speaking staff. Handles enrollment, OLA, EHIC.", tagKey: "places.startHere", icon: "🌍", hours: ["Mon–Fri: 10:00–14:00"], email: "international@pg.edu.pl", coords: [54.3716, 18.6210] },
-      { name: "Dean's Office", detail: "Your faculty building", note: "Student ID cards, enrollment certificates, course issues.", icon: "🎓", hours: ["Mon–Fri: 10:00–14:00", "Wed: 15:00–17:00"], coords: [54.3716, 18.6210] },
-      { name: "Library", detail: "ul. Narutowicza 11/12", note: "Access with student ID. Study rooms, printing, scanning.", icon: "📚", hours: ["Mon–Fri: 8:00–20:00", "Sat: 9:00–15:00"], link: "https://pg.edu.pl/biblioteka", coords: [54.3713, 18.6195] },
-      { name: "Student Dormitories (DS1–DS6)", detail: "ul. Wyspiańskiego, on-campus", note: "Present booking + passport at reception.", icon: "🏠", hours: ["Reception: 24/7"], coords: [54.3740, 18.6175] },
-      { name: "IT Help Desk", detail: "CI PG Building, ul. Siedlicka", note: "PG email, Eduroam Wi-Fi, Microsoft 365.", icon: "💻", hours: ["Mon–Fri: 8:00–16:00"], email: "pomoc@pg.edu.pl", coords: [54.3720, 18.6135] },
-      { name: "Finance Office (Grants)", detail: "Main Building, 1st Floor", note: "Erasmus grant payments. Bring Polish bank details.", icon: "💰", hours: ["Mon–Fri: 9:00–14:00"], coords: [54.3716, 18.6210] },
+      { nameKey: "place.intl-office", detailKey: "place.intl-office.detail", noteKey: "place.intl-office.note", tagKey: "places.startHere", icon: "🌍", hours: ["Mon–Fri: 10:00–14:00"], email: "international@pg.edu.pl", coords: [54.3716, 18.6210] },
+      { nameKey: "place.deans-office", detailKey: "place.deans-office.detail", noteKey: "place.deans-office.note", icon: "🎓", hours: ["Mon–Fri: 10:00–14:00", "Wed: 15:00–17:00"], coords: [54.3716, 18.6210] },
+      { nameKey: "place.library", detail: "ul. Narutowicza 11/12", noteKey: "place.library.note", icon: "📚", hours: ["Mon–Fri: 8:00–20:00", "Sat: 9:00–15:00"], link: "https://pg.edu.pl/biblioteka", coords: [54.3713, 18.6195] },
+      { nameKey: "place.dorms", detailKey: "place.dorms.detail", noteKey: "place.dorms.note", icon: "🏠", hours: ["Reception: 24/7"], coords: [54.3740, 18.6175] },
+      { nameKey: "place.it-help", detail: "CI PG Building, ul. Siedlicka", noteKey: "place.it-help.note", icon: "💻", hours: ["Mon–Fri: 8:00–16:00"], email: "pomoc@pg.edu.pl", coords: [54.3720, 18.6135] },
+      { nameKey: "place.finance", detailKey: "place.finance.detail", noteKey: "place.finance.note", icon: "💰", hours: ["Mon–Fri: 9:00–14:00"], coords: [54.3716, 18.6210] },
     ],
   },
   {
     id: "groceries", titleKey: "places.cat.groceries",
     color: "#B2F0E8", accent: "#006B5A", border: "#7DE0D2", icon: "🛒",
     places: [
-      { name: "Biedronka", detail: "ul. Partyzantów 71 & many locations", note: "Most affordable. Closest to PG. Open 6:00–23:00.", tagKey: "places.closestToPG", icon: "🛒", coords: [54.3735, 18.6205] },
-      { name: "Lidl", detail: "ul. Kartuska 245 & others", note: "Great fresh produce, bakery and weekly deals.", icon: "🛒", coords: [54.3585, 18.6040] },
-      { name: "Kaufland", detail: "ul. Kartuska 245", note: "Large hypermarket — best for big weekly shop.", icon: "🏪", coords: [54.3585, 18.6035] },
-      { name: "Żabka", detail: "Near dormitories & everywhere", note: "Convenience store — 6:00–23:00. Quick top-ups.", icon: "🏬", coords: [54.3738, 18.6180] },
+      { name: "Biedronka", detailKey: "place.biedronka.detail", noteKey: "place.biedronka.note", tagKey: "places.closestToPG", icon: "🛒", coords: [54.3735, 18.6205] },
+      { name: "Lidl", detailKey: "place.lidl.detail", noteKey: "place.lidl.note", icon: "🛒", coords: [54.3585, 18.6040] },
+      { name: "Kaufland", detail: "ul. Kartuska 245", noteKey: "place.kaufland.note", icon: "🏪", coords: [54.3585, 18.6035] },
+      { name: "Żabka", detailKey: "place.zabka.detail", noteKey: "place.zabka.note", icon: "🏬", coords: [54.3738, 18.6180] },
     ],
   },
   {
     id: "transport", titleKey: "places.cat.transport",
     color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF", icon: "🚌",
     places: [
-      { name: "ZTM — Trams & Buses", detail: "ztm.gda.pl · Jakdojade / moBiLET", note: "Buy tickets on board or in-app. Validate immediately!", tagKey: "places.mostUsed", icon: "🚌", link: "https://ztm.gda.pl" },
-      { name: "SKM — City Rail", detail: "Gdańsk ↔ Sopot ↔ Gdynia", note: "Sopot in 12 min, Gdynia in 25 min. Wrzeszcz station 10 min from PG.", tagKey: "places.trojmiasto", icon: "🚆", coords: [54.3745, 18.6130] },
-      { name: "Student Discount — 50%", detail: "Show student ID", note: "ZTM and SKM both offer 50% off. Essential!", tagKey: "places.save50", icon: "🎓" },
-      { name: "Bolt / Free Now", detail: "Taxi apps on iOS & Android", note: "Cheaper than traditional taxis. Avoid unmarked cabs.", icon: "🚗" },
+      { nameKey: "place.ztm", detail: "ztm.gda.pl · Jakdojade / moBiLET", noteKey: "place.ztm.note", tagKey: "places.mostUsed", icon: "🚌", link: "https://ztm.gda.pl" },
+      { nameKey: "place.skm", detail: "Gdańsk ↔ Sopot ↔ Gdynia", noteKey: "place.skm.note", tagKey: "places.trojmiasto", icon: "🚆", coords: [54.3745, 18.6130] },
+      { nameKey: "place.discount", detailKey: "place.discount.detail", noteKey: "place.discount.note", tagKey: "places.save50", icon: "🎓" },
+      { name: "Bolt / Free Now", detailKey: "place.taxi.detail", noteKey: "place.taxi.note", icon: "🚗" },
     ],
   },
   {
     id: "pharmacy", titleKey: "places.cat.pharmacy",
     color: "#FDE68A", accent: "#78350F", border: "#FBD34D", icon: "💊",
     places: [
-      { name: "Dr. Max Apteka", detail: "Galeria Bałtycka & city centre", note: "Largest chain. Most meds OTC. Some English staff.", tagKey: "places.mostCommon", icon: "💊", coords: [54.3800, 18.5920] },
-      { name: "24h Emergency Pharmacy", detail: "ul. Podwale Grodzkie 8", note: "Open around the clock for emergencies.", tagKey: "places.24_7", icon: "🚨", coords: [54.3490, 18.6530] },
+      { name: "Dr. Max Apteka", detail: "Galeria Bałtycka", noteKey: "place.drmax.note", tagKey: "places.mostCommon", icon: "💊", coords: [54.3800, 18.5920] },
+      { nameKey: "place.24h-pharmacy", detail: "ul. Podwale Grodzkie 8", noteKey: "place.24h-pharmacy.note", tagKey: "places.24_7", icon: "🚨", coords: [54.3490, 18.6530] },
     ],
   },
   {
     id: "city", titleKey: "places.cat.city",
     color: "#DDD6FE", accent: "#4C1D95", border: "#C4B5FD", icon: "🏙️",
     places: [
-      { name: "Stare Miasto — Old Town", detail: "~20 min by tram", note: "Stunning architecture, restaurants, bars. Długi Targ is the heart.", tagKey: "places.mustSee", icon: "🏰", coords: [54.3484, 18.6534] },
-      { name: "Galeria Bałtycka", detail: "ul. Grunwaldzka 141", note: "Largest mall near PG — H&M, Zara, food court. 5-min walk.", tagKey: "places.closestMall", icon: "🛍️", coords: [54.3800, 18.5920] },
-      { name: "Forum Gdańsk", detail: "City centre", note: "Modern mall — cinema, IKEA Pick-Up, great food hall.", icon: "🛍️", coords: [54.3560, 18.6475] },
+      { nameKey: "place.old-town", detailKey: "place.old-town.detail", noteKey: "place.old-town.note", tagKey: "places.mustSee", icon: "🏰", coords: [54.3484, 18.6534] },
+      { name: "Galeria Bałtycka", detail: "ul. Grunwaldzka 141", noteKey: "place.baltycka.note", tagKey: "places.closestMall", icon: "🛍️", coords: [54.3800, 18.5920] },
+      { name: "Forum Gdańsk", detailKey: "place.forum.detail", noteKey: "place.forum.note", icon: "🛍️", coords: [54.3560, 18.6475] },
     ],
   },
   {
     id: "food", titleKey: "places.cat.food",
     color: "#FDE68A", accent: "#78350F", border: "#FBD34D", icon: "🍽️",
     places: [
-      { name: "PG Student Canteen", detail: "On campus — Gmach B", note: "Hot meals 12–20 PLN. Cheapest on campus.", tagKey: "places.cheapest", icon: "🍽️", coords: [54.3718, 18.6200] },
-      { name: "Bar Mleczny (Milk Bar)", detail: "Various locations", note: "Traditional Polish canteen. Pierogi, barszcz 10–25 PLN.", icon: "🥟", coords: [54.3725, 18.6140] },
-      { name: "Coffee Shops", detail: "Wrzeszcz neighbourhood", note: "Karma Coffee, Sowa, Coffeedesk — great cafés near campus.", icon: "☕", coords: [54.3780, 18.6010] },
+      { nameKey: "place.canteen", detailKey: "place.canteen.detail", noteKey: "place.canteen.note", tagKey: "places.cheapest", icon: "🍽️", coords: [54.3718, 18.6200] },
+      { nameKey: "place.milkbar", detailKey: "place.milkbar.detail", noteKey: "place.milkbar.note", icon: "🥟", coords: [54.3725, 18.6140] },
+      { nameKey: "place.coffee", detailKey: "place.coffee.detail", noteKey: "place.coffee.note", icon: "☕", coords: [54.3780, 18.6010] },
     ],
   },
   {
     id: "emergency", titleKey: "places.cat.emergency",
     color: "#FECDD5", accent: "#9F1239", border: "#FDA4AF", icon: "🆘",
     places: [
-      { name: "Emergency — 112", detail: "European emergency number", note: "Works from any phone. English operators available.", tagKey: "places.callAnytime", icon: "🆘" },
-      { name: "UCK Hospital", detail: "ul. Dębinki 7 (10 min from PG)", note: "Main hospital. Emergency (SOR) open 24/7.", icon: "🏥", coords: [54.3620, 18.6290] },
-      { name: "NFZ GP Clinic", detail: "Register after ZUS", note: "Free GP visits with ZUS insurance + PESEL.", icon: "🩺" },
+      { nameKey: "place.112", detailKey: "place.112.detail", noteKey: "place.112.note", tagKey: "places.callAnytime", icon: "🆘" },
+      { name: "UCK Hospital", detail: "ul. Dębinki 7 (10 min from PG)", noteKey: "place.uck.note", icon: "🏥", coords: [54.3620, 18.6290] },
+      { nameKey: "place.nfz", detailKey: "place.nfz.detail", noteKey: "place.nfz.note", icon: "🩺" },
     ],
   },
 ];
@@ -295,6 +298,9 @@ function PlaceCard({ place, cat, t }: { place: Place; cat: Category; t: (key: Tr
   const mapUrl = place.coords
     ? `https://www.google.com/maps/search/?api=1&query=${place.coords[0]},${place.coords[1]}`
     : null;
+  const displayName = place.nameKey ? t(place.nameKey) : place.name || "";
+  const displayDetail = place.detailKey ? t(place.detailKey) : place.detail || "";
+  const displayNote = place.noteKey ? t(place.noteKey) : place.note || "";
 
   return (
     <div className="card-interactive" style={{
@@ -304,7 +310,7 @@ function PlaceCard({ place, cat, t }: { place: Place; cat: Category; t: (key: Tr
       <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
-            <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.3, flex: 1, minWidth: 0 }}>{place.name}</p>
+            <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.3, flex: 1, minWidth: 0 }}>{displayName}</p>
             {place.tagKey && (
               <span className="badge" style={{ background: cat.color, color: cat.accent, border: `1px solid ${cat.border}`, flexShrink: 0 }}>
                 {t(place.tagKey)}
@@ -352,8 +358,8 @@ function PlaceCard({ place, cat, t }: { place: Place; cat: Category; t: (key: Tr
               </a>
             )}
           </div>
-          <p style={{ fontSize: 11, color: cat.accent, fontWeight: 500 }}>{place.detail}</p>
-          {place.note && <p style={{ fontSize: 11.5, color: "var(--text-secondary)", marginTop: 4, lineHeight: 1.5 }}>{place.note}</p>}
+          <p style={{ fontSize: 11, color: cat.accent, fontWeight: 500 }}>{displayDetail}</p>
+          {displayNote && <p style={{ fontSize: 11.5, color: "var(--text-secondary)", marginTop: 4, lineHeight: 1.5 }}>{displayNote}</p>}
           {place.hours && (
             <div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 5 }}>
               <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
