@@ -267,7 +267,7 @@ export default function Timetable() {
       </div>
 
       {/* Add Button */}
-      <div style={{ padding: "0 20px", marginTop: 32, marginBottom: 16 }}>
+      <div style={{ padding: "0 20px", marginTop: 20, marginBottom: 16 }}>
         <button onClick={() => setShowModal(true)}
           className="w-full py-3.5 rounded-2xl font-semibold text-sm flex items-center justify-center gap-2"
           style={{ background: "var(--pg-navy)", color: "white" }}>
