@@ -162,6 +162,8 @@ const translations = {
   "settings.passwordUpdated": { en: "Password updated successfully!", tr: "Şifre başarıyla güncellendi!", es: "¡Contraseña actualizada!", pl: "Hasło zaktualizowane!" },
   "settings.passwordMismatch": { en: "Passwords don't match", tr: "Şifreler eşleşmiyor", es: "Las contraseñas no coinciden", pl: "Hasła nie pasują" },
   "settings.passwordTooShort": { en: "Min 6 characters", tr: "Min 6 karakter", es: "Mín 6 caracteres", pl: "Min 6 znaków" },
+  "settings.currentPasswordRequired": { en: "Enter your current password", tr: "Mevcut şifrenizi girin", es: "Ingresa tu contraseña actual", pl: "Wprowadź aktualne hasło" },
+  "settings.wrongCurrentPassword": { en: "Current password is incorrect", tr: "Mevcut şifre yanlış", es: "La contraseña actual es incorrecta", pl: "Aktualne hasło jest nieprawidłowe" },
   "settings.updating": { en: "Updating…", tr: "Güncelleniyor…", es: "Actualizando…", pl: "Aktualizowanie…" },
   "settings.editProfile": { en: "Edit Profile", tr: "Profili Düzenle", es: "Editar Perfil", pl: "Edytuj Profil" },
   "settings.saveProfile": { en: "Save", tr: "Kaydet", es: "Guardar", pl: "Zapisz" },

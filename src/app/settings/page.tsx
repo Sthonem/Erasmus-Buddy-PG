@@ -27,6 +27,7 @@ export default function Settings() {
 
   // Password change
   const [showPassword, setShowPassword] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMsg, setPasswordMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -100,6 +101,10 @@ export default function Settings() {
   }
 
   async function handleChangePassword() {
+    if (!currentPassword) {
+      setPasswordMsg({ type: "error", text: t("settings.currentPasswordRequired") });
+      return;
+    }
     if (newPassword.length < 6) {
       setPasswordMsg({ type: "error", text: t("settings.passwordTooShort") });
       return;
@@ -110,11 +115,24 @@ export default function Settings() {
     }
     setSavingPassword(true);
     setPasswordMsg(null);
+
+    // Verify current password first
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: user?.email || "",
+      password: currentPassword,
+    });
+    if (signInError) {
+      setPasswordMsg({ type: "error", text: t("settings.wrongCurrentPassword") });
+      setSavingPassword(false);
+      return;
+    }
+
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     if (error) {
       setPasswordMsg({ type: "error", text: error.message });
     } else {
       setPasswordMsg({ type: "success", text: t("settings.passwordUpdated") });
+      setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
       setTimeout(() => { setPasswordMsg(null); setShowPassword(false); }, 3000);
@@ -344,6 +362,15 @@ export default function Settings() {
           {showPassword && (
             <div style={{ padding: "0 16px 16px", borderTop: "1px solid var(--border)" }}>
               <div style={{ paddingTop: 14 }}>
+                <p style={{ fontSize: 11, color: "var(--text-tertiary)", fontWeight: 500, marginBottom: 6 }}>{t("settings.currentPassword")}</p>
+                <input
+                  type="password"
+                  value={currentPassword}
+                  onChange={e => setCurrentPassword(e.target.value)}
+                  placeholder="••••••••"
+                  style={inputStyle}
+                />
+                <div style={{ height: 1, background: "var(--border)", margin: "14px 0" }} />
                 <p style={{ fontSize: 11, color: "var(--text-tertiary)", fontWeight: 500, marginBottom: 6 }}>{t("settings.newPassword")}</p>
                 <input
                   type="password"
@@ -375,12 +402,12 @@ export default function Settings() {
                 )}
                 <button
                   onClick={handleChangePassword}
-                  disabled={savingPassword || !newPassword || !confirmPassword}
+                  disabled={savingPassword || !currentPassword || !newPassword || !confirmPassword}
                   style={{
                     ...actionBtnStyle,
                     width: "100%", marginTop: 12,
                     background: "#D97706", color: "white",
-                    opacity: savingPassword || !newPassword || !confirmPassword ? 0.5 : 1,
+                    opacity: savingPassword || !currentPassword || !newPassword || !confirmPassword ? 0.5 : 1,
                   }}
                 >
                   {savingPassword ? t("settings.updating") : t("settings.updatePassword")}
