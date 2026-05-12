@@ -173,68 +173,95 @@ export default function Timetable() {
         )}
       </div>
 
-      {/* Grid — single CSS grid so courses can span multiple rows */}
-      <div style={{ padding: "16px 8px 0", overflow: "hidden" }}>
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "34px repeat(5, 1fr)",
-          gridTemplateRows: `auto repeat(${HOURS.length}, 38px)`,
-          gap: 2,
-        }}>
-          {/* Header row */}
+      {/* ── Calendar canvas ── */}
+      <div style={{ padding: "16px 18px 0" }}>
+        {/* Day headers */}
+        <div style={{ display: "grid", gridTemplateColumns: "38px repeat(5, 1fr)", marginBottom: 8 }}>
           <div />
           {DAYS.map(d => (
-            <div key={d} style={{ textAlign: "center", fontSize: 11, fontWeight: 600, color: "#555", padding: "4px 0" }}>{d}</div>
+            <div key={d} style={{
+              textAlign: "center", fontSize: 10, fontWeight: 700,
+              letterSpacing: ".6px", color: "#A0A8BB", textTransform: "uppercase" as const,
+              padding: "8px 0",
+            }}>{d}</div>
           ))}
+        </div>
 
-          {/* Hour rows */}
-          {HOURS.map((hour, hourIdx) => {
-            const row = hourIdx + 2; // +2 because row 1 is header
-            return [
-              /* Time label */
-              <div key={`t-${hour}`} style={{
-                gridColumn: 1, gridRow: row,
-                textAlign: "right", paddingRight: 3, paddingTop: 4, fontSize: 9, color: "#bbb",
-              }}>{hour}:00</div>,
-
-              /* Day cells */
-              ...DAYS.map((_, dayIdx) => {
-                const col = dayIdx + 2; // +2 because col 1 is time
-                const slot = slots.find(s => s.day_of_week === dayIdx && s.start_hour === hour);
-                const isCovered = slots.some(s => s.day_of_week === dayIdx && s.start_hour < hour && s.end_hour > hour);
-
-                if (isCovered) return null; // parent slot covers this cell
-
-                if (slot) {
-                  const span = slot.end_hour - slot.start_hour;
-                  const colorIdx = COLORS.indexOf(slot.color);
-                  const isConflict = conflicts.includes(slot.id);
-                  return (
-                    <div key={`s-${hour}-${dayIdx}`} style={{
-                      gridColumn: col, gridRow: `${row} / span ${span}`,
-                      borderRadius: 10, padding: "5px 7px", position: "relative",
-                      background: isConflict ? "#FEF3C7" : slot.color,
-                      border: isConflict ? "1.5px solid #D97706" : "none",
-                      zIndex: 2,
-                    }}>
-                      <p style={{ fontSize: 10, fontWeight: 700, color: isConflict ? "#D97706" : TEXT_COLORS[colorIdx] ?? "#003580", lineHeight: 1.3 }}>
-                        {slot.course}
-                      </p>
-                      {slot.room && <p style={{ fontSize: 8, color: "#888", marginTop: 2 }}>{slot.room}</p>}
-                      <button onClick={() => removeSlot(slot.id)}
-                        style={{ position: "absolute", top: 2, right: 4, width: 16, height: 16, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "50%", border: "none", background: "transparent", color: "#aaa", fontSize: 12, lineHeight: 1, cursor: "pointer" }}>×</button>
-                    </div>
-                  );
-                }
-
-                return (
-                  <div key={`e-${hour}-${dayIdx}`} style={{
-                    gridColumn: col, gridRow: row,
-                    background: "rgba(0,0,0,0.025)", borderRadius: 10,
+        {/* Continuous canvas */}
+        <div style={{
+          position: "relative",
+          background: "white",
+          border: "1px solid #E5E7EB",
+          borderRadius: 14,
+          overflow: "hidden",
+        }}>
+          {/* Background grid */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "38px repeat(5, 1fr)",
+            gridTemplateRows: `repeat(${HOURS.length}, 56px)`,
+          }}>
+            {HOURS.map((hour, i) => (
+              <div key={`row-${hour}`} style={{ display: "contents" }}>
+                <div style={{
+                  display: "flex", justifyContent: "flex-end",
+                  padding: "4px 6px 0 0",
+                  fontSize: 9.5, color: "#A0A8BB", fontWeight: 500,
+                  borderBottom: i < HOURS.length - 1 ? "1px solid #F0F1F4" : "none",
+                }}>
+                  {hour}:00
+                </div>
+                {DAYS.map((_, dayIdx) => (
+                  <div key={`cell-${hour}-${dayIdx}`} style={{
+                    borderLeft: "1px solid #F0F1F4",
+                    borderBottom: i < HOURS.length - 1 ? "1px solid #F0F1F4" : "none",
                   }} />
-                );
-              }),
-            ];
+                ))}
+              </div>
+            ))}
+          </div>
+
+          {/* Course blocks — overlaid */}
+          {slots.map(slot => {
+            const colorIdx = COLORS.indexOf(slot.color);
+            const isConflict = conflicts.includes(slot.id);
+            const startIdx = HOURS.indexOf(slot.start_hour);
+            const span = slot.end_hour - slot.start_hour;
+            const top = startIdx * 56 + 4;
+            const height = span * 56 - 8;
+            const dayWidth = `calc((100% - 38px) / 5)`;
+            const left = `calc(38px + ${dayWidth} * ${slot.day_of_week} + 4px)`;
+            const width = `calc(${dayWidth} - 8px)`;
+            const railColor = isConflict ? "#D97706" : (TEXT_COLORS[colorIdx] ?? "#003580");
+
+            return (
+              <div key={slot.id} style={{
+                position: "absolute", top, left, width, height,
+                background: isConflict ? "#FEF3C7" : slot.color,
+                borderLeft: `3px solid ${railColor}`,
+                borderRadius: 6,
+                padding: "6px 8px",
+                overflow: "hidden",
+              }}>
+                <p style={{ fontSize: 10.5, fontWeight: 600, color: railColor, lineHeight: 1.25 }}>
+                  {slot.course}
+                </p>
+                {slot.room && <p style={{ fontSize: 9, color: "#6E7891", marginTop: 2 }}>{slot.room}</p>}
+                {span >= 2 && (
+                  <p style={{ fontSize: 8.5, color: "#A0A8BB", marginTop: 3 }}>
+                    {slot.start_hour}:00–{slot.end_hour}:00
+                  </p>
+                )}
+                <button onClick={() => removeSlot(slot.id)}
+                  style={{
+                    position: "absolute", top: 2, right: 4,
+                    width: 14, height: 14, display: "flex",
+                    alignItems: "center", justifyContent: "center",
+                    borderRadius: "50%", border: "none", background: "transparent",
+                    color: "#A0A8BB", fontSize: 11, lineHeight: 1, cursor: "pointer",
+                  }}>×</button>
+              </div>
+            );
           })}
         </div>
       </div>

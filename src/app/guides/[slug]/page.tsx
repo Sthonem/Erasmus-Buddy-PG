@@ -175,8 +175,8 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         style={{ background: "var(--pg-light)" }}>
         <p className="text-4xl">🔍</p>
         <p className="text-sm font-medium" style={{ color: "#1a1a2e" }}>Guide not found</p>
-        <Link href="/guides">
-          <span className="text-sm" style={{ color: "var(--pg-blue)" }}>← Back to Guides</span>
+        <Link href="/places">
+          <span style={{ fontSize: 13, color: "var(--pg-blue)" }}>← Back to Explore</span>
         </Link>
       </main>
     );
@@ -188,68 +188,113 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
     <main className="min-h-screen" style={{ background: "var(--pg-light)", paddingBottom: 90 }}>
 
       {/* Header */}
-      <div style={{ background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)", padding: "52px 20px 24px", position: "relative", overflow: "hidden" }}>
+      <div style={{ background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)", padding: "52px 20px 28px", position: "relative", overflow: "hidden" }}>
         <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,93,170,0.4), transparent 70%)", pointerEvents: "none" }} />
-        <Link href="/guides">
-          <span className="text-blue-200 text-xs flex items-center gap-1 mb-3">
+        <Link href="/places">
+          <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, display: "flex", alignItems: "center", gap: 4, marginBottom: 12 }}>
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
               <path d="M10 4L6 8l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
-            Back to Guides
+            Back to Explore
           </span>
         </Link>
-        <h1 className="text-white text-xl font-bold leading-snug">{guide.title}</h1>
-        <div className="flex items-center gap-2 mt-2 flex-wrap">
-          <span className="text-xs px-2.5 py-0.5 rounded-full font-medium"
-            style={{ background: cat.bg, color: cat.text }}>
+        <h1 style={{ color: "white", fontSize: 22, fontWeight: 800, lineHeight: 1.25 }}>{guide.title}</h1>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
+          <span style={{
+            fontSize: 11, fontWeight: 600, padding: "4px 10px", borderRadius: 99,
+            background: cat.bg, color: cat.text,
+          }}>
             {guide.category}
           </span>
           {guide.urgent && (
-            <span className="text-xs px-2.5 py-0.5 rounded-full font-medium"
-              style={{ background: "#D97706", color: "white" }}>
+            <span style={{
+              fontSize: 11, fontWeight: 600, padding: "4px 10px", borderRadius: 99,
+              background: "#D97706", color: "white",
+            }}>
               Critical
             </span>
           )}
-          <span className="text-blue-200 text-xs">⏱ {guide.time}</span>
+          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style={{ display: "inline", verticalAlign: "-1px", marginRight: 3 }}>
+              <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.2"/>
+              <path d="M8 5v3.5l2.5 1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+            </svg>
+            {guide.time}
+          </span>
         </div>
       </div>
 
       {/* Intro */}
-      <div className="px-5 mt-5">
-        <p className="text-sm leading-relaxed" style={{ color: "#444" }}>{guide.intro}</p>
+      <div style={{ padding: "0 20px", marginTop: 20 }}>
+        <div style={{
+          background: "white", borderRadius: 14, padding: "16px",
+          border: "1px solid #E5E7EB",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+        }}>
+          <p style={{ fontSize: 13, lineHeight: 1.6, color: "#444" }}>{guide.intro}</p>
+        </div>
       </div>
 
       {/* Steps */}
-      <div className="px-5 mt-6">
-        <h2 className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: "#003580" }}>
-          Steps
-        </h2>
-        {guide.steps.map((step, i) => (
-          <div key={i} className="flex gap-3 mb-4">
-            <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-              style={{ background: "#E8EEF7", color: "#003580", fontSize: 11, fontWeight: 700 }}>
-              {i + 1}
+      <div style={{ padding: "0 20px", marginTop: 24 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 16 }}>
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#003580" }} />
+          <h2 style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase" as const, color: "#003580", margin: 0 }}>
+            Steps
+          </h2>
+        </div>
+        <div style={{ position: "relative" }}>
+          {guide.steps.map((step, i) => (
+            <div key={i} style={{ display: "flex", gap: 14, marginBottom: i < guide.steps.length - 1 ? 0 : 0, position: "relative" }}>
+              {/* Timeline rail */}
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0, width: 28 }}>
+                <div style={{
+                  width: 28, height: 28, borderRadius: "50%",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  background: "#003580", color: "white",
+                  fontSize: 11, fontWeight: 700, flexShrink: 0,
+                  boxShadow: "0 2px 6px rgba(0,53,128,0.2)",
+                }}>
+                  {i + 1}
+                </div>
+                {i < guide.steps.length - 1 && (
+                  <div style={{ width: 2, flex: 1, background: "#E5E7EB", minHeight: 20 }} />
+                )}
+              </div>
+              {/* Content */}
+              <div style={{ flex: 1, paddingBottom: i < guide.steps.length - 1 ? 20 : 0 }}>
+                <p style={{ fontSize: 13.5, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.3, marginTop: 3 }}>{step.title}</p>
+                <p style={{ fontSize: 12, color: "#666", marginTop: 4, lineHeight: 1.55 }}>{step.desc}</p>
+              </div>
             </div>
-            <div className="flex-1 pb-4 border-b" style={{ borderColor: "#e5e7eb" }}>
-              <p className="text-sm font-semibold" style={{ color: "#1a1a2e" }}>{step.title}</p>
-              <p className="text-xs mt-1 leading-relaxed" style={{ color: "#666" }}>{step.desc}</p>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Documents */}
       {guide.documents.length > 0 && (
-        <div className="px-5 mt-2">
-          <h2 className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#003580" }}>
-            Documents needed
-          </h2>
-          <div className="bg-white rounded-2xl p-4 border" style={{ borderColor: "#e5e7eb" }}>
+        <div style={{ padding: "0 20px", marginTop: 24 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#00A693" }} />
+            <h2 style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase" as const, color: "#00A693", margin: 0 }}>
+              Documents needed
+            </h2>
+          </div>
+          <div style={{
+            background: "white", borderRadius: 14, padding: "4px 0",
+            border: "1px solid #E5E7EB",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+          }}>
             {guide.documents.map((doc, i) => (
-              <div key={i} className="flex items-center gap-3 py-2 border-b last:border-b-0"
-                style={{ borderColor: "#f0f0f0" }}>
-                <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: "#00A693" }} />
-                <p className="text-sm" style={{ color: "#1a1a2e" }}>{doc}</p>
+              <div key={i} style={{
+                display: "flex", alignItems: "center", gap: 12, padding: "11px 16px",
+                borderBottom: i < guide.documents.length - 1 ? "1px solid #F3F4F6" : "none",
+              }}>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+                  <rect x="3" y="2" width="10" height="12" rx="1.5" stroke="#00A693" strokeWidth="1.2"/>
+                  <path d="M6 6h4M6 8.5h3" stroke="#00A693" strokeWidth="1" strokeLinecap="round"/>
+                </svg>
+                <p style={{ fontSize: 13, color: "#1a1a2e" }}>{doc}</p>
               </div>
             ))}
           </div>
@@ -258,18 +303,23 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
 
       {/* External Link */}
       {guide.link && (
-        <div className="px-5 mt-4">
-          <a href={guide.link.url} target="_blank" rel="noopener noreferrer">
-            <div className="p-4 rounded-2xl border flex items-center gap-3 active:scale-[0.98] transition-transform"
-              style={{ background: "#E8EEF7", borderColor: "#B3C6E0" }}>
-              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ background: "#003580" }}>
+        <div style={{ padding: "0 20px", marginTop: 20 }}>
+          <a href={guide.link.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+            <div className="card-interactive" style={{
+              padding: "14px 16px", display: "flex", alignItems: "center", gap: 12,
+              background: "#E8EEF7", border: "1.5px solid #B3C6E0",
+            }}>
+              <div style={{
+                width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                background: "#003580",
+              }}>
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M8 3h5v5M13 3L7 9M5 4H3v9h9v-2" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <p className="text-sm flex-1 font-medium" style={{ color: "#003580" }}>{guide.link.label}</p>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="flex-shrink-0">
+              <p style={{ fontSize: 13, flex: 1, fontWeight: 600, color: "#003580" }}>{guide.link.label}</p>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
                 <path d="M6 4l4 4-4 4" stroke="#005DAA" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
             </div>
@@ -279,16 +329,31 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
 
       {/* FAQ */}
       {guide.faq.length > 0 && (
-        <div className="px-5 mt-5 mb-4">
-          <h2 className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "#003580" }}>
-            Frequently asked questions
-          </h2>
-          {guide.faq.map((item, i) => (
-            <div key={i} className="bg-white rounded-2xl p-4 border mb-2" style={{ borderColor: "#e5e7eb" }}>
-              <p className="text-sm font-semibold mb-1.5" style={{ color: "#1a1a2e" }}>{item.q}</p>
-              <p className="text-xs leading-relaxed" style={{ color: "#666" }}>{item.a}</p>
-            </div>
-          ))}
+        <div style={{ padding: "0 20px", marginTop: 24, marginBottom: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#D97706" }} />
+            <h2 style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase" as const, color: "#D97706", margin: 0 }}>
+              FAQ
+            </h2>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {guide.faq.map((item, i) => (
+              <div key={i} style={{
+                background: "white", borderRadius: 14, padding: "14px 16px",
+                border: "1px solid #E5E7EB",
+                boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+              }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#D97706", flexShrink: 0, marginTop: 1 }}>Q</span>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.4 }}>{item.q}</p>
+                </div>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginTop: 8 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#003580", flexShrink: 0, marginTop: 1 }}>A</span>
+                  <p style={{ fontSize: 12.5, color: "#555", lineHeight: 1.55 }}>{item.a}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

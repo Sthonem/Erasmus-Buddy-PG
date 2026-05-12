@@ -188,7 +188,7 @@ export default function Explore() {
           <div style={{ marginTop: 20 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#D97706" }} />
-              <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase", color: "#D97706" }}>⚡ Start with these</p>
+              <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase", color: "#D97706" }}>Start with these</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {guides.filter(g => g.urgent).map(g => <GuideCard key={g.slug} guide={g} />)}
@@ -218,27 +218,22 @@ export default function Explore() {
           }}>
             {categories.map(cat => (
               <a key={cat.id} href={`#${cat.id}`} style={{
-                flexShrink: 0, padding: "6px 12px", borderRadius: 99,
+                flexShrink: 0, padding: "7px 14px", borderRadius: 99,
                 fontSize: 11, fontWeight: 600, textDecoration: "none",
                 background: cat.color, color: cat.accent,
                 border: `1.5px solid ${cat.border}`,
+                lineHeight: 1,
               }}>
-                {cat.icon} {cat.title.split("(")[0].split("—")[0].trim().split(" ")[0]}
+                {cat.title.split("(")[0].split("—")[0].trim().split(" ")[0]}
               </a>
             ))}
           </div>
 
           {categories.map(cat => (
-            <div key={cat.id} id={cat.id} style={{ marginTop: 20 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-                <div style={{
-                  width: 34, height: 34, borderRadius: 10,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 18, background: cat.color, border: `1.5px solid ${cat.border}`,
-                }}>
-                  {cat.icon}
-                </div>
-                <h2 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-primary)" }}>{cat.title}</h2>
+            <div key={cat.id} id={cat.id} style={{ marginTop: 24 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", background: cat.accent, flexShrink: 0 }} />
+                <h2 style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase" as const, color: cat.accent }}>{cat.title}</h2>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {cat.places.map((place, i) => (
@@ -255,7 +250,16 @@ export default function Explore() {
                 padding: "14px 16px", display: "flex", alignItems: "center", gap: 12,
                 background: "#C5D8F8", border: "1.5px solid #9BBDEF",
               }}>
-                <span style={{ fontSize: 22 }}>🗺️</span>
+                <div style={{
+                  width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  background: "#002A6B",
+                }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2 4l4-2 4 2 4-2v10l-4 2-4-2-4 2V4z" stroke="white" strokeWidth="1.3" strokeLinejoin="round"/>
+                    <path d="M6 2v10M10 4v10" stroke="white" strokeWidth="1.3"/>
+                  </svg>
+                </div>
                 <div style={{ flex: 1 }}>
                   <p style={{ fontSize: 13, fontWeight: 700, color: "#002A6B" }}>Interactive Campus Map</p>
                   <p style={{ fontSize: 11, color: "#555", marginTop: 2 }}>pg.edu.pl/en/campus</p>
@@ -301,15 +305,11 @@ function GuideCard({ guide }: { guide: typeof guides[0] }) {
 
 function PlaceCard({ place, cat }: { place: Place; cat: Category }) {
   const inner = (
-    <div className="card-interactive" style={{ padding: "13px 16px" }}>
-      <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-        <div style={{
-          width: 36, height: 36, borderRadius: 10, flexShrink: 0,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: 16, background: cat.color, border: `1px solid ${cat.border}`,
-        }}>
-          {place.icon}
-        </div>
+    <div className="card-interactive" style={{
+      padding: "12px 16px",
+      borderLeft: `3px solid ${cat.accent}`,
+    }}>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: 2 }}>
             <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.3 }}>{place.name}</p>
@@ -322,12 +322,23 @@ function PlaceCard({ place, cat }: { place: Place; cat: Category }) {
           <p style={{ fontSize: 11, color: cat.accent, fontWeight: 500 }}>{place.detail}</p>
           {place.note && <p style={{ fontSize: 11.5, color: "var(--text-secondary)", marginTop: 4, lineHeight: 1.5 }}>{place.note}</p>}
           {place.hours && (
-            <div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 4 }}>
-              <span style={{ fontSize: 10 }}>🕐</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 5 }}>
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="6.5" stroke={cat.accent} strokeWidth="1.2"/>
+                <path d="M8 5v3.5l2.5 1.5" stroke={cat.accent} strokeWidth="1.2" strokeLinecap="round"/>
+              </svg>
               <p style={{ fontSize: 10.5, color: cat.accent, fontWeight: 500 }}>{place.hours.join(" · ")}</p>
             </div>
           )}
-          {place.email && <p style={{ fontSize: 10.5, color: "var(--pg-blue)", marginTop: 3 }}>✉️ {place.email}</p>}
+          {place.email && (
+            <div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 3 }}>
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <rect x="2" y="4" width="12" height="9" rx="1.5" stroke="var(--pg-blue)" strokeWidth="1.2"/>
+                <path d="M2 5.5l6 4 6-4" stroke="var(--pg-blue)" strokeWidth="1.2" strokeLinecap="round"/>
+              </svg>
+              <p style={{ fontSize: 10.5, color: "var(--pg-blue)", fontWeight: 500 }}>{place.email}</p>
+            </div>
+          )}
         </div>
         {place.link && (
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 4 }}>

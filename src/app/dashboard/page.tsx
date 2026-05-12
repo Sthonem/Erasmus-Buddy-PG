@@ -163,16 +163,16 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* ── Journey Progress Card ── */}
+        {/* ── Journey Progress Card — Stepper ── */}
         <div style={{
           background: "rgba(255,255,255,0.09)",
           border: "1px solid rgba(255,255,255,0.12)",
           borderRadius: 20,
-          padding: "16px 18px",
+          padding: 18,
           backdropFilter: "blur(8px)",
         }}>
-          {/* Stage label + percentage */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+          {/* Title row */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
             <div>
               <p style={{ color: "white", fontSize: 13, fontWeight: 600 }}>
                 {stage.emoji} Your Gdańsk Journey
@@ -181,59 +181,82 @@ export default function Dashboard() {
                 {stage.msg}
               </p>
             </div>
-            <div style={{ textAlign: "right" }}>
-              <p style={{ color: "white", fontSize: 28, fontWeight: 800, letterSpacing: "-1px", lineHeight: 1 }}>
-                {progress}<span style={{ fontSize: 14, fontWeight: 600, opacity: 0.7 }}>%</span>
-              </p>
-            </div>
+            <p style={{
+              color: "white", fontSize: 28, fontWeight: 800,
+              letterSpacing: "-1px", lineHeight: 1,
+            }}>
+              {progress}<span style={{ fontSize: 14, fontWeight: 500, opacity: 0.5 }}>%</span>
+            </p>
           </div>
 
-          {/* Stage bars with labels */}
-          <div style={{ display: "flex", gap: 3, marginBottom: 6 }}>
+          {/* Stepper */}
+          <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
             {STAGES.map((s, i) => {
-              const isActive = i === stageIdx;
               const isPast = i < stageIdx;
-              const isFuture = i > stageIdx;
+              const isActive = i === stageIdx;
+              const isLast = i === STAGES.length - 1;
               return (
-                <div key={s.key} style={{ flex: 1 }}>
-                  <div style={{
-                    height: isActive ? 6 : 4,
-                    borderRadius: 99,
-                    background: isPast
-                      ? "rgba(0,228,210,0.5)"
-                      : isActive
-                        ? "linear-gradient(90deg, #00c4b4, #00e5d2)"
-                        : "rgba(255,255,255,0.10)",
-                    transition: "all 0.5s ease",
-                    boxShadow: isActive ? "0 0 10px rgba(0,228,210,0.4)" : "none",
-                    marginTop: isActive ? 0 : 1,
-                  }} />
+                <div key={s.key} style={{ display: "contents" }}>
+                  {isActive ? (
+                    <div style={{
+                      width: 22, height: 22, borderRadius: "50%",
+                      background: "white", border: "3px solid #00E5D2",
+                      boxShadow: "0 0 0 4px rgba(0,229,210,0.2)",
+                      flexShrink: 0,
+                    }} />
+                  ) : isPast ? (
+                    <div style={{
+                      width: 18, height: 18, borderRadius: "50%",
+                      background: "#00E5D2",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      flexShrink: 0,
+                    }}>
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                        <path d="M2 5l2.5 2.5L8 3" stroke="#001540" strokeWidth="1.8"
+                          strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                  ) : (
+                    <div style={{
+                      width: 18, height: 18, borderRadius: "50%",
+                      background: "rgba(255,255,255,0.15)",
+                      flexShrink: 0,
+                    }} />
+                  )}
+                  {!isLast && (
+                    <div style={{
+                      flex: 1, height: 3,
+                      background: i < stageIdx
+                        ? "#00E5D2"
+                        : i === stageIdx
+                          ? "linear-gradient(90deg,#00E5D2,rgba(255,255,255,0.15))"
+                          : "rgba(255,255,255,0.15)",
+                    }} />
+                  )}
                 </div>
               );
             })}
           </div>
 
-          {/* Active stage label */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            {STAGES.map((s, i) => {
-              const isActive = i === stageIdx;
-              return (
-                <p key={s.key} style={{
-                  flex: 1,
-                  fontSize: isActive ? 9 : 8,
-                  textAlign: "center",
-                  color: isActive ? "rgba(0,228,210,0.9)" : i < stageIdx ? "rgba(0,228,210,0.4)" : "rgba(255,255,255,0.2)",
-                  fontWeight: isActive ? 700 : 400,
-                  transition: "all 0.3s ease",
-                }}>
-                  {isActive ? `${s.emoji} ${s.label}` : s.emoji}
-                </p>
-              );
-            })}
+          {/* Emoji row */}
+          <div style={{
+            display: "flex", justifyContent: "space-between",
+            fontSize: 13, padding: "0 1px", marginBottom: 8,
+          }}>
+            {STAGES.map((s, i) => (
+              <span key={s.key} style={{
+                opacity: i === stageIdx ? 1 : i < stageIdx ? 0.5 : 0.3,
+                transition: "opacity 0.3s",
+              }}>{s.emoji}</span>
+            ))}
           </div>
 
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: 11, marginTop: 8 }}>
-            {progressMsg}
+          {/* Active stage label */}
+          <p style={{
+            fontSize: 13.5, fontWeight: 700, color: "white",
+            textAlign: "center", letterSpacing: "-0.2px",
+          }}>
+            {stage.label}
           </p>
         </div>
       </div>
