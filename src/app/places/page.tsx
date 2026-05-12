@@ -3,18 +3,18 @@
 import { useState } from "react";
 import BottomNav from "@/components/shared/BottomNav";
 import Link from "next/link";
-import { useI18n } from "@/lib/i18n";
+import { useI18n, type TranslationKey } from "@/lib/i18n";
 
 // ── GUIDES DATA ─────────────────────────────────────────────────────────────
 const guides = [
-  { slug: "pesel",      title: "PESEL Application",        desc: "Polish legal ID — required for bank, ZUS and most registrations", category: "Admin",    urgent: true,  time: "~2 hours", when: "Day 1–3"  },
-  { slug: "bank",       title: "Open Bank Account",         desc: "PKO BP or Santander — needed to receive your Erasmus grant",      category: "Admin",    urgent: true,  time: "~1 hour",  when: "Day 3–7"  },
-  { slug: "zus",        title: "ZUS Registration",          desc: "Health insurance registration — required for GP access",           category: "Admin",    urgent: true,  time: "~30 min",  when: "Day 1–7"  },
-  { slug: "ola",        title: "Online Learning Agreement", desc: "Digital OLA — must be submitted and approved before the deadline",  category: "Academic", urgent: true,  time: "~1 hour",  when: "Week 1"   },
-  { slug: "sis",        title: "SIS Course Registration",   desc: "Choose and confirm your courses on the PG student portal",         category: "Academic", urgent: false, time: "~1 hour",  when: "Week 1–2" },
-  { slug: "student-id", title: "Student ID Card",           desc: "Collect from the dean's office — needed for library & discounts",  category: "Academic", urgent: false, time: "~20 min",  when: "Week 2"   },
-  { slug: "offices",    title: "Key Offices & Buildings",   desc: "International Office, library, dorms — locations & hours",         category: "Campus",   urgent: false, time: "Reference",when: "Anytime"  },
-];
+  { slug: "pesel",      titleKey: "guide.pesel.title",      descKey: "guides.pesel.desc",      category: "Admin",    urgent: true,  timeKey: "guide.pesel.time",      whenKey: "guides.pesel.when"  },
+  { slug: "bank",       titleKey: "guide.bank.title",       descKey: "guides.bank.desc",       category: "Admin",    urgent: true,  timeKey: "guide.bank.time",       whenKey: "guides.bank.when"  },
+  { slug: "zus",        titleKey: "guide.zus.title",        descKey: "guides.zus.desc",        category: "Admin",    urgent: true,  timeKey: "guide.zus.time",        whenKey: "guides.zus.when"  },
+  { slug: "ola",        titleKey: "guide.ola.title",        descKey: "guides.ola.desc",        category: "Academic", urgent: true,  timeKey: "guide.ola.time",        whenKey: "guides.ola.when"   },
+  { slug: "sis",        titleKey: "guide.sis.title",        descKey: "guides.sis.desc",        category: "Academic", urgent: false, timeKey: "guide.sis.time",        whenKey: "guides.sis.when" },
+  { slug: "student-id", titleKey: "guide.student-id.title", descKey: "guides.student-id.desc", category: "Academic", urgent: false, timeKey: "guide.student-id.time", whenKey: "guides.student-id.when"   },
+  { slug: "offices",    titleKey: "guide.offices.title",    descKey: "guides.offices.desc",    category: "Campus",   urgent: false, timeKey: "guide.offices.time",    whenKey: "guides.offices.when"  },
+] as const;
 
 const CAT: Record<string, { bg: string; text: string }> = {
   Admin:    { bg: "#FDE68A", text: "#78350F" },
@@ -27,17 +27,17 @@ type Place = {
   name: string;
   detail: string;
   note?: string;
-  tag?: string;
+  tagKey?: TranslationKey;
   icon: string;
   link?: string;
   hours?: string[];
   email?: string;
-  coords?: [number, number]; // [lat, lng]
+  coords?: [number, number];
 };
 
 type Category = {
   id: string;
-  title: string;
+  titleKey: TranslationKey;
   color: string;
   accent: string;
   border: string;
@@ -47,10 +47,10 @@ type Category = {
 
 const categories: Category[] = [
   {
-    id: "campus", title: "Campus Offices",
+    id: "campus", titleKey: "places.cat.campus",
     color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF", icon: "🏫",
     places: [
-      { name: "International Students Office", detail: "Main Building, Room 124", note: "Your first stop — English-speaking staff. Handles enrollment, OLA, EHIC.", tag: "Start here", icon: "🌍", hours: ["Mon–Fri: 10:00–14:00"], email: "international@pg.edu.pl", coords: [54.3716, 18.6210] },
+      { name: "International Students Office", detail: "Main Building, Room 124", note: "Your first stop — English-speaking staff. Handles enrollment, OLA, EHIC.", tagKey: "places.startHere", icon: "🌍", hours: ["Mon–Fri: 10:00–14:00"], email: "international@pg.edu.pl", coords: [54.3716, 18.6210] },
       { name: "Dean's Office", detail: "Your faculty building", note: "Student ID cards, enrollment certificates, course issues.", icon: "🎓", hours: ["Mon–Fri: 10:00–14:00", "Wed: 15:00–17:00"], coords: [54.3716, 18.6210] },
       { name: "Library", detail: "ul. Narutowicza 11/12", note: "Access with student ID. Study rooms, printing, scanning.", icon: "📚", hours: ["Mon–Fri: 8:00–20:00", "Sat: 9:00–15:00"], link: "https://pg.edu.pl/biblioteka", coords: [54.3713, 18.6195] },
       { name: "Student Dormitories (DS1–DS6)", detail: "ul. Wyspiańskiego, on-campus", note: "Present booking + passport at reception.", icon: "🏠", hours: ["Reception: 24/7"], coords: [54.3740, 18.6175] },
@@ -59,56 +59,56 @@ const categories: Category[] = [
     ],
   },
   {
-    id: "groceries", title: "Grocery Stores",
+    id: "groceries", titleKey: "places.cat.groceries",
     color: "#B2F0E8", accent: "#006B5A", border: "#7DE0D2", icon: "🛒",
     places: [
-      { name: "Biedronka", detail: "ul. Partyzantów 71 & many locations", note: "Most affordable. Closest to PG. Open 6:00–23:00.", tag: "Closest to PG", icon: "🛒", coords: [54.3735, 18.6205] },
+      { name: "Biedronka", detail: "ul. Partyzantów 71 & many locations", note: "Most affordable. Closest to PG. Open 6:00–23:00.", tagKey: "places.closestToPG", icon: "🛒", coords: [54.3735, 18.6205] },
       { name: "Lidl", detail: "ul. Kartuska 245 & others", note: "Great fresh produce, bakery and weekly deals.", icon: "🛒", coords: [54.3585, 18.6040] },
       { name: "Kaufland", detail: "ul. Kartuska 245", note: "Large hypermarket — best for big weekly shop.", icon: "🏪", coords: [54.3585, 18.6035] },
       { name: "Żabka", detail: "Near dormitories & everywhere", note: "Convenience store — 6:00–23:00. Quick top-ups.", icon: "🏬", coords: [54.3738, 18.6180] },
     ],
   },
   {
-    id: "transport", title: "Public Transport",
+    id: "transport", titleKey: "places.cat.transport",
     color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF", icon: "🚌",
     places: [
-      { name: "ZTM — Trams & Buses", detail: "ztm.gda.pl · Jakdojade / moBiLET", note: "Buy tickets on board or in-app. Validate immediately!", tag: "Most used", icon: "🚌", link: "https://ztm.gda.pl" },
-      { name: "SKM — City Rail", detail: "Gdańsk ↔ Sopot ↔ Gdynia", note: "Sopot in 12 min, Gdynia in 25 min. Wrzeszcz station 10 min from PG.", tag: "Trójmiasto", icon: "🚆", coords: [54.3745, 18.6130] },
-      { name: "Student Discount — 50%", detail: "Show student ID", note: "ZTM and SKM both offer 50% off. Essential!", tag: "Save 50%", icon: "🎓" },
+      { name: "ZTM — Trams & Buses", detail: "ztm.gda.pl · Jakdojade / moBiLET", note: "Buy tickets on board or in-app. Validate immediately!", tagKey: "places.mostUsed", icon: "🚌", link: "https://ztm.gda.pl" },
+      { name: "SKM — City Rail", detail: "Gdańsk ↔ Sopot ↔ Gdynia", note: "Sopot in 12 min, Gdynia in 25 min. Wrzeszcz station 10 min from PG.", tagKey: "places.trojmiasto", icon: "🚆", coords: [54.3745, 18.6130] },
+      { name: "Student Discount — 50%", detail: "Show student ID", note: "ZTM and SKM both offer 50% off. Essential!", tagKey: "places.save50", icon: "🎓" },
       { name: "Bolt / Free Now", detail: "Taxi apps on iOS & Android", note: "Cheaper than traditional taxis. Avoid unmarked cabs.", icon: "🚗" },
     ],
   },
   {
-    id: "pharmacy", title: "Pharmacy (Apteka)",
+    id: "pharmacy", titleKey: "places.cat.pharmacy",
     color: "#FDE68A", accent: "#78350F", border: "#FBD34D", icon: "💊",
     places: [
-      { name: "Dr. Max Apteka", detail: "Galeria Bałtycka & city centre", note: "Largest chain. Most meds OTC. Some English staff.", tag: "Most common", icon: "💊", coords: [54.3800, 18.5920] },
-      { name: "24h Emergency Pharmacy", detail: "ul. Podwale Grodzkie 8", note: "Open around the clock for emergencies.", tag: "24/7", icon: "🚨", coords: [54.3490, 18.6530] },
+      { name: "Dr. Max Apteka", detail: "Galeria Bałtycka & city centre", note: "Largest chain. Most meds OTC. Some English staff.", tagKey: "places.mostCommon", icon: "💊", coords: [54.3800, 18.5920] },
+      { name: "24h Emergency Pharmacy", detail: "ul. Podwale Grodzkie 8", note: "Open around the clock for emergencies.", tagKey: "places.24_7", icon: "🚨", coords: [54.3490, 18.6530] },
     ],
   },
   {
-    id: "city", title: "City & Shopping",
+    id: "city", titleKey: "places.cat.city",
     color: "#DDD6FE", accent: "#4C1D95", border: "#C4B5FD", icon: "🏙️",
     places: [
-      { name: "Stare Miasto — Old Town", detail: "~20 min by tram", note: "Stunning architecture, restaurants, bars. Długi Targ is the heart.", tag: "Must see", icon: "🏰", coords: [54.3484, 18.6534] },
-      { name: "Galeria Bałtycka", detail: "ul. Grunwaldzka 141", note: "Largest mall near PG — H&M, Zara, food court. 5-min walk.", tag: "Closest mall", icon: "🛍️", coords: [54.3800, 18.5920] },
+      { name: "Stare Miasto — Old Town", detail: "~20 min by tram", note: "Stunning architecture, restaurants, bars. Długi Targ is the heart.", tagKey: "places.mustSee", icon: "🏰", coords: [54.3484, 18.6534] },
+      { name: "Galeria Bałtycka", detail: "ul. Grunwaldzka 141", note: "Largest mall near PG — H&M, Zara, food court. 5-min walk.", tagKey: "places.closestMall", icon: "🛍️", coords: [54.3800, 18.5920] },
       { name: "Forum Gdańsk", detail: "City centre", note: "Modern mall — cinema, IKEA Pick-Up, great food hall.", icon: "🛍️", coords: [54.3560, 18.6475] },
     ],
   },
   {
-    id: "food", title: "Food & Cafés",
+    id: "food", titleKey: "places.cat.food",
     color: "#FDE68A", accent: "#78350F", border: "#FBD34D", icon: "🍽️",
     places: [
-      { name: "PG Student Canteen", detail: "On campus — Gmach B", note: "Hot meals 12–20 PLN. Cheapest on campus.", tag: "Cheapest", icon: "🍽️", coords: [54.3718, 18.6200] },
+      { name: "PG Student Canteen", detail: "On campus — Gmach B", note: "Hot meals 12–20 PLN. Cheapest on campus.", tagKey: "places.cheapest", icon: "🍽️", coords: [54.3718, 18.6200] },
       { name: "Bar Mleczny (Milk Bar)", detail: "Various locations", note: "Traditional Polish canteen. Pierogi, barszcz 10–25 PLN.", icon: "🥟", coords: [54.3725, 18.6140] },
       { name: "Coffee Shops", detail: "Wrzeszcz neighbourhood", note: "Karma Coffee, Sowa, Coffeedesk — great cafés near campus.", icon: "☕", coords: [54.3780, 18.6010] },
     ],
   },
   {
-    id: "emergency", title: "Emergency & Health",
+    id: "emergency", titleKey: "places.cat.emergency",
     color: "#FECDD5", accent: "#9F1239", border: "#FDA4AF", icon: "🆘",
     places: [
-      { name: "Emergency — 112", detail: "European emergency number", note: "Works from any phone. English operators available.", tag: "Call anytime", icon: "🆘" },
+      { name: "Emergency — 112", detail: "European emergency number", note: "Works from any phone. English operators available.", tagKey: "places.callAnytime", icon: "🆘" },
       { name: "UCK Hospital", detail: "ul. Dębinki 7 (10 min from PG)", note: "Main hospital. Emergency (SOR) open 24/7.", icon: "🏥", coords: [54.3620, 18.6290] },
       { name: "NFZ GP Clinic", detail: "Register after ZUS", note: "Free GP visits with ZUS insurance + PESEL.", icon: "🩺" },
     ],
@@ -148,14 +148,8 @@ export default function Explore() {
           <button
             onClick={() => setTab("guides")}
             style={{
-              flex: 1,
-              padding: "10px 0",
-              borderRadius: 11,
-              border: "none",
-              cursor: "pointer",
-              fontSize: 13,
-              fontWeight: 600,
-              transition: "all 0.2s ease",
+              flex: 1, padding: "10px 0", borderRadius: 11, border: "none", cursor: "pointer",
+              fontSize: 13, fontWeight: 600, transition: "all 0.2s ease",
               background: tab === "guides" ? "rgba(255,255,255,0.95)" : "transparent",
               color: tab === "guides" ? "#003580" : "rgba(255,255,255,0.55)",
               boxShadow: tab === "guides" ? "0 2px 8px rgba(0,0,0,0.15)" : "none",
@@ -166,14 +160,8 @@ export default function Explore() {
           <button
             onClick={() => setTab("places")}
             style={{
-              flex: 1,
-              padding: "10px 0",
-              borderRadius: 11,
-              border: "none",
-              cursor: "pointer",
-              fontSize: 13,
-              fontWeight: 600,
-              transition: "all 0.2s ease",
+              flex: 1, padding: "10px 0", borderRadius: 11, border: "none", cursor: "pointer",
+              fontSize: 13, fontWeight: 600, transition: "all 0.2s ease",
               background: tab === "places" ? "rgba(255,255,255,0.95)" : "transparent",
               color: tab === "places" ? "#003580" : "rgba(255,255,255,0.55)",
               boxShadow: tab === "places" ? "0 2px 8px rgba(0,0,0,0.15)" : "none",
@@ -187,25 +175,22 @@ export default function Explore() {
       {/* ── GUIDES TAB ── */}
       {tab === "guides" && (
         <div style={{ padding: "0 16px" }}>
-          {/* Urgent */}
           <div style={{ marginTop: 20 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#D97706" }} />
               <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase", color: "#D97706" }}>{t("explore.startWith")}</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {guides.filter(g => g.urgent).map(g => <GuideCard key={g.slug} guide={g} />)}
+              {guides.filter(g => g.urgent).map(g => <GuideCard key={g.slug} guide={g} t={t} />)}
             </div>
           </div>
-
-          {/* Rest */}
           <div style={{ marginTop: 24, marginBottom: 12 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#D0D5DD" }} />
               <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase", color: "var(--text-tertiary)" }}>{t("explore.alsoImportant")}</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {guides.filter(g => !g.urgent).map(g => <GuideCard key={g.slug} guide={g} />)}
+              {guides.filter(g => !g.urgent).map(g => <GuideCard key={g.slug} guide={g} t={t} />)}
             </div>
           </div>
         </div>
@@ -214,7 +199,6 @@ export default function Explore() {
       {/* ── PLACES TAB ── */}
       {tab === "places" && (
         <div style={{ padding: "0 16px" }}>
-          {/* Quick jump pills */}
           <div style={{
             display: "flex", gap: 6, marginTop: 16, overflowX: "auto", paddingBottom: 8,
             scrollbarWidth: "none",
@@ -227,7 +211,7 @@ export default function Explore() {
                 border: `1.5px solid ${cat.border}`,
                 lineHeight: 1,
               }}>
-                {cat.title.split("(")[0].split("—")[0].trim().split(" ")[0]}
+                {t(cat.titleKey).split("(")[0].split("—")[0].trim().split(" ")[0]}
               </a>
             ))}
           </div>
@@ -236,11 +220,11 @@ export default function Explore() {
             <div key={cat.id} id={cat.id} style={{ marginTop: 24 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
                 <div style={{ width: 6, height: 6, borderRadius: "50%", background: cat.accent, flexShrink: 0 }} />
-                <h2 style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase" as const, color: cat.accent }}>{cat.title}</h2>
+                <h2 style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase" as const, color: cat.accent }}>{t(cat.titleKey)}</h2>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {cat.places.map((place, i) => (
-                  <PlaceCard key={i} place={place} cat={cat} />
+                  <PlaceCard key={i} place={place} cat={cat} t={t} />
                 ))}
               </div>
             </div>
@@ -282,20 +266,21 @@ export default function Explore() {
 }
 
 // ── SUB-COMPONENTS ──────────────────────────────────────────────────────────
-function GuideCard({ guide }: { guide: typeof guides[0] }) {
+function GuideCard({ guide, t }: { guide: typeof guides[number]; t: (key: TranslationKey) => string }) {
   const cat = CAT[guide.category];
+  const catLabel = t(`guide.cat.${guide.category}` as TranslationKey);
   return (
     <Link href={`/guides/${guide.slug}`}>
       <div className="card-interactive" style={{ padding: "14px 16px", display: "flex", alignItems: "center", gap: 12 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap", marginBottom: 4 }}>
-            <p style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-primary)" }}>{guide.title}</p>
-            <span className="badge" style={{ background: cat.bg, color: cat.text, border: `1px solid ${cat.text}22`, flexShrink: 0 }}>{guide.category}</span>
+            <p style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-primary)" }}>{t(guide.titleKey as TranslationKey)}</p>
+            <span className="badge" style={{ background: cat.bg, color: cat.text, border: `1px solid ${cat.text}22`, flexShrink: 0 }}>{catLabel}</span>
           </div>
-          <p style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5 }}>{guide.desc}</p>
+          <p style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5 }}>{t(guide.descKey as TranslationKey)}</p>
           <div style={{ display: "flex", gap: 12, marginTop: 6 }}>
-            <span style={{ fontSize: 11, color: "var(--pg-teal)", fontWeight: 500 }}>⏱ {guide.time}</span>
-            <span style={{ fontSize: 11, color: "var(--text-tertiary)" }}>📅 {guide.when}</span>
+            <span style={{ fontSize: 11, color: "var(--pg-teal)", fontWeight: 500 }}>⏱ {t(guide.timeKey as TranslationKey)}</span>
+            <span style={{ fontSize: 11, color: "var(--text-tertiary)" }}>📅 {t(guide.whenKey as TranslationKey)}</span>
           </div>
         </div>
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
@@ -306,12 +291,12 @@ function GuideCard({ guide }: { guide: typeof guides[0] }) {
   );
 }
 
-function PlaceCard({ place, cat }: { place: Place; cat: Category }) {
+function PlaceCard({ place, cat, t }: { place: Place; cat: Category; t: (key: TranslationKey) => string }) {
   const mapUrl = place.coords
     ? `https://www.google.com/maps/search/?api=1&query=${place.coords[0]},${place.coords[1]}`
     : null;
 
-  const inner = (
+  return (
     <div className="card-interactive" style={{
       padding: "12px 16px",
       borderLeft: `3px solid ${cat.accent}`,
@@ -320,9 +305,9 @@ function PlaceCard({ place, cat }: { place: Place; cat: Category }) {
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
             <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.3, flex: 1, minWidth: 0 }}>{place.name}</p>
-            {place.tag && (
+            {place.tagKey && (
               <span className="badge" style={{ background: cat.color, color: cat.accent, border: `1px solid ${cat.border}`, flexShrink: 0 }}>
-                {place.tag}
+                {t(place.tagKey)}
               </span>
             )}
             {mapUrl && (
@@ -343,7 +328,7 @@ function PlaceCard({ place, cat }: { place: Place; cat: Category }) {
                   <path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.5-2-4.5-4.5-4.5z" stroke={cat.accent} strokeWidth="1.3"/>
                   <circle cx="8" cy="6" r="1.5" stroke={cat.accent} strokeWidth="1.3"/>
                 </svg>
-                Map
+                {t("places.map")}
               </a>
             )}
             {place.link && (
@@ -363,7 +348,7 @@ function PlaceCard({ place, cat }: { place: Place; cat: Category }) {
                 <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
                   <path d="M8 3h5v5M13 3L7 9M5 4H3v9h9v-2" stroke="#003580" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                Link
+                {t("places.link")}
               </a>
             )}
           </div>
@@ -391,6 +376,4 @@ function PlaceCard({ place, cat }: { place: Place; cat: Category }) {
       </div>
     </div>
   );
-
-  return inner;
 }
