@@ -138,7 +138,7 @@ export default function Timetable() {
       <div className="flex flex-col items-center gap-3">
         <div className="w-8 h-8 rounded-full border-2 animate-spin"
           style={{ borderColor: "var(--pg-blue)", borderTopColor: "transparent" }} />
-        <p className="text-sm" style={{ color: "#888" }}>Loading timetable...</p>
+        <p className="text-sm" style={{ color: "var(--text-tertiary)" }}>Loading timetable...</p>
       </div>
     </main>
   );
@@ -148,7 +148,7 @@ export default function Timetable() {
   return (
     <main className="min-h-screen" style={{ background: "var(--pg-light)", paddingBottom: 90 }}>
 
-      <div style={{ background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)", padding: "52px 20px 16px", position: "relative", overflow: "hidden" }}>
+      <div style={{ background: "linear-gradient(165deg, var(--header-from) 0%, var(--header-mid) 40%, var(--header-to) 100%)", padding: "52px 20px 16px", position: "relative", overflow: "hidden" }}>
         <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,93,170,0.4), transparent 70%)", pointerEvents: "none" }} />
         <div className="flex items-center justify-between">
           <div>
@@ -181,7 +181,7 @@ export default function Timetable() {
           {DAYS.map(d => (
             <div key={d} style={{
               textAlign: "center", fontSize: 10, fontWeight: 700,
-              letterSpacing: ".6px", color: "#A0A8BB", textTransform: "uppercase" as const,
+              letterSpacing: ".6px", color: "var(--text-tertiary)", textTransform: "uppercase" as const,
               padding: "8px 0",
             }}>{d}</div>
           ))}
@@ -190,8 +190,8 @@ export default function Timetable() {
         {/* Continuous canvas */}
         <div style={{
           position: "relative",
-          background: "white",
-          border: "1px solid #E5E7EB",
+          background: "var(--surface)",
+          border: "1px solid var(--border)",
           borderRadius: 14,
           overflow: "hidden",
         }}>
@@ -206,15 +206,15 @@ export default function Timetable() {
                 <div style={{
                   display: "flex", justifyContent: "flex-end",
                   padding: "4px 6px 0 0",
-                  fontSize: 9.5, color: "#A0A8BB", fontWeight: 500,
-                  borderBottom: i < HOURS.length - 1 ? "1px solid #F0F1F4" : "none",
+                  fontSize: 9.5, color: "var(--text-tertiary)", fontWeight: 500,
+                  borderBottom: i < HOURS.length - 1 ? "1px solid var(--border-light)" : "none",
                 }}>
                   {hour}:00
                 </div>
                 {DAYS.map((_, dayIdx) => (
                   <div key={`cell-${hour}-${dayIdx}`} style={{
-                    borderLeft: "1px solid #F0F1F4",
-                    borderBottom: i < HOURS.length - 1 ? "1px solid #F0F1F4" : "none",
+                    borderLeft: "1px solid var(--border-light)",
+                    borderBottom: i < HOURS.length - 1 ? "1px solid var(--border-light)" : "none",
                   }} />
                 ))}
               </div>
@@ -246,9 +246,9 @@ export default function Timetable() {
                 <p style={{ fontSize: 10.5, fontWeight: 600, color: railColor, lineHeight: 1.25 }}>
                   {slot.course}
                 </p>
-                {slot.room && <p style={{ fontSize: 9, color: "#6E7891", marginTop: 2 }}>{slot.room}</p>}
+                {slot.room && <p style={{ fontSize: 9, color: "var(--text-secondary)", marginTop: 2 }}>{slot.room}</p>}
                 {span >= 2 && (
-                  <p style={{ fontSize: 8.5, color: "#A0A8BB", marginTop: 3 }}>
+                  <p style={{ fontSize: 8.5, color: "var(--text-tertiary)", marginTop: 3 }}>
                     {slot.start_hour}:00–{slot.end_hour}:00
                   </p>
                 )}
@@ -258,7 +258,7 @@ export default function Timetable() {
                     width: 14, height: 14, display: "flex",
                     alignItems: "center", justifyContent: "center",
                     borderRadius: "50%", border: "none", background: "transparent",
-                    color: "#A0A8BB", fontSize: 11, lineHeight: 1, cursor: "pointer",
+                    color: "var(--text-tertiary)", fontSize: 11, lineHeight: 1, cursor: "pointer",
                   }}>×</button>
               </div>
             );
@@ -280,62 +280,62 @@ export default function Timetable() {
         <div className="fixed inset-0 flex items-end justify-center z-50"
           style={{ background: "rgba(0,0,0,0.5)" }}
           onClick={(e) => { if (e.target === e.currentTarget) setShowModal(false); }}>
-          <div className="w-full rounded-t-3xl p-6 pb-8" style={{ background: "white", maxWidth: 430 }}>
+          <div className="w-full rounded-t-3xl p-6 pb-8" style={{ background: "var(--surface)", maxWidth: 430 }}>
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-bold" style={{ color: "#1a1a2e" }}>Add Course</h2>
+              <h2 className="text-lg font-bold" style={{ color: "var(--text-primary)" }}>Add Course</h2>
               <button onClick={() => setShowModal(false)}
                 className="w-8 h-8 rounded-full flex items-center justify-center"
-                style={{ background: "#F5F6F8", color: "#888", fontSize: 18 }}>×</button>
+                style={{ background: "var(--surface-raised)", color: "var(--text-tertiary)", fontSize: 18 }}>×</button>
             </div>
 
             <input placeholder="Course name *" value={form.course}
               onChange={e => setForm({ ...form, course: e.target.value })}
               className="w-full px-4 py-3 rounded-xl border mb-3 text-sm outline-none focus:border-blue-400"
-              style={{ borderColor: "#e5e7eb" }} />
+              style={{ borderColor: "var(--border)" }} />
 
             <div className="grid grid-cols-2 gap-3 mb-3">
               <input placeholder="Code (e.g. CS101)" value={form.code}
                 onChange={e => setForm({ ...form, code: e.target.value })}
                 className="px-4 py-3 rounded-xl border text-sm outline-none focus:border-blue-400"
-                style={{ borderColor: "#e5e7eb" }} />
+                style={{ borderColor: "var(--border)" }} />
               <input placeholder="Room" value={form.room}
                 onChange={e => setForm({ ...form, room: e.target.value })}
                 className="px-4 py-3 rounded-xl border text-sm outline-none focus:border-blue-400"
-                style={{ borderColor: "#e5e7eb" }} />
+                style={{ borderColor: "var(--border)" }} />
             </div>
 
             <div className="grid grid-cols-3 gap-3 mb-4">
               <div>
-                <p className="text-xs mb-1.5 font-medium" style={{ color: "#888" }}>Day</p>
+                <p className="text-xs mb-1.5 font-medium" style={{ color: "var(--text-tertiary)" }}>Day</p>
                 <select value={form.day} onChange={e => setForm({ ...form, day: Number(e.target.value) })}
                   className="w-full px-3 py-2.5 rounded-xl border text-sm outline-none"
-                  style={{ borderColor: "#e5e7eb" }}>
+                  style={{ borderColor: "var(--border)" }}>
                   {DAYS.map((d, i) => <option key={d} value={i}>{d}</option>)}
                 </select>
               </div>
               <div>
-                <p className="text-xs mb-1.5 font-medium" style={{ color: "#888" }}>Start</p>
+                <p className="text-xs mb-1.5 font-medium" style={{ color: "var(--text-tertiary)" }}>Start</p>
                 <select value={form.start}
                   onChange={e => {
                     const s = Number(e.target.value);
                     setForm({ ...form, start: s, end: s + 1 > 16 ? 16 : s + 2 });
                   }}
                   className="w-full px-3 py-2.5 rounded-xl border text-sm outline-none"
-                  style={{ borderColor: "#e5e7eb" }}>
+                  style={{ borderColor: "var(--border)" }}>
                   {HOURS.filter(h => h < 16).map(h => <option key={h} value={h}>{h}:00</option>)}
                 </select>
               </div>
               <div>
-                <p className="text-xs mb-1.5 font-medium" style={{ color: "#888" }}>End</p>
+                <p className="text-xs mb-1.5 font-medium" style={{ color: "var(--text-tertiary)" }}>End</p>
                 <select value={form.end} onChange={e => setForm({ ...form, end: Number(e.target.value) })}
                   className="w-full px-3 py-2.5 rounded-xl border text-sm outline-none"
-                  style={{ borderColor: "#e5e7eb" }}>
+                  style={{ borderColor: "var(--border)" }}>
                   {endOptions.map(h => <option key={h} value={h}>{h}:00</option>)}
                 </select>
               </div>
             </div>
 
-            <p className="text-xs mb-2 font-medium" style={{ color: "#888" }}>Color</p>
+            <p className="text-xs mb-2 font-medium" style={{ color: "var(--text-tertiary)" }}>Color</p>
             <div className="flex gap-2 mb-6">
               {COLORS.map((c, i) => (
                 <button key={c} onClick={() => setForm({ ...form, colorIndex: i })}
@@ -347,7 +347,7 @@ export default function Timetable() {
             <div className="flex gap-3">
               <button onClick={() => setShowModal(false)}
                 className="flex-1 py-3.5 rounded-2xl text-sm font-medium"
-                style={{ background: "#F5F6F8", color: "#888" }}>
+                style={{ background: "var(--surface-raised)", color: "var(--text-tertiary)" }}>
                 Cancel
               </button>
               <button onClick={addSlot}

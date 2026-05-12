@@ -35,6 +35,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="apple-touch-icon" href="/icon-192.png" />
         <meta name="mobile-web-app-capable" content="yes" />
+        <script dangerouslySetInnerHTML={{ __html: `
+          try {
+            if (localStorage.getItem('erasmus-dark-mode') === 'true') {
+              document.documentElement.classList.add('dark');
+            }
+          } catch(e) {}
+        ` }} />
       </head>
       <body>{children}</body>
     </html>

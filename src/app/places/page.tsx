@@ -123,7 +123,7 @@ export default function Explore() {
 
       {/* Header */}
       <div style={{
-        background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)",
+        background: "linear-gradient(165deg, var(--header-from) 0%, var(--header-mid) 40%, var(--header-to) 100%)",
         padding: "52px 20px 20px",
         position: "relative", overflow: "hidden",
       }}>
@@ -263,7 +263,7 @@ export default function Explore() {
                 </div>
                 <div style={{ flex: 1 }}>
                   <p style={{ fontSize: 13, fontWeight: 700, color: "#002A6B" }}>Interactive Campus Map</p>
-                  <p style={{ fontSize: 11, color: "#555", marginTop: 2 }}>pg.edu.pl/en/campus</p>
+                  <p style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 2 }}>pg.edu.pl/en/campus</p>
                 </div>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M6 4l4 4-4 4" stroke="#002A6B" strokeWidth="1.5" strokeLinecap="round"/>

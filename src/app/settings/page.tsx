@@ -54,7 +54,7 @@ export default function Settings() {
 
       {/* Header */}
       <div style={{
-        background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)",
+        background: "linear-gradient(165deg, var(--header-from) 0%, var(--header-mid) 40%, var(--header-to) 100%)",
         padding: "52px 20px 24px", position: "relative", overflow: "hidden",
       }}>
         <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,93,170,0.4), transparent 70%)", pointerEvents: "none" }} />
@@ -79,10 +79,10 @@ export default function Settings() {
             <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase", color: "#003580" }}>Profile</p>
           </div>
           <div style={{
-            background: "white", borderRadius: 14, border: "1px solid #E5E7EB",
+            background: "var(--surface)", borderRadius: 14, border: "1px solid var(--border)",
             boxShadow: "0 1px 3px rgba(0,0,0,0.04)", overflow: "hidden",
           }}>
-            <div style={{ padding: "14px 16px", display: "flex", alignItems: "center", gap: 12, borderBottom: "1px solid #F3F4F6" }}>
+            <div style={{ padding: "14px 16px", display: "flex", alignItems: "center", gap: 12, borderBottom: "1px solid var(--border)" }}>
               <div style={{
                 width: 40, height: 40, borderRadius: "50%",
                 background: "linear-gradient(135deg, #003580, #005DAA)",
@@ -110,7 +110,7 @@ export default function Settings() {
             <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase", color: "#D97706" }}>Appearance</p>
           </div>
           <div style={{
-            background: "white", borderRadius: 14, border: "1px solid #E5E7EB",
+            background: "var(--surface)", borderRadius: 14, border: "1px solid var(--border)",
             boxShadow: "0 1px 3px rgba(0,0,0,0.04)", overflow: "hidden",
           }}>
             <div style={{ padding: "14px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -147,20 +147,16 @@ export default function Settings() {
             <p style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.7px", textTransform: "uppercase", color: "#00A693" }}>About</p>
           </div>
           <div style={{
-            background: "white", borderRadius: 14, border: "1px solid #E5E7EB",
+            background: "var(--surface)", borderRadius: 14, border: "1px solid var(--border)",
             boxShadow: "0 1px 3px rgba(0,0,0,0.04)", overflow: "hidden",
           }}>
-            <div style={{ padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #F3F4F6" }}>
+            <div style={{ padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--border)" }}>
               <p style={{ fontSize: 13, color: "var(--text-primary)" }}>Version</p>
               <p style={{ fontSize: 12, color: "var(--text-secondary)" }}>1.0.0</p>
             </div>
-            <div style={{ padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #F3F4F6" }}>
+            <div style={{ padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <p style={{ fontSize: 13, color: "var(--text-primary)" }}>Made by</p>
               <p style={{ fontSize: 12, color: "var(--text-secondary)" }}>David, Joel & Erdem</p>
-            </div>
-            <div style={{ padding: "12px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <p style={{ fontSize: 13, color: "var(--text-primary)" }}>Course</p>
-              <p style={{ fontSize: 12, color: "var(--text-secondary)" }}>HCI — Erasmus 2025</p>
             </div>
           </div>
         </div>

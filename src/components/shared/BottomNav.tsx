@@ -89,12 +89,12 @@ export default function BottomNav() {
     <nav
       className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-40"
       style={{
-        background: "rgba(255,255,255,0.96)",
+        background: "var(--surface)",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
         boxShadow: "var(--shadow-nav)",
         paddingBottom: "env(safe-area-inset-bottom, 8px)",
-        borderTop: "1px solid rgba(0,0,0,0.06)",
+        borderTop: "1px solid var(--border)",
       }}
     >
       <div className="flex">
@@ -118,7 +118,7 @@ export default function BottomNav() {
                 style={{
                   fontSize: 10,
                   fontWeight: active ? 600 : 400,
-                  color: active ? "var(--pg-blue)" : "#B0B8CC",
+                  color: active ? "var(--pg-blue)" : "var(--text-tertiary)",
                   letterSpacing: "0.1px",
                 }}
               >

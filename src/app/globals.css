@@ -39,6 +39,62 @@
 
   /* Transitions */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Header gradient */
+  --header-from: #001a4d;
+  --header-mid:  #002e75;
+  --header-to:   #003580;
+}
+
+/* ═══════════════════════════════════════════
+   DARK MODE
+═══════════════════════════════════════════ */
+html.dark {
+  --pg-light:   #0D1117;
+  --pg-white:   #161B22;
+
+  --text-primary:   #E6EDF3;
+  --text-secondary: #8B949E;
+  --text-tertiary:  #6E7681;
+
+  --surface:        #161B22;
+  --surface-raised: #1C2128;
+  --border:         rgba(255, 255, 255, 0.08);
+  --border-light:   rgba(255, 255, 255, 0.05);
+
+  --shadow-xs:  0 1px 2px rgba(0,0,0,0.3);
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2);
+  --shadow-md:  0 4px 12px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-lg:  0 8px 32px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-nav: 0 -1px 0 rgba(255,255,255,0.06), 0 -4px 16px rgba(0,0,0,0.3);
+
+  --header-from: #0D1117;
+  --header-mid:  #161B22;
+  --header-to:   #1C2128;
+}
+
+html.dark body {
+  background-color: var(--pg-light);
+}
+
+/* Dark mode overrides for inline white backgrounds */
+html.dark .card,
+html.dark .card-interactive {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+html.dark input,
+html.dark select {
+  background: var(--surface);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+html.dark input:focus,
+html.dark select:focus {
+  background: var(--surface-raised);
+  border-color: var(--pg-blue);
 }
 
 /* ═══════════════════════════════════════════
@@ -213,7 +269,7 @@ input, select {
 input::placeholder { color: var(--text-tertiary); }
 input:focus, select:focus {
   border-color: var(--pg-blue);
-  background: white;
+  background: var(--surface-raised);
 }
 
 /* ═══════════════════════════════════════════

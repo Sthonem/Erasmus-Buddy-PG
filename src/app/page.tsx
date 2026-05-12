@@ -151,7 +151,7 @@ export default function Home() {
       {/* CTA Sheet */}
       <div
         style={{
-          background: "white",
+          background: "var(--surface)",
           borderRadius: "28px 28px 0 0",
           padding: "28px 28px 48px",
         }}
@@ -200,9 +200,9 @@ export default function Home() {
 
         {/* Divider */}
         <div className="flex items-center gap-3 mb-4">
-          <div style={{ flex: 1, height: 1, background: "#E5E7EB" }} />
+          <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
           <span style={{ fontSize: 12, color: "#B0B8CC", fontWeight: 500 }}>or</span>
-          <div style={{ flex: 1, height: 1, background: "#E5E7EB" }} />
+          <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
         </div>
 
         {/* Email form toggle buttons */}
@@ -214,8 +214,8 @@ export default function Home() {
                 flex: 1,
                 padding: "13px",
                 borderRadius: 14,
-                border: "1.5px solid #E5E7EB",
-                background: "white",
+                border: "1.5px solid var(--border)",
+                background: "var(--surface)",
                 fontSize: 14,
                 fontWeight: 600,
                 color: "#003580",
@@ -249,7 +249,7 @@ export default function Home() {
         {mode === "signin" && (
           <div>
             <div className="flex items-center justify-between mb-4">
-              <span style={{ fontSize: 15, fontWeight: 700, color: "#1a1a2e" }}>Sign In</span>
+              <span style={{ fontSize: 15, fontWeight: 700, color: "var(--text-primary)" }}>Sign In</span>
               <button
                 onClick={() => { resetForm(); setMode("idle"); }}
                 style={{ fontSize: 20, color: "#B0B8CC", background: "none", border: "none", cursor: "pointer", lineHeight: 1 }}
@@ -311,7 +311,7 @@ export default function Home() {
         {mode === "forgot" && (
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span style={{ fontSize: 15, fontWeight: 700, color: "#1a1a2e" }}>Reset Password</span>
+              <span style={{ fontSize: 15, fontWeight: 700, color: "var(--text-primary)" }}>Reset Password</span>
               <button
                 onClick={() => { resetForm(); setMode("signin"); }}
                 style={{ fontSize: 20, color: "#B0B8CC", background: "none", border: "none", cursor: "pointer", lineHeight: 1 }}
@@ -360,7 +360,7 @@ export default function Home() {
         {mode === "signup" && (
           <div>
             <div className="flex items-center justify-between mb-4">
-              <span style={{ fontSize: 15, fontWeight: 700, color: "#1a1a2e" }}>Create Account</span>
+              <span style={{ fontSize: 15, fontWeight: 700, color: "var(--text-primary)" }}>Create Account</span>
               <button
                 onClick={() => { resetForm(); setMode("idle"); }}
                 style={{ fontSize: 20, color: "#B0B8CC", background: "none", border: "none", cursor: "pointer", lineHeight: 1 }}
@@ -444,9 +444,10 @@ const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "13px 16px",
   borderRadius: 12,
-  border: "1.5px solid #E5E7EB",
+  border: "1.5px solid var(--border)",
   fontSize: 14,
-  color: "#1a1a2e",
+  color: "var(--text-primary)",
+  background: "var(--surface)",
   outline: "none",
   marginBottom: 10,
   fontFamily: "inherit",

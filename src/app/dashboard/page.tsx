@@ -125,7 +125,7 @@ export default function Dashboard() {
 
       {/* ── HEADER ── */}
       <div style={{
-        background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)",
+        background: "linear-gradient(165deg, var(--header-from) 0%, var(--header-mid) 40%, var(--header-to) 100%)",
         padding: "52px 20px 24px",
         position: "relative",
         overflow: "hidden",
@@ -322,10 +322,10 @@ export default function Dashboard() {
       {/* ── ALL DONE CELEBRATION ── */}
       {priorityTasks.length === 0 && (
         <div style={{ padding: "20px 20px 0" }}>
-          <div style={{ background: "#E5F7F5", border: "1px solid #b2ebe5", borderRadius: 16, padding: "18px 20px", textAlign: "center" }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "18px 20px", textAlign: "center" }}>
             <p style={{ fontSize: 32, marginBottom: 6 }}>🎉</p>
             <p style={{ fontSize: 15, fontWeight: 700, color: "#00856f" }}>You&apos;re all sorted!</p>
-            <p style={{ fontSize: 12, color: "#555", marginTop: 3 }}>Time to explore Gdańsk and enjoy your Erasmus 🌍</p>
+            <p style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 3 }}>Time to explore Gdańsk and enjoy your Erasmus 🌍</p>
           </div>
         </div>
       )}
@@ -447,7 +447,7 @@ export default function Dashboard() {
 
       {/* ── FUN TIP ── */}
       <div style={{ padding: "16px 20px 8px" }}>
-        <div style={{ background: "white", border: "1px solid var(--border)", borderRadius: 16, padding: "13px 16px", display: "flex", gap: 12, boxShadow: "var(--shadow-xs)" }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "13px 16px", display: "flex", gap: 12, boxShadow: "var(--shadow-xs)" }}>
           <span style={{ fontSize: 18, flexShrink: 0 }}>{tip.emoji}</span>
           <p style={{ fontSize: 12.5, color: "var(--text-secondary)", lineHeight: 1.5 }}>
             <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>Did you know?</span>{" "}

@@ -174,7 +174,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       <main className="min-h-screen flex flex-col items-center justify-center gap-3 px-5"
         style={{ background: "var(--pg-light)" }}>
         <p className="text-4xl">🔍</p>
-        <p className="text-sm font-medium" style={{ color: "#1a1a2e" }}>Guide not found</p>
+        <p className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>Guide not found</p>
         <Link href="/places">
           <span style={{ fontSize: 13, color: "var(--pg-blue)" }}>← Back to Explore</span>
         </Link>
@@ -188,7 +188,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
     <main className="min-h-screen" style={{ background: "var(--pg-light)", paddingBottom: 90 }}>
 
       {/* Header */}
-      <div style={{ background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)", padding: "52px 20px 28px", position: "relative", overflow: "hidden" }}>
+      <div style={{ background: "linear-gradient(165deg, var(--header-from) 0%, var(--header-mid) 40%, var(--header-to) 100%)", padding: "52px 20px 28px", position: "relative", overflow: "hidden" }}>
         <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,93,170,0.4), transparent 70%)", pointerEvents: "none" }} />
         <Link href="/places">
           <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, display: "flex", alignItems: "center", gap: 4, marginBottom: 12 }}>
@@ -227,11 +227,11 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       {/* Intro */}
       <div style={{ padding: "0 20px", marginTop: 20 }}>
         <div style={{
-          background: "white", borderRadius: 14, padding: "16px",
-          border: "1px solid #E5E7EB",
+          background: "var(--surface)", borderRadius: 14, padding: "16px",
+          border: "1px solid var(--border)",
           boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
         }}>
-          <p style={{ fontSize: 13, lineHeight: 1.6, color: "#444" }}>{guide.intro}</p>
+          <p style={{ fontSize: 13, lineHeight: 1.6, color: "var(--text-secondary)" }}>{guide.intro}</p>
         </div>
       </div>
 
@@ -258,13 +258,13 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
                   {i + 1}
                 </div>
                 {i < guide.steps.length - 1 && (
-                  <div style={{ width: 2, flex: 1, background: "#E5E7EB", minHeight: 20 }} />
+                  <div style={{ width: 2, flex: 1, background: "var(--border)", minHeight: 20 }} />
                 )}
               </div>
               {/* Content */}
               <div style={{ flex: 1, paddingBottom: i < guide.steps.length - 1 ? 20 : 0 }}>
-                <p style={{ fontSize: 13.5, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.3, marginTop: 3 }}>{step.title}</p>
-                <p style={{ fontSize: 12, color: "#666", marginTop: 4, lineHeight: 1.55 }}>{step.desc}</p>
+                <p style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.3, marginTop: 3 }}>{step.title}</p>
+                <p style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 4, lineHeight: 1.55 }}>{step.desc}</p>
               </div>
             </div>
           ))}
@@ -281,20 +281,20 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
             </h2>
           </div>
           <div style={{
-            background: "white", borderRadius: 14, padding: "4px 0",
-            border: "1px solid #E5E7EB",
+            background: "var(--surface)", borderRadius: 14, padding: "4px 0",
+            border: "1px solid var(--border)",
             boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
           }}>
             {guide.documents.map((doc, i) => (
               <div key={i} style={{
                 display: "flex", alignItems: "center", gap: 12, padding: "11px 16px",
-                borderBottom: i < guide.documents.length - 1 ? "1px solid #F3F4F6" : "none",
+                borderBottom: i < guide.documents.length - 1 ? "1px solid var(--border)" : "none",
               }}>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
                   <rect x="3" y="2" width="10" height="12" rx="1.5" stroke="#00A693" strokeWidth="1.2"/>
                   <path d="M6 6h4M6 8.5h3" stroke="#00A693" strokeWidth="1" strokeLinecap="round"/>
                 </svg>
-                <p style={{ fontSize: 13, color: "#1a1a2e" }}>{doc}</p>
+                <p style={{ fontSize: 13, color: "var(--text-primary)" }}>{doc}</p>
               </div>
             ))}
           </div>
@@ -339,17 +339,17 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {guide.faq.map((item, i) => (
               <div key={i} style={{
-                background: "white", borderRadius: 14, padding: "14px 16px",
-                border: "1px solid #E5E7EB",
+                background: "var(--surface)", borderRadius: 14, padding: "14px 16px",
+                border: "1px solid var(--border)",
                 boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
               }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
                   <span style={{ fontSize: 11, fontWeight: 700, color: "#D97706", flexShrink: 0, marginTop: 1 }}>Q</span>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", lineHeight: 1.4 }}>{item.q}</p>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.4 }}>{item.q}</p>
                 </div>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginTop: 8 }}>
                   <span style={{ fontSize: 11, fontWeight: 700, color: "#003580", flexShrink: 0, marginTop: 1 }}>A</span>
-                  <p style={{ fontSize: 12.5, color: "#555", lineHeight: 1.55 }}>{item.a}</p>
+                  <p style={{ fontSize: 12.5, color: "var(--text-secondary)", lineHeight: 1.55 }}>{item.a}</p>
                 </div>
               </div>
             ))}

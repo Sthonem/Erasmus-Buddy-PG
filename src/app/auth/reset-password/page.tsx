@@ -78,12 +78,12 @@ function ResetPasswordForm() {
         </p>
       </div>
 
-      <div style={{ background: "white", borderRadius: "28px 28px 0 0", padding: "28px 28px 48px" }}>
+      <div style={{ background: "var(--surface)", borderRadius: "28px 28px 0 0", padding: "28px 28px 48px" }}>
         {!ready ? (
           <div className="flex flex-col items-center gap-3 py-6">
             <div className="w-8 h-8 rounded-full border-2 animate-spin"
               style={{ borderColor: "#003580", borderTopColor: "transparent" }} />
-            <p style={{ fontSize: 13, color: "#A0A8BB" }}>Verifying reset link…</p>
+            <p style={{ fontSize: 13, color: "var(--text-tertiary)" }}>Verifying reset link…</p>
           </div>
         ) : (
           <>
@@ -149,9 +149,10 @@ const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "13px 16px",
   borderRadius: 12,
-  border: "1.5px solid #E5E7EB",
+  border: "1.5px solid var(--border)",
   fontSize: 14,
-  color: "#1a1a2e",
+  color: "var(--text-primary)",
+  background: "var(--surface)",
   outline: "none",
   marginBottom: 10,
   fontFamily: "inherit",

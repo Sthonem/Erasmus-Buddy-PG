@@ -78,7 +78,7 @@ export default function Tasks() {
 
       {/* Header */}
       <div style={{
-        background: "linear-gradient(165deg, #001a4d 0%, #002e75 40%, #003580 100%)",
+        background: "linear-gradient(165deg, var(--header-from) 0%, var(--header-mid) 40%, var(--header-to) 100%)",
         padding: "52px 20px 24px", position: "relative", overflow: "hidden",
       }}>
         <div aria-hidden style={{ position: "absolute", top: -50, right: -50, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,93,170,0.4), transparent 70%)", pointerEvents: "none" }} />
@@ -152,10 +152,10 @@ export default function Tasks() {
           </Section>
         )}
         {critical.length === 0 && upcoming.length === 0 && (
-          <div style={{ marginTop: 24, background: "#E5F7F5", border: "1px solid #b2ebe5", borderRadius: 18, padding: "24px 20px", textAlign: "center" }}>
+          <div style={{ marginTop: 24, background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 18, padding: "24px 20px", textAlign: "center" }}>
             <p style={{ fontSize: 36, marginBottom: 8 }}>🎉</p>
             <p style={{ fontSize: 15, fontWeight: 700, color: "#00856f" }}>You&apos;re all sorted!</p>
-            <p style={{ fontSize: 12.5, color: "#555", marginTop: 4 }}>Time to explore Gdańsk and enjoy your Erasmus 🌍</p>
+            <p style={{ fontSize: 12.5, color: "var(--text-secondary)", marginTop: 4 }}>Time to explore Gdańsk and enjoy your Erasmus 🌍</p>
           </div>
         )}
       </div>
