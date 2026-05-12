@@ -31,6 +31,7 @@ type Place = {
   link?: string;
   hours?: string[];
   email?: string;
+  coords?: [number, number]; // [lat, lng]
 };
 
 type Category = {
@@ -48,22 +49,22 @@ const categories: Category[] = [
     id: "campus", title: "Campus Offices",
     color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF", icon: "🏫",
     places: [
-      { name: "International Students Office", detail: "Main Building, Room 124", note: "Your first stop — English-speaking staff. Handles enrollment, OLA, EHIC.", tag: "Start here", icon: "🌍", hours: ["Mon–Fri: 10:00–14:00"], email: "international@pg.edu.pl" },
-      { name: "Dean's Office", detail: "Your faculty building", note: "Student ID cards, enrollment certificates, course issues.", icon: "🎓", hours: ["Mon–Fri: 10:00–14:00", "Wed: 15:00–17:00"] },
-      { name: "Library", detail: "ul. Narutowicza 11/12", note: "Access with student ID. Study rooms, printing, scanning.", icon: "📚", hours: ["Mon–Fri: 8:00–20:00", "Sat: 9:00–15:00"], link: "https://pg.edu.pl/biblioteka" },
-      { name: "Student Dormitories (DS1–DS6)", detail: "ul. Wyspiańskiego, on-campus", note: "Present booking + passport at reception.", icon: "🏠", hours: ["Reception: 24/7"] },
-      { name: "IT Help Desk", detail: "CI PG Building, ul. Siedlicka", note: "PG email, Eduroam Wi-Fi, Microsoft 365.", icon: "💻", hours: ["Mon–Fri: 8:00–16:00"], email: "pomoc@pg.edu.pl" },
-      { name: "Finance Office (Grants)", detail: "Main Building, 1st Floor", note: "Erasmus grant payments. Bring Polish bank details.", icon: "💰", hours: ["Mon–Fri: 9:00–14:00"] },
+      { name: "International Students Office", detail: "Main Building, Room 124", note: "Your first stop — English-speaking staff. Handles enrollment, OLA, EHIC.", tag: "Start here", icon: "🌍", hours: ["Mon–Fri: 10:00–14:00"], email: "international@pg.edu.pl", coords: [54.3716, 18.6210] },
+      { name: "Dean's Office", detail: "Your faculty building", note: "Student ID cards, enrollment certificates, course issues.", icon: "🎓", hours: ["Mon–Fri: 10:00–14:00", "Wed: 15:00–17:00"], coords: [54.3716, 18.6210] },
+      { name: "Library", detail: "ul. Narutowicza 11/12", note: "Access with student ID. Study rooms, printing, scanning.", icon: "📚", hours: ["Mon–Fri: 8:00–20:00", "Sat: 9:00–15:00"], link: "https://pg.edu.pl/biblioteka", coords: [54.3713, 18.6195] },
+      { name: "Student Dormitories (DS1–DS6)", detail: "ul. Wyspiańskiego, on-campus", note: "Present booking + passport at reception.", icon: "🏠", hours: ["Reception: 24/7"], coords: [54.3740, 18.6175] },
+      { name: "IT Help Desk", detail: "CI PG Building, ul. Siedlicka", note: "PG email, Eduroam Wi-Fi, Microsoft 365.", icon: "💻", hours: ["Mon–Fri: 8:00–16:00"], email: "pomoc@pg.edu.pl", coords: [54.3720, 18.6135] },
+      { name: "Finance Office (Grants)", detail: "Main Building, 1st Floor", note: "Erasmus grant payments. Bring Polish bank details.", icon: "💰", hours: ["Mon–Fri: 9:00–14:00"], coords: [54.3716, 18.6210] },
     ],
   },
   {
     id: "groceries", title: "Grocery Stores",
     color: "#B2F0E8", accent: "#006B5A", border: "#7DE0D2", icon: "🛒",
     places: [
-      { name: "Biedronka", detail: "ul. Partyzantów 71 & many locations", note: "Most affordable. Closest to PG. Open 6:00–23:00.", tag: "Closest to PG", icon: "🛒" },
-      { name: "Lidl", detail: "ul. Kartuska 245 & others", note: "Great fresh produce, bakery and weekly deals.", icon: "🛒" },
-      { name: "Kaufland", detail: "ul. Kartuska 245", note: "Large hypermarket — best for big weekly shop.", icon: "🏪" },
-      { name: "Żabka", detail: "Near dormitories & everywhere", note: "Convenience store — 6:00–23:00. Quick top-ups.", icon: "🏬" },
+      { name: "Biedronka", detail: "ul. Partyzantów 71 & many locations", note: "Most affordable. Closest to PG. Open 6:00–23:00.", tag: "Closest to PG", icon: "🛒", coords: [54.3735, 18.6205] },
+      { name: "Lidl", detail: "ul. Kartuska 245 & others", note: "Great fresh produce, bakery and weekly deals.", icon: "🛒", coords: [54.3585, 18.6040] },
+      { name: "Kaufland", detail: "ul. Kartuska 245", note: "Large hypermarket — best for big weekly shop.", icon: "🏪", coords: [54.3585, 18.6035] },
+      { name: "Żabka", detail: "Near dormitories & everywhere", note: "Convenience store — 6:00–23:00. Quick top-ups.", icon: "🏬", coords: [54.3738, 18.6180] },
     ],
   },
   {
@@ -71,7 +72,7 @@ const categories: Category[] = [
     color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF", icon: "🚌",
     places: [
       { name: "ZTM — Trams & Buses", detail: "ztm.gda.pl · Jakdojade / moBiLET", note: "Buy tickets on board or in-app. Validate immediately!", tag: "Most used", icon: "🚌", link: "https://ztm.gda.pl" },
-      { name: "SKM — City Rail", detail: "Gdańsk ↔ Sopot ↔ Gdynia", note: "Sopot in 12 min, Gdynia in 25 min. Wrzeszcz station 10 min from PG.", tag: "Trójmiasto", icon: "🚆" },
+      { name: "SKM — City Rail", detail: "Gdańsk ↔ Sopot ↔ Gdynia", note: "Sopot in 12 min, Gdynia in 25 min. Wrzeszcz station 10 min from PG.", tag: "Trójmiasto", icon: "🚆", coords: [54.3745, 18.6130] },
       { name: "Student Discount — 50%", detail: "Show student ID", note: "ZTM and SKM both offer 50% off. Essential!", tag: "Save 50%", icon: "🎓" },
       { name: "Bolt / Free Now", detail: "Taxi apps on iOS & Android", note: "Cheaper than traditional taxis. Avoid unmarked cabs.", icon: "🚗" },
     ],
@@ -80,26 +81,26 @@ const categories: Category[] = [
     id: "pharmacy", title: "Pharmacy (Apteka)",
     color: "#FDE68A", accent: "#78350F", border: "#FBD34D", icon: "💊",
     places: [
-      { name: "Dr. Max Apteka", detail: "Galeria Bałtycka & city centre", note: "Largest chain. Most meds OTC. Some English staff.", tag: "Most common", icon: "💊" },
-      { name: "24h Emergency Pharmacy", detail: "ul. Podwale Grodzkie 8", note: "Open around the clock for emergencies.", tag: "24/7", icon: "🚨" },
+      { name: "Dr. Max Apteka", detail: "Galeria Bałtycka & city centre", note: "Largest chain. Most meds OTC. Some English staff.", tag: "Most common", icon: "💊", coords: [54.3800, 18.5920] },
+      { name: "24h Emergency Pharmacy", detail: "ul. Podwale Grodzkie 8", note: "Open around the clock for emergencies.", tag: "24/7", icon: "🚨", coords: [54.3490, 18.6530] },
     ],
   },
   {
     id: "city", title: "City & Shopping",
     color: "#DDD6FE", accent: "#4C1D95", border: "#C4B5FD", icon: "🏙️",
     places: [
-      { name: "Stare Miasto — Old Town", detail: "~20 min by tram", note: "Stunning architecture, restaurants, bars. Długi Targ is the heart.", tag: "Must see", icon: "🏰" },
-      { name: "Galeria Bałtycka", detail: "ul. Grunwaldzka 141", note: "Largest mall near PG — H&M, Zara, food court. 5-min walk.", tag: "Closest mall", icon: "🛍️" },
-      { name: "Forum Gdańsk", detail: "City centre", note: "Modern mall — cinema, IKEA Pick-Up, great food hall.", icon: "🛍️" },
+      { name: "Stare Miasto — Old Town", detail: "~20 min by tram", note: "Stunning architecture, restaurants, bars. Długi Targ is the heart.", tag: "Must see", icon: "🏰", coords: [54.3484, 18.6534] },
+      { name: "Galeria Bałtycka", detail: "ul. Grunwaldzka 141", note: "Largest mall near PG — H&M, Zara, food court. 5-min walk.", tag: "Closest mall", icon: "🛍️", coords: [54.3800, 18.5920] },
+      { name: "Forum Gdańsk", detail: "City centre", note: "Modern mall — cinema, IKEA Pick-Up, great food hall.", icon: "🛍️", coords: [54.3560, 18.6475] },
     ],
   },
   {
     id: "food", title: "Food & Cafés",
     color: "#FDE68A", accent: "#78350F", border: "#FBD34D", icon: "🍽️",
     places: [
-      { name: "PG Student Canteen", detail: "On campus — Gmach B", note: "Hot meals 12–20 PLN. Cheapest on campus.", tag: "Cheapest", icon: "🍽️" },
-      { name: "Bar Mleczny (Milk Bar)", detail: "Various locations", note: "Traditional Polish canteen. Pierogi, barszcz 10–25 PLN.", icon: "🥟" },
-      { name: "Coffee Shops", detail: "Wrzeszcz neighbourhood", note: "Karma Coffee, Sowa, Coffeedesk — great cafés near campus.", icon: "☕" },
+      { name: "PG Student Canteen", detail: "On campus — Gmach B", note: "Hot meals 12–20 PLN. Cheapest on campus.", tag: "Cheapest", icon: "🍽️", coords: [54.3718, 18.6200] },
+      { name: "Bar Mleczny (Milk Bar)", detail: "Various locations", note: "Traditional Polish canteen. Pierogi, barszcz 10–25 PLN.", icon: "🥟", coords: [54.3725, 18.6140] },
+      { name: "Coffee Shops", detail: "Wrzeszcz neighbourhood", note: "Karma Coffee, Sowa, Coffeedesk — great cafés near campus.", icon: "☕", coords: [54.3780, 18.6010] },
     ],
   },
   {
@@ -107,7 +108,7 @@ const categories: Category[] = [
     color: "#FECDD5", accent: "#9F1239", border: "#FDA4AF", icon: "🆘",
     places: [
       { name: "Emergency — 112", detail: "European emergency number", note: "Works from any phone. English operators available.", tag: "Call anytime", icon: "🆘" },
-      { name: "UCK Hospital", detail: "ul. Dębinki 7 (10 min from PG)", note: "Main hospital. Emergency (SOR) open 24/7.", icon: "🏥" },
+      { name: "UCK Hospital", detail: "ul. Dębinki 7 (10 min from PG)", note: "Main hospital. Emergency (SOR) open 24/7.", icon: "🏥", coords: [54.3620, 18.6290] },
       { name: "NFZ GP Clinic", detail: "Register after ZUS", note: "Free GP visits with ZUS insurance + PESEL.", icon: "🩺" },
     ],
   },
@@ -339,18 +340,56 @@ function PlaceCard({ place, cat }: { place: Place; cat: Category }) {
               <p style={{ fontSize: 10.5, color: "var(--pg-blue)", fontWeight: 500 }}>{place.email}</p>
             </div>
           )}
+          {/* Action row: map + link */}
+          {(place.coords || place.link) && (
+            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+              {place.coords && (
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${place.coords[0]},${place.coords[1]}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: 4,
+                    padding: "5px 10px", borderRadius: 8,
+                    background: cat.color, border: `1px solid ${cat.border}`,
+                    fontSize: 10.5, fontWeight: 600, color: cat.accent,
+                    textDecoration: "none",
+                  }}
+                >
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.5-2-4.5-4.5-4.5z" stroke={cat.accent} strokeWidth="1.2"/>
+                    <circle cx="8" cy="6" r="1.5" stroke={cat.accent} strokeWidth="1.2"/>
+                  </svg>
+                  Map
+                </a>
+              )}
+              {place.link && (
+                <a
+                  href={place.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: 4,
+                    padding: "5px 10px", borderRadius: 8,
+                    background: "#E8EEF7", border: "1px solid #B3C6E0",
+                    fontSize: 10.5, fontWeight: 600, color: "#003580",
+                    textDecoration: "none",
+                  }}
+                >
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 3h5v5M13 3L7 9M5 4H3v9h9v-2" stroke="#003580" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Website
+                </a>
+              )}
+            </div>
+          )}
         </div>
-        {place.link && (
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 4 }}>
-            <path d="M6 4l4 4-4 4" stroke="#C8CDD8" strokeWidth="1.5" strokeLinecap="round"/>
-          </svg>
-        )}
       </div>
     </div>
   );
 
-  if (place.link) {
-    return <a href={place.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>{inner}</a>;
-  }
   return inner;
 }
