@@ -46,7 +46,7 @@ const EXPLORE = [
 
 const EATS = [
   { title: "Pierogarnia Mandu", sub: "Best pierogi in town",     icon: "🥟", tip: "Student favorite",  color: "#FDE68A", accent: "#78350F", border: "#FBD34D" },
-  { title: "Biedronka",         sub: "Cheapest grocery chain",    icon: "🛒", tip: "Closest to PG",    color: "#FDE68A", accent: "#78350F", border: "#FBD34D" },
+  { title: "Biedronka",         sub: "Cheapest grocery chain",    icon: "🛒", tip: "Closest to PG",    color: "#FED7AA", accent: "#9A3412", border: "#FDBA74" },
   { title: "Kebab spots",       sub: "Late night go-to food",     icon: "🌯", tip: "ul. Rajska area",  color: "#BBF0CC", accent: "#14522A", border: "#88E0A4" },
   { title: "Stacja Food Hall",  sub: "Many cuisines, one place",  icon: "🍕", tip: "Great for groups", color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF" },
 ];
@@ -315,7 +315,7 @@ export default function Dashboard() {
       )}
 
       {/* ── EXPLORE GDAŃSK ── */}
-      <div style={{ padding: "20px 0 0" }}>
+      <div style={{ padding: "24px 0 0" }}>
         <div style={{ padding: "0 20px", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.1px" }}>
             🌍 Explore Gdańsk
@@ -354,7 +354,7 @@ export default function Dashboard() {
       </div>
 
       {/* ── STUDENT EATS ── */}
-      <div style={{ padding: "16px 0 0" }}>
+      <div style={{ padding: "20px 0 0" }}>
         <div style={{ padding: "0 20px", marginBottom: 12 }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.1px" }}>
             🍕 Student Eats & Shopping
