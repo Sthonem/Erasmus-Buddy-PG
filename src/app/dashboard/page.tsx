@@ -300,7 +300,7 @@ export default function Dashboard() {
                     color: task.critical ? "#D97706" : "#6E7891",
                     flexShrink: 0,
                   }}>
-                    {task.critical ? t("dashboard.doFirst") : task.badge}
+                    {task.critical ? t("dashboard.doFirst") : t(task.badgeKey as TranslationKey)}
                   </span>
                 </div>
               </Link>

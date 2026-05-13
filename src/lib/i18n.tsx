@@ -95,6 +95,12 @@ const translations = {
   "task.accommodation.desc": { en: "Dorm registration", tr: "Yurt kaydı", es: "Registro de dormitorio", pl: "Rejestracja w akademiku" },
   "task.sis-login": { en: "SIS First Login", tr: "SIS İlk Giriş", es: "Primer Inicio SIS", pl: "Pierwszy Login SIS" },
   "task.sis-login.desc": { en: "Activate your account", tr: "Hesabını aktifleştir", es: "Activa tu cuenta", pl: "Aktywuj swoje konto" },
+  "task.badge.day1": { en: "Day 1", tr: "Gün 1", es: "Día 1", pl: "Dzień 1" },
+  "task.badge.day1-3": { en: "Day 1-3", tr: "Gün 1-3", es: "Día 1-3", pl: "Dzień 1-3" },
+  "task.badge.day1-7": { en: "Day 1-7", tr: "Gün 1-7", es: "Día 1-7", pl: "Dzień 1-7" },
+  "task.badge.day3-7": { en: "Day 3-7", tr: "Gün 3-7", es: "Día 3-7", pl: "Dzień 3-7" },
+  "task.badge.week1": { en: "Week 1", tr: "Hafta 1", es: "Semana 1", pl: "Tydzień 1" },
+  "task.badge.week2": { en: "Week 2", tr: "Hafta 2", es: "Semana 2", pl: "Tydzień 2" },
 
   // ── Timetable ──
   "timetable.title": { en: "Timetable", tr: "Ders Programı", es: "Horario", pl: "Plan Zajęć" },

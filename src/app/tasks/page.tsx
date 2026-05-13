@@ -207,7 +207,7 @@ function TaskCard({ task, done, onToggle, t }: { task: Task; done: boolean; onTo
         color: done ? "#00856f" : task.critical ? "#D97706" : "var(--text-tertiary)",
         flexShrink: 0,
       }}>
-        {done ? t("tasks.badgeDone") : task.badge}
+        {done ? t("tasks.badgeDone") : t(task.badgeKey as TranslationKey)}
       </span>
     </div>
   );
