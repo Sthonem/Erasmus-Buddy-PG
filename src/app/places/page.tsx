@@ -54,8 +54,8 @@ const categories: Category[] = [
     color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF", icon: "🏫",
     places: [
       { nameKey: "place.intl-office", detailKey: "place.intl-office.detail", noteKey: "place.intl-office.note", tagKey: "places.startHere", icon: "🌍", hours: ["Mon–Fri: 10:00–14:00"], email: "international@pg.edu.pl", coords: [54.3716, 18.6210] },
-      { nameKey: "place.deans-office", detailKey: "place.deans-office.detail", noteKey: "place.deans-office.note", icon: "🎓", hours: ["Mon–Fri: 10:00–14:00", "Wed: 15:00–17:00"], link: "https://campus.pg.edu.pl/building/10/?lang=pl", coords: [54.3716, 18.6210] },
-      { nameKey: "place.library", detail: "ul. Narutowicza 11/12", noteKey: "place.library.note", icon: "📚", hours: ["Mon–Fri: 8:00–20:00", "Sat: 9:00–15:00"], link: "https://pg.edu.pl/biblioteka", coords: [54.3714, 18.6191] },
+      { nameKey: "place.deans-office", detailKey: "place.deans-office.detail", noteKey: "place.deans-office.note", icon: "🎓", hours: ["Mon–Fri: 10:00–14:00", "Wed: 15:00–17:00"], link: "https://pg.edu.pl/en/international/welcome-office", coords: [54.3716, 18.6210] },
+      { nameKey: "place.library", detail: "ul. Narutowicza 11/12", noteKey: "place.library.note", icon: "📚", hours: ["Mon–Fri: 8:00–20:00", "Sat: 9:00–15:00"], link: "https://pg.edu.pl/biblioteka-pg", coords: [54.3714, 18.6191] },
       { nameKey: "place.dorms", detailKey: "place.dorms.detail", noteKey: "place.dorms.note", icon: "🏠", hours: ["Reception: 24/7"], link: "https://pg.edu.pl/en/students/student-life/accommodation", coords: [54.3740, 18.6175] },
       { nameKey: "place.it-help", detail: "CI PG Building, ul. Siedlicka", noteKey: "place.it-help.note", icon: "💻", hours: ["Mon–Fri: 8:00–16:00"], email: "pomoc@pg.edu.pl", coords: [54.3720, 18.6135] },
       { nameKey: "place.finance", detailKey: "place.finance.detail", noteKey: "place.finance.note", icon: "💰", hours: ["Mon–Fri: 9:00–14:00"], coords: [54.3716, 18.6210] },
