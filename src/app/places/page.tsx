@@ -103,6 +103,7 @@ const categories: Category[] = [
     color: "#FED7AA", accent: "#9A3412", border: "#FDBA74", icon: "🎶",
     places: [
       { name: "Kwadratowa", detailKey: "place.kwadratowa.detail", noteKey: "place.kwadratowa.note", tagKey: "places.onCampus", icon: "🎶", link: "https://www.facebook.com/klubKwadratowa/", coords: [54.3708, 18.6154] },
+      { name: "Armata", detailKey: "place.armata.detail", noteKey: "place.armata.note", tagKey: "places.everyThursday", icon: "🍻", coords: [54.3688, 18.6063] },
     ],
   },
   {
