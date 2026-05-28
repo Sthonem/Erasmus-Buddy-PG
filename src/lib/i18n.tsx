@@ -434,7 +434,7 @@ const translations = {
   "places.cat.transport": { en: "Public Transport", tr: "Toplu Taşıma", es: "Transporte Público", pl: "Transport Publiczny" },
   "places.cat.pharmacy": { en: "Pharmacy (Apteka)", tr: "Eczane (Apteka)", es: "Farmacia (Apteka)", pl: "Apteka" },
   "places.cat.city": { en: "City & Shopping", tr: "Şehir & Alışveriş", es: "Ciudad y Compras", pl: "Miasto i Zakupy" },
-  "places.cat.nightlife": { en: "Nightlife & Events", tr: "Gece Hayatı & Etkinlikler", es: "Vida Nocturna y Eventos", pl: "Życie Nocne i Wydarzenia" },
+  "places.cat.nightlife": { en: "Student Life & Events", tr: "Öğrenci Hayatı & Etkinlikler", es: "Vida Estudiantil y Eventos", pl: "Życie Studenckie i Wydarzenia" },
   "places.onCampus": { en: "On Campus", tr: "Kampüste", es: "En el Campus", pl: "Na Kampusie" },
   "place.kwadratowa.detail": { en: "PG student club — Thu, Fri & Sat nights", tr: "PG öğrenci kulübü — Per, Cum & Cmt geceleri", es: "Club estudiantil PG — Jue, Vie y Sáb por la noche", pl: "Klub studencki PG — Czw, Pt i Sob wieczorem" },
   "place.kwadratowa.note": { en: "Register on Facebook before 20:00 & enter before 22:00 = FREE! Otherwise: students 20 PLN, regular 40 PLN.", tr: "Facebook'tan 20:00'den önce kayıt ol ve 22:00'den önce gir = ÜCRETSİZ! Aksi halde: öğrenci 20 PLN, normal 40 PLN.", es: "Regístrate en Facebook antes de las 20:00 y entra antes de las 22:00 = ¡GRATIS! Si no: estudiantes 20 PLN, normal 40 PLN.", pl: "Zarejestruj się na Facebooku przed 20:00 i wejdź przed 22:00 = ZA DARMO! W przeciwnym razie: studenci 20 PLN, normalny 40 PLN." },
