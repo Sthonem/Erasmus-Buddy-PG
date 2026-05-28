@@ -365,7 +365,7 @@ const translations = {
   "guide.sis.s1": { en: "Activate your PG account", tr: "PG hesabını aktif et", es: "Activa tu cuenta PG", pl: "Aktywuj konto PG" },
   "guide.sis.s1d": { en: "Check your email for login credentials from PG", tr: "PG'den gelen giriş bilgileri için e-postanı kontrol et", es: "Revisa tu email para las credenciales de PG", pl: "Sprawdź email z danymi logowania z PG" },
   "guide.sis.s2": { en: "Log in to SIS", tr: "SIS'e giriş yap", es: "Inicia sesión en SIS", pl: "Zaloguj się do SIS" },
-  "guide.sis.s2d": { en: "Visit: sis.pg.edu.pl", tr: "Ziyaret: sis.pg.edu.pl", es: "Visita: sis.pg.edu.pl", pl: "Odwiedź: sis.pg.edu.pl" },
+  "guide.sis.s2d": { en: "Visit: sis.eti.pg.edu.pl", tr: "Ziyaret: sis.eti.pg.edu.pl", es: "Visita: sis.eti.pg.edu.pl", pl: "Odwiedź: sis.eti.pg.edu.pl" },
   "guide.sis.s3": { en: "Select your courses", tr: "Derslerini seç", es: "Selecciona tus cursos", pl: "Wybierz przedmioty" },
   "guide.sis.s3d": { en: "Browse the catalogue and add courses to your schedule", tr: "Kataloğa göz at ve dersleri programına ekle", es: "Navega por el catálogo y añade cursos a tu horario", pl: "Przeglądaj katalog i dodaj przedmioty do planu" },
   "guide.sis.s4": { en: "Confirm your selection", tr: "Seçimini onayla", es: "Confirma tu selección", pl: "Potwierdź wybór" },

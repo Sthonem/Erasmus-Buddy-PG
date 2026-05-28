@@ -21,7 +21,7 @@ const GUIDES: GuideConfig[] = [
   { slug: "bank", category: "Admin", urgent: true, stepsCount: 4, docsCount: 3, faqCount: 3, hasLink: true, linkUrl: "https://www.pkobp.pl" },
   { slug: "zus", category: "Admin", urgent: true, stepsCount: 4, docsCount: 3, faqCount: 2, hasLink: true, linkUrl: "https://www.zus.pl" },
   { slug: "ola", category: "Academic", urgent: true, stepsCount: 7, docsCount: 4, faqCount: 5, hasLink: true, linkUrl: "https://learning-agreement.eu" },
-  { slug: "sis", category: "Academic", urgent: false, stepsCount: 4, docsCount: 2, faqCount: 2, hasLink: true, linkUrl: "https://sis.pg.edu.pl" },
+  { slug: "sis", category: "Academic", urgent: false, stepsCount: 4, docsCount: 2, faqCount: 2, hasLink: true, linkUrl: "https://sis.eti.pg.edu.pl/Search/Search" },
   { slug: "student-id", category: "Academic", urgent: false, stepsCount: 3, docsCount: 2, faqCount: 2, hasLink: false },
   { slug: "offices", category: "Campus", urgent: false, stepsCount: 4, docsCount: 0, faqCount: 2, hasLink: true, linkUrl: "https://campus.pg.edu.pl/" },
 ];
