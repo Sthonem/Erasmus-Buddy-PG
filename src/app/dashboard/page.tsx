@@ -39,6 +39,12 @@ const EATS_ITEMS = [
   { key: "stacja",    icon: "🍕", color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF" },
 ];
 
+const ESN_LINKS = [
+  { key: "gdansk", icon: "📸", color: "#E8D5F5", accent: "#6B21A8", border: "#D8B4FE", url: "https://www.instagram.com/esn_gdansk/" },
+  { key: "3city",  icon: "🎉", color: "#FED7AA", accent: "#9A3412", border: "#FDBA74", url: "https://www.instagram.com/esn3city/" },
+  { key: "pg",     icon: "🎓", color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF", url: "https://pg.edu.pl/studenci/dzialalnosc-studencka/organizacje-studenckie/lista-organizacji-studenckich/erasmus-student-network-gdansk-esn" },
+];
+
 const QUICK_ACCESS: { titleKey: TranslationKey; subKey: TranslationKey; bg: string; accent: string; border: string; icon: string; href: string }[] = [
   { titleKey: "quick.explore",   subKey: "quick.explore.sub",   bg: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF", icon: "🧭", href: "/places"    },
   { titleKey: "quick.timetable", subKey: "quick.timetable.sub", bg: "#B2F0E8", accent: "#006B5A", border: "#7DE0D2", icon: "📅", href: "/timetable" },
@@ -397,6 +403,60 @@ export default function Dashboard() {
                 ⭐ {t(`eats.${item.key}.tip` as TranslationKey)}
               </p>
             </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── STUDENT LIFE & EVENTS ── */}
+      <div style={{ padding: "20px 0 0" }}>
+        <div style={{ padding: "0 20px", marginBottom: 12 }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.1px" }}>
+            🎊 {t("dashboard.studentLife")}
+          </p>
+          <p style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 2 }}>
+            {t("dashboard.followForEvents")}
+          </p>
+        </div>
+        <div style={{
+          display: "flex", gap: 10, overflowX: "auto",
+          paddingBottom: 4,
+          scrollSnapType: "x mandatory",
+          scrollPaddingLeft: 20,
+          WebkitOverflowScrolling: "touch",
+          msOverflowStyle: "none",
+          scrollbarWidth: "none",
+        }}>
+          {ESN_LINKS.map((item, idx) => (
+            <a
+              key={item.key}
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                minWidth: 160, maxWidth: 160,
+                background: item.color,
+                border: `1.5px solid ${item.border}`,
+                borderRadius: 16,
+                padding: "14px 14px 12px",
+                scrollSnapAlign: "start",
+                flexShrink: 0,
+                textDecoration: "none",
+                marginLeft: idx === 0 ? 20 : 0,
+                marginRight: idx === ESN_LINKS.length - 1 ? 20 : 0,
+                transition: "transform 0.15s",
+              }}
+            >
+              <p style={{ fontSize: 28, marginBottom: 8, lineHeight: 1 }}>{item.icon}</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: item.accent, lineHeight: 1.3 }}>
+                {t(`esn.${item.key}.title` as TranslationKey)}
+              </p>
+              <p style={{ fontSize: 10.5, color: "var(--text-secondary)", marginTop: 3, lineHeight: 1.4 }}>
+                {t(`esn.${item.key}.desc` as TranslationKey)}
+              </p>
+              <p style={{ fontSize: 9.5, color: item.accent, marginTop: 6, fontWeight: 600, opacity: 0.7 }}>
+                🔗 {t(`esn.${item.key}.tag` as TranslationKey)}
+              </p>
+            </a>
           ))}
         </div>
       </div>
