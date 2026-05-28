@@ -557,6 +557,14 @@ const translations = {
   "tip.3": { en: "Oliwa Cathedral has free organ concerts — one of Gdańsk's hidden gems.", tr: "Oliwa Katedrali'nde ücretsiz organ konserleri var — Gdańsk'ın gizli hazinelerinden.", es: "La Catedral de Oliwa tiene conciertos de órgano gratis — una joya oculta.", pl: "Katedra w Oliwie ma darmowe koncerty organowe — jeden z ukrytych skarbów Gdańska." },
   "tip.4": { en: "Galeria Bałtycka is the biggest shopping mall near PG. 5 min walk!", tr: "Galeria Bałtycka PG'ye en yakın AVM. 5 dakika yürüyüş!", es: "Galeria Bałtycka es el centro comercial más grande cerca de PG. ¡5 min a pie!", pl: "Galeria Bałtycka to największe centrum handlowe blisko PG. 5 min pieszo!" },
   "tip.5": { en: "Lechia Gdańsk matches at Stadion Energa are super cheap with a student ID.", tr: "Lechia Gdańsk maçları öğrenci kimliğiyle çok ucuz.", es: "Los partidos del Lechia Gdańsk son muy baratos con carné de estudiante.", pl: "Mecze Lechii Gdańsk na Stadionie Energa są super tanie z legitymacją studencką." },
+
+  // ── Guest Mode ──
+  "guest.preview": { en: "Preview without account", tr: "Hesap olmadan önizle", es: "Vista previa sin cuenta", pl: "Podgląd bez konta" },
+  "guest.banner": { en: "Preview Mode — Sign up to save your progress", tr: "Önizleme Modu — İlerlemenizi kaydetmek için kaydolun", es: "Modo Vista Previa — Regístrate para guardar tu progreso", pl: "Tryb Podglądu — Zarejestruj się, aby zapisać postępy" },
+  "guest.signupToSave": { en: "Sign up to save your progress", tr: "İlerlemenizi kaydetmek için kaydolun", es: "Regístrate para guardar tu progreso", pl: "Zarejestruj się, aby zapisać postępy" },
+  "guest.signupForTimetable": { en: "Sign up to save your timetable", tr: "Ders programınızı kaydetmek için kaydolun", es: "Regístrate para guardar tu horario", pl: "Zarejestruj się, aby zapisać plan zajęć" },
+  "guest.signupForSettings": { en: "Sign up to edit your profile", tr: "Profilinizi düzenlemek için kaydolun", es: "Regístrate para editar tu perfil", pl: "Zarejestruj się, aby edytować profil" },
+  "guest.signUp": { en: "Sign Up", tr: "Kaydol", es: "Registrarse", pl: "Zarejestruj się" },
 } as const;
 
 export type TranslationKey = keyof typeof translations;

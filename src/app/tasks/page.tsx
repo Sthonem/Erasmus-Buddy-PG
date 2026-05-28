@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { TASKS, type Task } from "@/lib/tasks-data";
 import BottomNav from "@/components/shared/BottomNav";
+import GuestBanner from "@/components/shared/GuestBanner";
 import { useRouter } from "next/navigation";
 import { useI18n, type TranslationKey } from "@/lib/i18n";
 
@@ -12,13 +13,21 @@ export default function Tasks() {
   const [completed, setCompleted] = useState<string[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isGuest, setIsGuest] = useState(false);
+  const [guestToast, setGuestToast] = useState(false);
   const router = useRouter();
   const { t } = useI18n();
 
   useEffect(() => {
     async function load() {
       const { data } = await supabase.auth.getUser();
-      if (!data.user) { router.push("/"); return; }
+      if (!data.user) {
+        const guestMode = typeof window !== "undefined" && localStorage.getItem("guest_mode") === "true";
+        if (!guestMode) { router.push("/"); return; }
+        setIsGuest(true);
+        setLoading(false);
+        return;
+      }
       setUserId(data.user.id);
       const { data: tasks } = await supabase
         .from("user_tasks").select("task_slug")
@@ -30,6 +39,11 @@ export default function Tasks() {
   }, [router]);
 
   async function toggleTask(slug: string) {
+    if (isGuest) {
+      setGuestToast(true);
+      setTimeout(() => setGuestToast(false), 2500);
+      return;
+    }
     if (!userId) return;
     const isDone = completed.includes(slug);
     if (isDone) {
@@ -157,6 +171,19 @@ export default function Tasks() {
         )}
       </div>
 
+      {/* Guest toast */}
+      {guestToast && (
+        <div style={{
+          position: "fixed", bottom: 130, left: "50%", transform: "translateX(-50%)",
+          background: "#78350F", color: "white", padding: "10px 20px", borderRadius: 12,
+          fontSize: 13, fontWeight: 600, zIndex: 100, boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
+          whiteSpace: "nowrap",
+        }}>
+          {t("guest.signupToSave")}
+        </div>
+      )}
+
+      {isGuest && <GuestBanner />}
       <BottomNav />
     </main>
   );

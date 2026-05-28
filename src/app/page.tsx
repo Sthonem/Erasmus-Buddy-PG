@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useI18n, LANGUAGES, type Lang } from "@/lib/i18n";
 
@@ -14,6 +15,7 @@ export default function Home() {
   const [success, setSuccess] = useState<string | null>(null);
   const { t, lang, setLang } = useI18n();
   const [showLangPicker, setShowLangPicker] = useState(false);
+  const router = useRouter();
 
   async function handleGoogleLogin() {
     await supabase.auth.signInWithOAuth({
@@ -469,21 +471,50 @@ export default function Home() {
 
         {/* Footer note */}
         {mode === "idle" && (
-          <p
-            style={{
-              fontSize: 12,
-              color: "#A0A8BB",
-              textAlign: "center",
-              lineHeight: 1.6,
-              marginTop: 14,
-            }}
-          >
-            {t("login.free")}
-            <br />
-            <span style={{ color: "#6E7891", fontWeight: 600 }}>
-              {t("login.noRegistration")}
-            </span>
-          </p>
+          <>
+            <p
+              style={{
+                fontSize: 12,
+                color: "#A0A8BB",
+                textAlign: "center",
+                lineHeight: 1.6,
+                marginTop: 14,
+              }}
+            >
+              {t("login.free")}
+              <br />
+              <span style={{ color: "#6E7891", fontWeight: 600 }}>
+                {t("login.noRegistration")}
+              </span>
+            </p>
+
+            {/* Guest Preview */}
+            <button
+              onClick={() => {
+                localStorage.setItem("guest_mode", "true");
+                router.push("/dashboard");
+              }}
+              style={{
+                width: "100%",
+                marginTop: 14,
+                padding: "12px",
+                borderRadius: 14,
+                border: "1.5px dashed var(--border)",
+                background: "transparent",
+                fontSize: 13,
+                fontWeight: 600,
+                color: "#6E7891",
+                cursor: "pointer",
+                fontFamily: "inherit",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
+              }}
+            >
+              👀 {t("guest.preview")}
+            </button>
+          </>
         )}
       </div>
     </main>

@@ -8,6 +8,7 @@ import BottomNav from "@/components/shared/BottomNav";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useI18n, type TranslationKey } from "@/lib/i18n";
+import GuestBanner from "@/components/shared/GuestBanner";
 
 // ── Journey stages ──────────────────────────────────────────────────────────
 const STAGE_KEYS = ["landed", "started", "settling", "student", "explorer"] as const;
@@ -55,13 +56,22 @@ export default function Dashboard() {
   const [user, setUser] = useState<{ name: string } | null>(null);
   const [completedSlugs, setCompletedSlugs] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isGuest, setIsGuest] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const { t } = useI18n();
 
   const loadData = useCallback(async () => {
     const { data } = await supabase.auth.getUser();
-    if (!data.user) { router.push("/"); return; }
+    if (!data.user) {
+      const guestMode = typeof window !== "undefined" && localStorage.getItem("guest_mode") === "true";
+      if (!guestMode) { router.push("/"); return; }
+      setIsGuest(true);
+      setUser({ name: "Guest" });
+      setCompletedSlugs([]);
+      setLoading(false);
+      return;
+    }
     setUser({ name: data.user.user_metadata?.full_name?.split(" ")[0] || "Student" });
     const { data: tasks } = await supabase
       .from("user_tasks").select("task_slug")
@@ -506,6 +516,7 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {isGuest && <GuestBanner />}
       <BottomNav />
     </main>
   );

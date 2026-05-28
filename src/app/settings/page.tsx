@@ -5,11 +5,13 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useI18n, LANGUAGES, type TranslationKey } from "@/lib/i18n";
+import GuestBanner from "@/components/shared/GuestBanner";
 
 export default function Settings() {
   const [user, setUser] = useState<{ name: string; email: string; createdAt: string } | null>(null);
   const [darkMode, setDarkMode] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isGuest, setIsGuest] = useState(false);
   const router = useRouter();
   const { t, lang, setLang } = useI18n();
 
@@ -36,7 +38,16 @@ export default function Settings() {
   useEffect(() => {
     async function load() {
       const { data } = await supabase.auth.getUser();
-      if (!data.user) { router.push("/"); return; }
+      if (!data.user) {
+        const guestMode = typeof window !== "undefined" && localStorage.getItem("guest_mode") === "true";
+        if (!guestMode) { router.push("/"); return; }
+        setIsGuest(true);
+        setUser({ name: "Guest", email: "", createdAt: "" });
+        const saved = localStorage.getItem("erasmus-dark-mode");
+        if (saved === "true") { setDarkMode(true); document.documentElement.classList.add("dark"); }
+        setLoading(false);
+        return;
+      }
       const name = data.user.user_metadata?.full_name || "Student";
       setUser({
         name,
@@ -202,9 +213,17 @@ export default function Settings() {
 
       <div style={{ padding: "0 16px" }}>
 
+        {/* ── Guest Notice ── */}
+        {isGuest && (
+          <div style={{ marginTop: 20, marginBottom: 8, background: "#FEF3C7", border: "1px solid #FBD34D", borderRadius: 14, padding: "12px 16px", display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ fontSize: 18 }}>👀</span>
+            <p style={{ fontSize: 12.5, color: "#78350F", fontWeight: 600 }}>{t("guest.signupForSettings")}</p>
+          </div>
+        )}
+
         {/* ── Account Section ── */}
-        <SectionHeader dot="#003580" label={t("settings.account")} color="#003580" />
-        <div style={cardStyle}>
+        {!isGuest && <SectionHeader dot="#003580" label={t("settings.account")} color="#003580" />}
+        {!isGuest && <div style={cardStyle}>
           {/* Name row */}
           {!editingProfile ? (
             <>
@@ -327,8 +346,8 @@ export default function Settings() {
               </div>
             </div>
           )}
-        </div>
-        {profileMsg && (
+        </div>}
+        {!isGuest && profileMsg && (
           <div style={{ marginTop: 8, padding: "10px 14px", borderRadius: 10, background: "#E5F7F5", display: "flex", alignItems: "center", gap: 8 }}>
             <span style={{ fontSize: 14 }}>✅</span>
             <p style={{ fontSize: 12.5, color: "#00856f", fontWeight: 600 }}>{profileMsg}</p>
@@ -336,8 +355,8 @@ export default function Settings() {
         )}
 
         {/* ── Security Section ── */}
-        <SectionHeader dot="#D97706" label={t("settings.security")} color="#D97706" />
-        <div style={cardStyle}>
+        {!isGuest && <SectionHeader dot="#D97706" label={t("settings.security")} color="#D97706" />}
+        {!isGuest && <div style={cardStyle}>
           <div
             onClick={() => setShowPassword(!showPassword)}
             style={{ ...rowStyle, cursor: "pointer" }}
@@ -415,7 +434,7 @@ export default function Settings() {
               </div>
             </div>
           )}
-        </div>
+        </div>}
 
         {/* ── Appearance Section ── */}
         <SectionHeader dot="#00A693" label={t("settings.appearance")} color="#00A693" />
@@ -521,7 +540,10 @@ export default function Settings() {
         {/* Sign Out */}
         <div style={{ marginTop: 24, marginBottom: 16 }}>
           <button
-            onClick={async () => { await supabase.auth.signOut(); router.push("/"); }}
+            onClick={async () => {
+              if (isGuest) { localStorage.removeItem("guest_mode"); router.push("/"); return; }
+              await supabase.auth.signOut(); router.push("/");
+            }}
             style={{
               width: "100%", padding: "14px", borderRadius: 14, border: "1.5px solid #FDA4AF",
               background: "#FFF1F2", cursor: "pointer",
@@ -538,6 +560,8 @@ export default function Settings() {
           </button>
         </div>
       </div>
+
+      {isGuest && <GuestBanner />}
     </main>
   );
 }
