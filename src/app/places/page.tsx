@@ -54,9 +54,9 @@ const categories: Category[] = [
     color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF", icon: "🏫",
     places: [
       { nameKey: "place.intl-office", detailKey: "place.intl-office.detail", noteKey: "place.intl-office.note", tagKey: "places.startHere", icon: "🌍", hours: ["Mon–Fri: 10:00–14:00"], email: "international@pg.edu.pl", coords: [54.3716, 18.6210] },
-      { nameKey: "place.deans-office", detailKey: "place.deans-office.detail", noteKey: "place.deans-office.note", icon: "🎓", hours: ["Mon–Fri: 10:00–14:00", "Wed: 15:00–17:00"], coords: [54.3716, 18.6210] },
-      { nameKey: "place.library", detail: "ul. Narutowicza 11/12", noteKey: "place.library.note", icon: "📚", hours: ["Mon–Fri: 8:00–20:00", "Sat: 9:00–15:00"], link: "https://pg.edu.pl/biblioteka", coords: [54.3713, 18.6195] },
-      { nameKey: "place.dorms", detailKey: "place.dorms.detail", noteKey: "place.dorms.note", icon: "🏠", hours: ["Reception: 24/7"], coords: [54.3740, 18.6175] },
+      { nameKey: "place.deans-office", detailKey: "place.deans-office.detail", noteKey: "place.deans-office.note", icon: "🎓", hours: ["Mon–Fri: 10:00–14:00", "Wed: 15:00–17:00"], link: "https://campus.pg.edu.pl/building/10/?lang=pl", coords: [54.3716, 18.6210] },
+      { nameKey: "place.library", detail: "ul. Narutowicza 11/12", noteKey: "place.library.note", icon: "📚", hours: ["Mon–Fri: 8:00–20:00", "Sat: 9:00–15:00"], link: "https://pg.edu.pl/biblioteka", coords: [54.3714, 18.6191] },
+      { nameKey: "place.dorms", detailKey: "place.dorms.detail", noteKey: "place.dorms.note", icon: "🏠", hours: ["Reception: 24/7"], link: "https://pg.edu.pl/en/students/student-life/accommodation", coords: [54.3740, 18.6175] },
       { nameKey: "place.it-help", detail: "CI PG Building, ul. Siedlicka", noteKey: "place.it-help.note", icon: "💻", hours: ["Mon–Fri: 8:00–16:00"], email: "pomoc@pg.edu.pl", coords: [54.3720, 18.6135] },
       { nameKey: "place.finance", detailKey: "place.finance.detail", noteKey: "place.finance.note", icon: "💰", hours: ["Mon–Fri: 9:00–14:00"], coords: [54.3716, 18.6210] },
     ],
@@ -65,9 +65,9 @@ const categories: Category[] = [
     id: "groceries", titleKey: "places.cat.groceries",
     color: "#B2F0E8", accent: "#006B5A", border: "#7DE0D2", icon: "🛒",
     places: [
-      { name: "Biedronka", detailKey: "place.biedronka.detail", noteKey: "place.biedronka.note", tagKey: "places.closestToPG", icon: "🛒", coords: [54.3735, 18.6205] },
-      { name: "Lidl", detailKey: "place.lidl.detail", noteKey: "place.lidl.note", icon: "🛒", coords: [54.3585, 18.6040] },
-      { name: "Kaufland", detail: "ul. Kartuska 245", noteKey: "place.kaufland.note", icon: "🏪", coords: [54.3585, 18.6035] },
+      { name: "Biedronka", detailKey: "place.biedronka.detail", noteKey: "place.biedronka.note", tagKey: "places.closestToPG", icon: "🛒", coords: [54.3781, 18.6060] },
+      { name: "Lidl", detailKey: "place.lidl.detail", noteKey: "place.lidl.note", icon: "🛒", coords: [54.3772, 18.6163] },
+      { name: "Kaufland", detail: "ul. Łódzka", noteKey: "place.kaufland.note", icon: "🏪", coords: [54.3313, 18.5945] },
       { name: "Żabka", detailKey: "place.zabka.detail", noteKey: "place.zabka.note", icon: "🏬", coords: [54.3738, 18.6180] },
     ],
   },
@@ -76,7 +76,7 @@ const categories: Category[] = [
     color: "#C5D8F8", accent: "#002A6B", border: "#9BBDEF", icon: "🚌",
     places: [
       { nameKey: "place.ztm", detail: "ztm.gda.pl · Jakdojade / moBiLET", noteKey: "place.ztm.note", tagKey: "places.mostUsed", icon: "🚌", link: "https://ztm.gda.pl" },
-      { nameKey: "place.skm", detail: "Gdańsk ↔ Sopot ↔ Gdynia", noteKey: "place.skm.note", tagKey: "places.trojmiasto", icon: "🚆", coords: [54.3745, 18.6130] },
+      { nameKey: "place.skm", detail: "Gdańsk ↔ Sopot ↔ Gdynia", noteKey: "place.skm.note", tagKey: "places.trojmiasto", icon: "🚆", coords: [54.3818, 18.6050] },
       { nameKey: "place.discount", detailKey: "place.discount.detail", noteKey: "place.discount.note", tagKey: "places.save50", icon: "🎓" },
       { name: "Bolt / Free Now", detailKey: "place.taxi.detail", noteKey: "place.taxi.note", icon: "🚗" },
     ],
@@ -85,8 +85,8 @@ const categories: Category[] = [
     id: "pharmacy", titleKey: "places.cat.pharmacy",
     color: "#FDE68A", accent: "#78350F", border: "#FBD34D", icon: "💊",
     places: [
-      { name: "Dr. Max Apteka", detail: "Galeria Bałtycka", noteKey: "place.drmax.note", tagKey: "places.mostCommon", icon: "💊", coords: [54.3800, 18.5920] },
-      { nameKey: "place.24h-pharmacy", detail: "ul. Podwale Grodzkie 8", noteKey: "place.24h-pharmacy.note", tagKey: "places.24_7", icon: "🚨", coords: [54.3490, 18.6530] },
+      { name: "Dr. Max Apteka", detail: "Galeria Bałtycka", noteKey: "place.drmax.note", tagKey: "places.mostCommon", icon: "💊", coords: [54.3830, 18.6001] },
+      { nameKey: "place.24h-pharmacy", detail: "ul. Podwale Grodzkie 8", noteKey: "place.24h-pharmacy.note", tagKey: "places.24_7", icon: "🚨", coords: [54.3787, 18.6051] },
     ],
   },
   {
@@ -94,8 +94,8 @@ const categories: Category[] = [
     color: "#DDD6FE", accent: "#4C1D95", border: "#C4B5FD", icon: "🏙️",
     places: [
       { nameKey: "place.old-town", detailKey: "place.old-town.detail", noteKey: "place.old-town.note", tagKey: "places.mustSee", icon: "🏰", coords: [54.3484, 18.6534] },
-      { name: "Galeria Bałtycka", detail: "ul. Grunwaldzka 141", noteKey: "place.baltycka.note", tagKey: "places.closestMall", icon: "🛍️", coords: [54.3800, 18.5920] },
-      { name: "Forum Gdańsk", detailKey: "place.forum.detail", noteKey: "place.forum.note", icon: "🛍️", coords: [54.3560, 18.6475] },
+      { name: "Galeria Bałtycka", detail: "ul. Grunwaldzka 141", noteKey: "place.baltycka.note", tagKey: "places.closestMall", icon: "🛍️", coords: [54.3830, 18.6001] },
+      { name: "Forum Gdańsk", detailKey: "place.forum.detail", noteKey: "place.forum.note", icon: "🛍️", coords: [54.3494, 18.6434] },
     ],
   },
   {
@@ -103,7 +103,7 @@ const categories: Category[] = [
     color: "#FDE68A", accent: "#78350F", border: "#FBD34D", icon: "🍽️",
     places: [
       { nameKey: "place.canteen", detailKey: "place.canteen.detail", noteKey: "place.canteen.note", tagKey: "places.cheapest", icon: "🍽️", coords: [54.3718, 18.6200] },
-      { nameKey: "place.milkbar", detailKey: "place.milkbar.detail", noteKey: "place.milkbar.note", icon: "🥟", coords: [54.3725, 18.6140] },
+      { nameKey: "place.milkbar", detailKey: "place.milkbar.detail", noteKey: "place.milkbar.note", icon: "🥟", coords: [54.3764, 18.6135] },
       { nameKey: "place.coffee", detailKey: "place.coffee.detail", noteKey: "place.coffee.note", icon: "☕", coords: [54.3780, 18.6010] },
     ],
   },
@@ -112,7 +112,7 @@ const categories: Category[] = [
     color: "#FECDD5", accent: "#9F1239", border: "#FDA4AF", icon: "🆘",
     places: [
       { nameKey: "place.112", detailKey: "place.112.detail", noteKey: "place.112.note", tagKey: "places.callAnytime", icon: "🆘" },
-      { name: "UCK Hospital", detail: "ul. Dębinki 7 (10 min from PG)", noteKey: "place.uck.note", icon: "🏥", coords: [54.3620, 18.6290] },
+      { name: "UCK Hospital", detail: "ul. Dębinki 7 (10 min from PG)", noteKey: "place.uck.note", icon: "🏥", coords: [54.3663, 18.6203] },
       { nameKey: "place.nfz", detailKey: "place.nfz.detail", noteKey: "place.nfz.note", icon: "🩺" },
     ],
   },
