@@ -235,7 +235,7 @@ export default function Explore() {
 
           {/* Campus map */}
           <div style={{ marginTop: 24, marginBottom: 8 }}>
-            <a href="https://pg.edu.pl/en/campus" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+            <a href="https://campus.pg.edu.pl/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
               <div className="card-interactive" style={{
                 padding: "14px 16px", display: "flex", alignItems: "center", gap: 12,
                 background: "#C5D8F8", border: "1.5px solid #9BBDEF",
@@ -252,7 +252,7 @@ export default function Explore() {
                 </div>
                 <div style={{ flex: 1 }}>
                   <p style={{ fontSize: 13, fontWeight: 700, color: "#002A6B" }}>{t("explore.campusMap")}</p>
-                  <p style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 2 }}>pg.edu.pl/en/campus</p>
+                  <p style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 2 }}>campus.pg.edu.pl</p>
                 </div>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M6 4l4 4-4 4" stroke="#002A6B" strokeWidth="1.5" strokeLinecap="round"/>
