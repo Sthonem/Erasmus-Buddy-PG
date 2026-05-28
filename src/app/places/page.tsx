@@ -99,6 +99,13 @@ const categories: Category[] = [
     ],
   },
   {
+    id: "nightlife", titleKey: "places.cat.nightlife",
+    color: "#FED7AA", accent: "#9A3412", border: "#FDBA74", icon: "🎶",
+    places: [
+      { name: "Kwadratowa", detailKey: "place.kwadratowa.detail", noteKey: "place.kwadratowa.note", tagKey: "places.onCampus", icon: "🎶", link: "https://www.facebook.com/klubKwadratowa/", coords: [54.3708, 18.6154] },
+    ],
+  },
+  {
     id: "food", titleKey: "places.cat.food",
     color: "#FDE68A", accent: "#78350F", border: "#FBD34D", icon: "🍽️",
     places: [
