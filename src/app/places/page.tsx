@@ -68,7 +68,7 @@ const categories: Category[] = [
       { name: "Biedronka", detailKey: "place.biedronka.detail", noteKey: "place.biedronka.note", tagKey: "places.closestToPG", icon: "🛒", coords: [54.3781, 18.6060] },
       { name: "Lidl", detailKey: "place.lidl.detail", noteKey: "place.lidl.note", icon: "🛒", coords: [54.3772, 18.6163] },
       { name: "Kaufland", detail: "ul. Łódzka", noteKey: "place.kaufland.note", icon: "🏪", coords: [54.3313, 18.5945] },
-      { name: "Żabka", detailKey: "place.zabka.detail", noteKey: "place.zabka.note", icon: "🏬", coords: [54.3738, 18.6180] },
+      { name: "Żabka", detailKey: "place.zabka.detail", noteKey: "place.zabka.note", icon: "🏬" },
     ],
   },
   {
