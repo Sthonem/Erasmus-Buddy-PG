@@ -25,6 +25,14 @@ const HOURS = [8, 9, 10, 11, 12, 13, 14, 15, 16];
 const COLORS = ["#E8EEF7", "#E0F5F3", "#EEEDFE", "#FAEEDA", "#FDE68A"];
 const TEXT_COLORS = ["#003580", "#00A693", "#534AB7", "#854F0B", "#78350F"];
 
+// Sample timetable shown in guest preview mode so the page isn't empty
+const SAMPLE_SLOTS: Slot[] = [
+  { id: -1, course: "Cartography",        code: "GIS 110", room: "Room 204", day_of_week: 0, start_hour: 8,  end_hour: 10, color: "#FDE68A" },
+  { id: -2, course: "GIS Fundamentals",   code: "GIS 101", room: "Room 312", day_of_week: 1, start_hour: 10, end_hour: 12, color: "#E0F5F3" },
+  { id: -3, course: "Spatial Databases",  code: "GIS 205", room: "Room 108", day_of_week: 2, start_hour: 12, end_hour: 14, color: "#E0F5F3" },
+  { id: -4, course: "Remote Sensing",     code: "GIS 301", room: "Room 208", day_of_week: 3, start_hour: 9,  end_hour: 11, color: "#EEEDFE" },
+];
+
 function detectConflicts(slots: Slot[]): number[] {
   const ids: number[] = [];
   for (let i = 0; i < slots.length; i++) {
@@ -72,6 +80,7 @@ export default function Timetable() {
         const guestMode = typeof window !== "undefined" && localStorage.getItem("guest_mode") === "true";
         if (!guestMode) { router.push("/"); return; }
         setIsGuest(true);
+        setSlots(SAMPLE_SLOTS);
         setLoading(false);
         return;
       }
