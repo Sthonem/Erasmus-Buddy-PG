@@ -121,6 +121,11 @@ export default function Timetable() {
   }
 
   async function removeSlot(id: number) {
+    if (isGuest) {
+      setGuestToast(true);
+      setTimeout(() => setGuestToast(false), 2500);
+      return;
+    }
     const { error } = await supabase.from("timetable_slots").delete().eq("id", id);
     if (!error) setSlots(prev => prev.filter(s => s.id !== id));
   }

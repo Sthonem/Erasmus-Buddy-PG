@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useI18n, LANGUAGES, type TranslationKey } from "@/lib/i18n";
+import { useI18n, LANGUAGES } from "@/lib/i18n";
 import GuestBanner from "@/components/shared/GuestBanner";
 
 export default function Settings() {

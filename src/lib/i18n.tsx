@@ -587,10 +587,14 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // localStorage is only available client-side; this one-time sync after
+    // mount keeps server and client HTML identical until hydration completes.
     const saved = localStorage.getItem("erasmus-language") as Lang | null;
     if (saved && ["en", "tr", "es", "pl"].includes(saved)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLangState(saved);
     }
+     
     setMounted(true);
   }, []);
 

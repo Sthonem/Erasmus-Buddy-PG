@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { useI18n, LANGUAGES, type Lang } from "@/lib/i18n";
+import { useI18n, LANGUAGES } from "@/lib/i18n";
 
 export default function Home() {
   const [mode, setMode] = useState<"idle" | "signin" | "signup" | "forgot">("idle");

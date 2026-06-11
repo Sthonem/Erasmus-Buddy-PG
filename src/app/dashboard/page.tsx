@@ -81,6 +81,8 @@ export default function Dashboard() {
   }, [router]);
 
   useEffect(() => {
+    // Async auth + task fetch; state updates land after await, not synchronously.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData();
   }, [pathname, loadData]);
 
@@ -120,12 +122,6 @@ export default function Dashboard() {
   const tipIdx = new Date().getDate() % 6;
   const tipEmojis = ["🚃", "🍺", "🏖️", "🎵", "🛍️", "⚽"];
   const tipText = t(`tip.${tipIdx}` as TranslationKey);
-
-  // Motivational sub-text
-  const progressMsg = progress === 0 ? t("dashboard.startAdventure") :
-    progress < 50 ? `${completedCount} ✓ · ${TASKS.length - completedCount} ${t("dashboard.left")}` :
-    progress < 100 ? t("dashboard.halfway") :
-    t("dashboard.allSortedSub");
 
   return (
     <main className="min-h-screen" style={{ background: "var(--pg-light)", paddingBottom: 90 }}>
